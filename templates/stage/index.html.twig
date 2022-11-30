@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('stage') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('stage') }}
+{% endblock %}
+{% block title %}Hello StageController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    {#    <div id="container"> #}
+    {#        <a href="{{ token }}">Spotifiy</a> #}
+    {#        <canvas id="the-canvas" width="1px" height="1px"></canvas> #}
+    {#        <img id="the-image" src="https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"/> #}
+    {#    </div> #}
+
+    {#    <div> #}
+    {#        <img id="random-image" src="https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"/> #}
+    {#        <img id="the-image" src="https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"/> #}
+    {#        <canvas id="the-canvas" width="1px" height="1px" ></canvas> #}
+    {#    </div> #}
+
+
+    {#    <script> #}
+    {#        var token = '{{ token }}'; #}
+    {#    </script> #}
+{% endblock %}

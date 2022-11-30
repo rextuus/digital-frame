@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('spotify') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('spotify') }}
+{% endblock %}
+
+{% block title %}Hello StageController!{% endblock %}
+
+{% block body %}
+    {#    <div id="container"> #}
+    {#        <a href="{{ token }}">Spotifiy</a> #}
+    {#        <canvas id="the-canvas" width="1px" height="1px"></canvas> #}
+    {#        <img id="the-image" src="https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"/> #}
+    {#    </div> #}
+
+    <div>
+        <img id="the-image"
+             src="https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"/>
+    </div>
+
+    <script>
+        var token = '{{ token }}';
+    </script>
+{% endblock %}
