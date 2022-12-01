@@ -10,20 +10,12 @@ import './styles/spotify.css';
 
 // start the Stimulus application
 import './bootstrap';
+
 var Spotify = require('spotify-web-api-js');
 
-var mode = 0;
-// var Unsplash = require('unsplash-js');
-// var nodeFetch = require('node-fetch');
-//
-// const unsplash = Unsplash.createApi({
-//     accessKey: 'IggqUsh5jKqF7WtHOiX64x8BYrLSfC86SyrmySDaWFY',
-//     // accessKey: 'https://mywebsite.com/unsplash-proxy',
-//     fetch: nodeFetch,
-// });
-//
-//
-//
+let mode = 0;
+let lastUrl = "";
+
 // set token to spotify api
 var spotify = new Spotify();
 spotify.setAccessToken(token);
@@ -60,48 +52,79 @@ function change() {
 
     setMode();
 
-    if (mode === 0){
+    if (mode === 0) {
         spotify.getMyCurrentPlayingTrack().then(
             function (data) {
+                let url = data['item']['album']['images'][0]['url'];
+                if (lastUrl === url) {
+                    return;
+                }
+                lastUrl = url;
+                // ask backend for dominant color
+                let request = new XMLHttpRequest();
+                request.open(('GET'), "https://127.0.0.1:8000/configuration/background?url=" + url);
+                request.send();
+                request.onload = () => {
+                    console.log(request);
+                    if (request.status === 200) {
+                        let backgroundColor = JSON.parse(request.response);
+                        console.log(backgroundColor);
+                        // document.body.style.backgroundColor = 'rgb(' + backgroundColor.join(',') + ')';
+                        setGradient('rgb(' + backgroundColor.join(',') + ')', 'rgb(0,0,0)');
+                    } else {
+                        console.log('error ${request.status} ${request.statusText}');
+                    }
+                }
+
                 document.getElementById('the-image').src = data['item']['album']['images'][0]['url'];
-                // document.body.style.backgroundImage = "url('"+data['item']['album']['images'][0]['url']+"')";
-
-
-                const canvas = document.getElementById('the-canvas')
-                var ctx = canvas.getContext('2d');
-                const image = document.getElementById('the-image')
-                // const imageSrc = document.getElementById('image-src')
-                // const DEFAULT_IMAGE_SRC = "https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-
-                image.addEventListener('load', e => {
-                    ctx.drawImage(image, 0, 0, 1, 1);
-                });
             },
             function (err) {
                 console.error(err);
             }
         );
-    }else{
+    } else {
         window.location.replace("https://127.0.0.1:8000/stage");
     }
 }
 
+function setGradient(color1, color2) {
+    console.log(color1, color2);
+
+    let css = document.querySelector("h4");
+    let body = document.getElementById("gradient");
+    // let grad =
+    //     "linear-gradient(to right, "
+    //     + color1
+    //     + ", "
+    //     + color2
+    //     + ")";
+    body.style.background =
+        "radial-gradient("
+        + color1
+        + ", "
+        + color2
+        + ")";
+    console.log(grad);
+    css.textContent = document.body.style.background + ";";
+    // document.body.style.backgroundColor = grad;
+
+}
 
 
 window.onload = function () {
     setInterval(change, 5000);
 };
 
-function setMode(){
+function setMode() {
     let request = new XMLHttpRequest();
-    request.open(('GET'), "https://127.0.0.1:8000/stage/change");
+    request.open(('GET'), "https://127.0.0.1:8000/configuration/change");
     request.send();
     request.onload = () => {
         console.log(request);
-        if (request.status === 200){
+        if (request.status === 200) {
             mode = JSON.parse(request.response)['mode'];
             console.log(mode);
-        }else{
+        } else {
             console.log('error ${request.status} ${request.statusText}');
         }
     }

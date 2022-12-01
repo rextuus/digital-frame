@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use DateTime;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -87,13 +88,14 @@ class SpotifyAuthenticationService
 //        $api->setAccessToken($accessToken);
     }
 
-    public function storeTokensToDb(string $accessToken, string $refreshToken)
+    public function storeTokensToDb(string $accessToken, string $refreshToken, int $expiration)
     {
         $response = $this->client->request('GET', self::STORE_TOKEN_URL, [
             // these values are automatically encoded before including them in the URL
             'query' => [
                 'access' => $accessToken,
                 'refresh' => $refreshToken,
+                'expiration' => $expiration,
             ],
         ]);
     }
@@ -106,5 +108,38 @@ class SpotifyAuthenticationService
             ],
         ]);
         return (json_decode($response->getContent(), true));
+    }
+
+    public function getValidAccessToken()
+    {
+        // get current tokens
+        $tokens = $this->getTokensFromDb();
+
+        // check if current token is valid
+        $currentTime = new DateTime();
+        $expirationDate = new DateTime();
+        $expirationDate->setTimestamp($tokens['expiration']);
+        if ($currentTime < $expirationDate){
+            return $tokens['acess'];
+        }
+
+        $session = new Session(
+            self::CLIENT_ID,
+            self::CLIENT_SECRET,
+            self::REDIRECT_URI
+        );
+
+        $session->setAccessToken($tokens['acess']);
+        $session->setRefreshToken($tokens['refresh']);
+
+        // refresh access token and store it in db
+        $session->refreshAccessToken();
+        $this->storeTokensToDb(
+            $session->getAccessToken(),
+            $session->getRefreshToken(),
+            $session->getTokenExpiration()
+        );
+
+        return $session->getAccessToken();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\SpotifyAuthenticationService;
+use ColorThief\ColorThief;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,22 +18,20 @@ class StageController extends AbstractController
 
 
     #[Route('/stage', name: 'app_stage')]
-    public function index(SpotifyAuthenticationService $spotifyAuthenticationService): Response
+    public function index(): Response
     {
 //        $spotifyAuthenticationService->refreshAccessToken();die();
         return $this->render('stage/index.html.twig', [
-            'controller_name' => 'StageController',
-            'token' => $spotifyAuthenticationService->getAccessToken()
+            'controller_name' => 'StageController'
         ]);
     }
 
     #[Route('/stage/spotify', name: 'app_stage_spotify')]
     public function spotify(SpotifyAuthenticationService $spotifyAuthenticationService): Response
     {
-//        $spotifyAuthenticationService->refreshAccessToken();die();
         return $this->render('stage/spotify.html.twig', [
             'controller_name' => 'StageController',
-            'token' => $spotifyAuthenticationService->getAccessToken()
+            'token' => $spotifyAuthenticationService->getValidAccessToken()
         ]);
     }
 
@@ -43,17 +42,5 @@ class StageController extends AbstractController
             'controller_name' => 'StageController',
             'token' => self::UNSPLASH_TOKEN
         ]);
-    }
-
-    // is requested via js from the stage index page
-    #[Route('/stage/change', name: 'app_stage_change')]
-    public function change(Request $request): Response
-    {
-        $mode = $request->query->get('mode');
-        if ($mode){
-            $this->mode = (int) $mode;
-        }
-        $response = new JsonResponse(['mode' => $this->mode]);
-        return $response;
     }
 }
