@@ -2,28 +2,27 @@
 
 namespace App\Controller;
 
+use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\SpotifyAuthenticationService;
-use ColorThief\ColorThief;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class StageController extends AbstractController
 {
-    private int $mode = 0;
+    const MODE_REDIRECTS = [
+        1 => 'app_stage_image',
+        2 => 'app_stage_spotify',
+    ];
 
     private const UNSPLASH_TOKEN = 'IggqUsh5jKqF7WtHOiX64x8BYrLSfC86SyrmySDaWFY';
 
 
     #[Route('/stage', name: 'app_stage')]
-    public function index(): Response
+    public function index(FrameConfigurationService $configurationService): Response
     {
-//        $spotifyAuthenticationService->refreshAccessToken();die();
-        return $this->render('stage/index.html.twig', [
-            'controller_name' => 'StageController'
-        ]);
+        $currentMode = $configurationService->getMode();
+        return $this->redirectToRoute(self::MODE_REDIRECTS[$currentMode]);
     }
 
     #[Route('/stage/spotify', name: 'app_stage_spotify')]
@@ -31,7 +30,8 @@ class StageController extends AbstractController
     {
         return $this->render('stage/spotify.html.twig', [
             'controller_name' => 'StageController',
-            'token' => $spotifyAuthenticationService->getValidAccessToken()
+            'token' => $spotifyAuthenticationService->getValidAccessToken(),
+            'marginTop' => '40px',
         ]);
     }
 

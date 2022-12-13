@@ -5,17 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/stage.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/spotify.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/spotify.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/styles/spotify.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/spotify.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/stage.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/StageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/StageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/SpotifyAuthenticationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/SpotifyAuthenticationService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/stage/spotify.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stage/spotify.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,6 +202,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.General" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -226,11 +234,26 @@
       <workItem from="1669591916609" duration="4316000" />
       <workItem from="1669674405172" duration="54000" />
       <workItem from="1669674512400" duration="5741000" />
-      <workItem from="1669680262064" duration="30252000" />
+      <workItem from="1669680262064" duration="36088000" />
+      <workItem from="1670539757391" duration="5082000" />
+      <workItem from="1670547720531" duration="1156000" />
+      <workItem from="1670801676339" duration="10812000" />
     </task>
+    <task id="LOCAL-00001" summary="Progress">
+      <created>1669934400318</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669934400318</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="Progress" />
   </component>
 </project>

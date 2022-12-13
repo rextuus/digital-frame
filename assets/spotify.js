@@ -13,46 +13,18 @@ import './bootstrap';
 
 var Spotify = require('spotify-web-api-js');
 
-let mode = 0;
+const spotifyMode = 2;
+let currentMode = 2;
 let lastUrl = "";
 
 // set token to spotify api
 var spotify = new Spotify();
 spotify.setAccessToken(token);
-//
-// var mode = 0;
-//
-// var photo = unsplash.photos.get(
-//     { photoId: 'pFqrYbhIAXs' }
-// ).then(result => {
-//     if (result.errors) {
-//         // handle error here
-//         console.log('error occurred: ', result.errors[0]);
-//     } else {
-//         // handle success here
-//         photo = result.response;
-//         console.log(photo);
-//         return photo;
-//     }
-// });
-// console.log(photo);
-//
-function change() {
-    // let request = new XMLHttpRequest();
-    // request.open(('GET'), "https://127.0.0.1:8000/stage/change");
-    // request.send();
-    // request.onload = () => {
-    //     console.log(request);
-    //     if (request.status == 200){
-    //         mode = JSON.parse(request.response)['mode'];
-    //     }else{
-    //         console.log('error ${request.status} ${request.statusText}');
-    //     }
-    // }
 
+function change() {
     setMode();
 
-    if (mode === 0) {
+    if (currentMode === spotifyMode) {
         spotify.getMyCurrentPlayingTrack().then(
             function (data) {
                 let url = data['item']['album']['images'][0]['url'];
@@ -92,12 +64,7 @@ function setGradient(color1, color2) {
 
     let css = document.querySelector("h4");
     let body = document.getElementById("gradient");
-    // let grad =
-    //     "linear-gradient(to right, "
-    //     + color1
-    //     + ", "
-    //     + color2
-    //     + ")";
+
     body.style.background =
         "radial-gradient("
         + color1
@@ -106,8 +73,6 @@ function setGradient(color1, color2) {
         + ")";
     console.log(grad);
     css.textContent = document.body.style.background + ";";
-    // document.body.style.backgroundColor = grad;
-
 }
 
 
@@ -122,8 +87,8 @@ function setMode() {
     request.onload = () => {
         console.log(request);
         if (request.status === 200) {
-            mode = JSON.parse(request.response)['mode'];
-            console.log(mode);
+            currentMode = JSON.parse(request.response)['mode'];
+            console.log(currentMode);
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }

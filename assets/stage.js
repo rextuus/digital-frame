@@ -6,11 +6,19 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/stage.css';
+import './styles/stage.scss';
 
 // start the Stimulus application
 import './bootstrap';
 var mode;
+
+console.log(document.getElementById(activeButton));
+document.getElementById(activeButton).classList.remove('btn-disabled');
+document.getElementById(activeButton).classList.add('btn-enabled');
+
+if (activeButton !== 'configuration_image'){
+    document.getElementById('configuration_next'). style.display = 'none';
+}
 
 // var Unsplash = require('unsplash-js');
 // var Spotify = require('spotify-web-api-js');
@@ -92,6 +100,8 @@ var mode;
 // window.onload = function () {
 //     setInterval(change, 5000);
 // };
+
+
 
 function setMode(){
     let request = new XMLHttpRequest();

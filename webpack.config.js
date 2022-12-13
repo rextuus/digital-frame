@@ -21,7 +21,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('stage', './assets/spotify.js')
+    .addEntry('stage', './assets/stage.js')
     .addEntry('spotify', './assets/spotify.js')
     .addEntry('random', './assets/random.js')
 
@@ -61,7 +61,7 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
