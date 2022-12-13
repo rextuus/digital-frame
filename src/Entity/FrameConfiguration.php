@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\FrameConfigurationRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: FrameConfigurationRepository::class)]
+class FrameConfiguration
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column]
+    private ?int $mode = null;
+
+    #[ORM\Column]
+    private bool $next = false;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getMode(): ?int
+    {
+        return $this->mode;
+    }
+
+    public function setMode(int $mode): self
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    public function isNext(): bool
+    {
+        return $this->next;
+    }
+
+    public function setNext(bool $next): self
+    {
+        $this->next = $next;
+
+        return $this;
+    }
+}
