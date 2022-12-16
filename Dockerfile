@@ -1,37 +1,31 @@
-FROM arodax/php8.1-apache
+FROM binarious/symfony-cli
 
-RUN apt-get update && apt-get install -y \
-git \
-unzip \
-libzip-dev \
-curl \
- && docker-php-ext-configure zip \
- && docker-php-ext-install zip
- \
-#    nvm
-# Install NVM and set up the environment
-RUN mkdir -p /usr/local/nvm
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 16.15.1
+# Install PHP 8.1 and required libraries
+RUN apk add --update \
+    php8 \
+    php8-cli \
+    php8-curl \
+    php8-mbstring \
+    php8-json \
+    php8-xml \
+    php8-openssl \
+    php8-zip \
+    php8-dom \
+    php8-pdo \
+    php8-mysqlnd \
+    php8-sqlite3
 
-# Install NVM
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/local/bin --filename=composer
 
-# Set up the NVM environment
-RUN . $NVM_DIR/nvm.sh && \
-    nvm install $NODE_VERSION && \
-    nvm alias default $NODE_VERSION && \
-    nvm use default
+# Install nvm
+RUN apk add --update curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v16.2.1/install.sh | bash
 
-# Add NVM to the PATH
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-# Enable the Apache mod_rewrite module and restart Apache
-RUN a2enmod rewrite && \
-    service apache2 restart
-
-#   composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filname=composer
+# Install npm
+RUN . ~/.bashrc
+RUN nvm install node
 
 #   copy and install dependencies
 COPY . /var/www/html
@@ -58,5 +52,5 @@ RUN sed -i "s/#SSLCertificateKeyFile/SSLCertificateKeyFile/g" /etc/apache2/sites
 RUN a2enmod ssl
 RUN a2ensite default-ssl
 
-EXPOSE 80
-CMD ["apache2-foreground"]
+#EXPOSE 80
+#CMD ["apache2-foreground"]

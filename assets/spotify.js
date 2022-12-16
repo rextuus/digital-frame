@@ -34,7 +34,7 @@ function change() {
                 lastUrl = url;
                 // ask backend for dominant color
                 let request = new XMLHttpRequest();
-                request.open(('GET'), "https://127.0.0.1:8000/configuration/background?url=" + url);
+                request.open(('GET'), "http://127.0.0.1:8000/configuration/background?url=" + url);
                 request.send();
                 request.onload = () => {
                     console.log(request);
@@ -55,7 +55,7 @@ function change() {
             }
         );
     } else {
-        window.location.replace("https://127.0.0.1:8000/stage");
+        window.location.replace("http://127.0.0.1:8000/stage");
     }
 }
 
@@ -82,7 +82,7 @@ window.onload = function () {
 
 function setMode() {
     let request = new XMLHttpRequest();
-    request.open(('GET'), "https://127.0.0.1:8000/configuration/change");
+    request.open(('GET'), "http://127.0.0.1:8000/configuration/change");
     request.send();
     request.onload = () => {
         console.log(request);

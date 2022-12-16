@@ -58,11 +58,11 @@ function change() {
             randomImage();
             next = false;
             let request = new XMLHttpRequest();
-            request.open(('GET'), "https://127.0.0.1:8000/configuration/next");
+            request.open(('GET'), "http://127.0.0.1:8000/configuration/next");
             request.send();
         }
     } else {
-        window.location.replace("https://127.0.0.1:8000/stage");
+        window.location.replace("http://127.0.0.1:8000/stage");
     }
 }
 
@@ -72,7 +72,7 @@ window.onload = function () {
 
 function setMode() {
     let request = new XMLHttpRequest();
-    request.open(('GET'), "https://127.0.0.1:8000/configuration/change");
+    request.open(('GET'), "http://127.0.0.1:8000/configuration/change");
     request.send();
     request.onload = () => {
         console.log(request);

@@ -26,7 +26,7 @@ if (activeButton !== 'configuration_image'){
 //
 // const unsplash = Unsplash.createApi({
 //     accessKey: 'IggqUsh5jKqF7WtHOiX64x8BYrLSfC86SyrmySDaWFY',
-//     // accessKey: 'https://mywebsite.com/unsplash-proxy',
+//     // accessKey: 'http://mywebsite.com/unsplash-proxy',
 //     fetch: nodeFetch,
 // });
 //
@@ -55,7 +55,7 @@ if (activeButton !== 'configuration_image'){
 //
 // function change() {
 //     let request = new XMLHttpRequest();
-//     request.open(('GET'), "https://127.0.0.1:8000/stage/change");
+//     request.open(('GET'), "http://127.0.0.1:8000/stage/change");
 //     request.send();
 //     request.onload = () => {
 //         console.log(request);
@@ -82,7 +82,7 @@ if (activeButton !== 'configuration_image'){
 //                 var ctx = canvas.getContext('2d');
 //                 const image = document.getElementById('the-image')
 //                 // const imageSrc = document.getElementById('image-src')
-//                 // const DEFAULT_IMAGE_SRC = "https://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+//                 // const DEFAULT_IMAGE_SRC = "http://images.unsplash.com/photo-1519515533456-ed9f2c73ca33?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
 //
 //                 image.addEventListener('load', e => {
 //                     ctx.drawImage(image, 0, 0, 1, 1);
@@ -105,7 +105,7 @@ if (activeButton !== 'configuration_image'){
 
 function setMode(){
     let request = new XMLHttpRequest();
-    request.open(('GET'), "https://127.0.0.1:8000/stage/change");
+    request.open(('GET'), "http://127.0.0.1:8000/stage/change");
     request.send();
     request.onload = () => {
         console.log(request);
