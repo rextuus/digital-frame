@@ -1,0 +1,10 @@
+Node 16.2.1 verwenden
+Php internen Server im public ordner des projektes starten nachdem ein Zertifikat installiert wurde:
+Ist nötig damit die ajax requests laufen
+php -S localhost:8000 -ssl -sslcert=home/master/cert.pem -sslkey=home/master/key.pem
+
+// composer install
+
+// js an den Start bringen
+npm install
+./node_modules/.bin/encore dev
