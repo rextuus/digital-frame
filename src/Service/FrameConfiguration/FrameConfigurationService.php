@@ -34,6 +34,9 @@ class FrameConfigurationService
     public function getMode(): ?int
     {
         $configuration = $this->repository->find(1);
+        if (is_null($configuration)){
+            $configuration = $this->createConfiguration(1);
+        }
         return $configuration->getMode();
     }
 

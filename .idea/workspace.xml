@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/spotify.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/spotify.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install" beforeDir="false" afterPath="$PROJECT_DIR$/install" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +17,13 @@
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -184,7 +188,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/styles" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -195,6 +199,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/assets/styles" />
       <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/templates/stage" />
@@ -233,7 +238,7 @@
       <workItem from="1671148381987" duration="23664000" />
       <workItem from="1671230537186" duration="19000" />
       <workItem from="1671231002241" duration="1033000" />
-      <workItem from="1671234145703" duration="725000" />
+      <workItem from="1671234145703" duration="5423000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -263,7 +268,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671224874348</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Changed https calls to http calls cause Iam to stupid to run a secure webserver on a raspi. Dont know why I earn so much money...">
+      <created>1671235138341</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1671235138342</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,6 +285,7 @@
     <MESSAGE value="Progress" />
     <MESSAGE value="Version 1.0" />
     <MESSAGE value="Added docker image" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added docker image" />
+    <MESSAGE value="Changed https calls to http calls cause Iam to stupid to run a secure webserver on a raspi. Dont know why I earn so much money..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed https calls to http calls cause Iam to stupid to run a secure webserver on a raspi. Dont know why I earn so much money..." />
   </component>
 </project>

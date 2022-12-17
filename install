@@ -8,3 +8,15 @@ php -S localhost:8000 -ssl -sslcert=home/master/cert.pem -sslkey=home/master/key
 // js an den Start bringen
 npm install
 ./node_modules/.bin/encore dev
+
+TODO
+1. Fix start configuration problem
+2. create deploy routine
+3. create function to adjust padding
+4. create function to enable window rotation
+5. upload function for images
+6. function to save images shown as favourites
+
+
+// Deploy script
+1. curl
