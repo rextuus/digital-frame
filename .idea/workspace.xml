@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install" beforeDir="false" afterPath="$PROJECT_DIR$/install" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/random.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/random.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/stage/image.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stage/image.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +239,7 @@
       <workItem from="1671148381987" duration="23664000" />
       <workItem from="1671230537186" duration="19000" />
       <workItem from="1671231002241" duration="1033000" />
-      <workItem from="1671234145703" duration="5423000" />
+      <workItem from="1671234145703" duration="7740000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -275,7 +276,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671235138342</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Init configuration after start using mode 1 = random picture">
+      <created>1671296851390</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1671296851390</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,6 +294,7 @@
     <MESSAGE value="Version 1.0" />
     <MESSAGE value="Added docker image" />
     <MESSAGE value="Changed https calls to http calls cause Iam to stupid to run a secure webserver on a raspi. Dont know why I earn so much money..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed https calls to http calls cause Iam to stupid to run a secure webserver on a raspi. Dont know why I earn so much money..." />
+    <MESSAGE value="Init configuration after start using mode 1 = random picture" />
+    <option name="LAST_COMMIT_MESSAGE" value="Init configuration after start using mode 1 = random picture" />
   </component>
 </project>

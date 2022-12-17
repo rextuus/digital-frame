@@ -5,9 +5,26 @@
 /*}*/
 body{
     background-color: #0a0a0a;
+    overflow: hidden;
 }
 .bg-container {
+    /*max-width: 100%;*/
+    /*max-height: 100%;*/
+    display: block; /* remove extra space below image */
+
+    width: 100vw;
+    height: 100vh;
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+}
+
+.image {
     max-width: 100%;
     max-height: 100%;
-    /*display: block; !* remove extra space below image *!*/
+    object-fit: cover;
+    height: auto;
 }

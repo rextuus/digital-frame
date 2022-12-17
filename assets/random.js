@@ -31,7 +31,7 @@ function randomImage(){
     unsplash.photos.getRandom({
         count: 10,
         // orientation: 'portrait'
-        orientation: 'landscape'
+        orientation: 'portrait'
     }).then(result => {
         if (result.errors) {
             // handle error here
