@@ -20,3 +20,8 @@ TODO
 
 // Deploy script
 1. curl
+
+
+sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+Der screen bleibt nach neustart so wie er zuletzt eingestellt wurde
+https://pimylifeup.com/raspberry-pi-rotate-screen/
