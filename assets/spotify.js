@@ -37,11 +37,10 @@ function change() {
                 request.open(('GET'), "http://127.0.0.1:8000/configuration/background?url=" + url);
                 request.send();
                 request.onload = () => {
-                    console.log(request);
                     if (request.status === 200) {
                         let backgroundColor = JSON.parse(request.response);
-                        console.log(backgroundColor);
                         // document.body.style.backgroundColor = 'rgb(' + backgroundColor.join(',') + ')';
+                        calculateImagePos();
                         setGradient('rgb(' + backgroundColor.join(',') + ')', 'rgb(0,0,0)');
                     } else {
                         console.log('error ${request.status} ${request.statusText}');
@@ -71,7 +70,6 @@ function setGradient(color1, color2) {
         + ", "
         + color2
         + ")";
-    console.log(grad);
     css.textContent = document.body.style.background + ";";
 }
 
@@ -85,12 +83,18 @@ function setMode() {
     request.open(('GET'), "http://127.0.0.1:8000/configuration/change");
     request.send();
     request.onload = () => {
-        console.log(request);
         if (request.status === 200) {
             currentMode = JSON.parse(request.response)['mode'];
-            console.log(currentMode);
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }
     }
+}
+
+function calculateImagePos(){
+    let image = document.getElementById('container');
+    let distanceFromTop = image.offsetTop;
+    let distanceFromBottom = window.innerHeight - (image.offsetTop + image.offsetHeight);
+    let total = distanceFromTop + distanceFromBottom;
+    image.style.marginTop = (total/2) + "px";//(screenHeight - height) / 2;
 }

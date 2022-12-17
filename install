@@ -24,4 +24,6 @@ TODO
 
 sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
 Der screen bleibt nach neustart so wie er zuletzt eingestellt wurde
+DISPLAY=:0 xrandr --output HDMI-1 --rotate right
+
 https://pimylifeup.com/raspberry-pi-rotate-screen/
