@@ -41,8 +41,7 @@ function randomImage(){
             random = result.response;
             // document.body.style.backgroundImage = "url('"+random[0]['urls']['regular']+"')";
             document.getElementById('random-image').src = random[0]['urls']['regular'];
-            console.log(window.screen.height);
-            console.log(window.screen.width);
+            calculateImagePos();
             return random;
         }
     });
@@ -50,10 +49,8 @@ function randomImage(){
 
 function change() {
     setMode();
-
+    calculateImagePos();
     if (currentMode === imageMode) {
-        console.log(next);
-
         if (next){
             randomImage();
             next = false;
@@ -75,13 +72,20 @@ function setMode() {
     request.open(('GET'), "http://127.0.0.1:8000/configuration/change");
     request.send();
     request.onload = () => {
-        console.log(request);
         if (request.status === 200) {
             currentMode = JSON.parse(request.response)['mode'];
             next = JSON.parse(request.response)['isNext'];
-            console.log(currentMode);
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }
     }
+}
+
+function calculateImagePos(){
+    let image = document.getElementById('random-image');
+    let distanceFromTop = image.offsetTop;
+    let distanceFromBottom = window.innerHeight - (image.offsetTop + image.offsetHeight);
+    let total = distanceFromTop + distanceFromBottom;
+    image.style.marginTop = (total/2) + "px";
+    console.log(window.innerHeight, distanceFromTop, distanceFromBottom)
 }

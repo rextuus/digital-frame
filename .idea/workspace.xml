@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/spotify.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/spotify.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/styles/spotify.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/spotify.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/random.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/random.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/install" beforeDir="false" afterPath="$PROJECT_DIR$/install" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/stage/spotify.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stage/spotify.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +240,7 @@
       <workItem from="1671230537186" duration="19000" />
       <workItem from="1671231002241" duration="1033000" />
       <workItem from="1671234145703" duration="10457000" />
-      <workItem from="1671302551073" duration="1975000" />
+      <workItem from="1671302551073" duration="4461000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -299,7 +298,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671300551850</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Optimized spotify variant for portrait mode">
+      <created>1671304734734</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1671304734734</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -313,6 +319,7 @@
     <MESSAGE value="Init configuration after start using mode 1 = random picture" />
     <MESSAGE value="Experimental frame" />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="Optimized spotify variant for portrait mode" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimized spotify variant for portrait mode" />
   </component>
 </project>

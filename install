@@ -16,6 +16,9 @@ TODO
 4. create function to enable window rotation
 5. upload function for images
 6. function to save images shown as favourites
+7. usplash get as many as possible pictures per request an store them in db move from frontend to backend
+and just ask the backend for new images until its store is empty
+8. usplash filter settings
 
 
 // Deploy script
