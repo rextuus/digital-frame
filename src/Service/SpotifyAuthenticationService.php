@@ -142,4 +142,15 @@ class SpotifyAuthenticationService
 
         return $session->getAccessToken();
     }
+
+    public function getImageUrlOfCurrentlyPlayingSong(): array
+    {
+        $api = new SpotifyWebAPI();
+        $api->setAccessToken($this->getValidAccessToken());
+        $currentTrack = json_decode(json_encode($api->getMyCurrentTrack()), true);
+        if (!array_key_exists('item', $currentTrack)){
+            return [];
+        }
+        return ['url' => $currentTrack['item']['album']['images'][0]['url'], 'name' => $currentTrack['item']['name']];
+    }
 }

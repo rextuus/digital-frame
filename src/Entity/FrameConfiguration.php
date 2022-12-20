@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FrameConfigurationRepository::class)]
 class FrameConfiguration
 {
+    public const MODE_UNSPLASH = 1;
+    public const MODE_SPOTIFY = 2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

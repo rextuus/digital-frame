@@ -3,9 +3,14 @@
 namespace App\Controller;
 
 use ApiPlatform\Symfony\Bundle\DependencyInjection\Configuration;
+use App\Entity\Image;
 use App\Service\FrameConfiguration\Form\ConfigurationData;
 use App\Service\FrameConfiguration\Form\ConfigurationType;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\Image\ImageData;
+use App\Service\Image\ImageService;
+use App\Service\Image\ImageStoreService;
+use App\Service\SpotifyAuthenticationService;
 use ColorThief\ColorThief;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,7 +47,7 @@ class ConfigurationController extends AbstractController
     }
 
     #[Route('/configuration/landing', name: 'app_configuration_landing')]
-    public function view(Request $request, FrameConfigurationService $configurationService): Response
+    public function view(Request $request, FrameConfigurationService $configurationService, ImageService $imageService, ImageStoreService $imageStoreService): Response
     {
         $configurationData = new ConfigurationData();
         $configurationData->setMode(1);
@@ -52,6 +57,7 @@ class ConfigurationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $isSpotify = $form->get('spotify')->isClicked();
             $isImage = $form->get('image')->isClicked();
+            $isStore = $form->get('store')->isClicked();
 
             $newMode = $configurationService->getMode();
             $next = $form->get('next')->isClicked();
@@ -62,6 +68,9 @@ class ConfigurationController extends AbstractController
                 }
                 if ($isImage){
                     $newMode = 1;
+                }
+                if ($isStore){
+                    $imageStoreService->storeImage();
                 }
             }
 
