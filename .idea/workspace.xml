@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
+    <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="Add">
+      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashApiService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageFactory.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/styles/random.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/random.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install" beforeDir="false" afterPath="$PROJECT_DIR$/install" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Image.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Image.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/ImageStoreService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Image/ImageStoreService.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,6 +183,17 @@
       <path value="$PROJECT_DIR$/vendor/api-platform/core" />
       <path value="$PROJECT_DIR$/vendor/nelmio/cors-bundle" />
       <path value="$PROJECT_DIR$/vendor/ksubileau/color-thief-php" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/vendor/hughbertd/oauth2-unsplash" />
+      <path value="$PROJECT_DIR$/vendor/unsplash/unsplash" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-client" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
     </include_path>
   </component>
   <component name="ProjectId" id="2I3fmASnUWkiofHDN4bJHYFBhKw" />
@@ -186,10 +203,11 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Service/Image/Unsplash" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -200,6 +218,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Service/Image/Unsplash" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/assets/styles" />
       <recent name="$PROJECT_DIR$/assets" />
@@ -240,7 +259,8 @@
       <workItem from="1671230537186" duration="19000" />
       <workItem from="1671231002241" duration="1033000" />
       <workItem from="1671234145703" duration="10457000" />
-      <workItem from="1671302551073" duration="4461000" />
+      <workItem from="1671302551073" duration="14568000" />
+      <workItem from="1671550438539" duration="16608000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -305,13 +325,28 @@
       <option name="project" value="LOCAL" />
       <updated>1671304734734</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Changed image">
+      <created>1671327883102</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1671327883102</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added image store functionality">
+      <created>1671550933666</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1671550933666</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="SHOW_UNVERSIONED_FILES_WHILE_COMMIT" value="false" />
     <MESSAGE value="Progress" />
     <MESSAGE value="Version 1.0" />
     <MESSAGE value="Added docker image" />
@@ -320,6 +355,8 @@
     <MESSAGE value="Experimental frame" />
     <MESSAGE value="test" />
     <MESSAGE value="Optimized spotify variant for portrait mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimized spotify variant for portrait mode" />
+    <MESSAGE value="Changed image" />
+    <MESSAGE value="Added image store functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added image store functionality" />
   </component>
 </project>

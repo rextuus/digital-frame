@@ -70,7 +70,7 @@ class ConfigurationController extends AbstractController
                     $newMode = 1;
                 }
                 if ($isStore){
-                    $imageStoreService->storeImage();
+                    $imageStoreService->storeCurrentlyDisplayedImage();
                 }
             }
 

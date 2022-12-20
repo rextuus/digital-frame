@@ -20,14 +20,14 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $path = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $url = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $path = null;
 
     public function getId(): ?int
     {

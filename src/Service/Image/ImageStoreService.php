@@ -3,29 +3,31 @@
 namespace App\Service\Image;
 
 use App\Entity\FrameConfiguration;
-use App\Entity\Image;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\Image\Unsplash\UnsplashApiService;
+use App\Service\Image\Unsplash\UnsplashImageService;
 use App\Service\SpotifyAuthenticationService;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class ImageStoreService
 {
-
     public function __construct(
-        private ImageService $imageService,
-        private FrameConfigurationService $configurationService,
+        private ImageService                 $imageService,
+        private FrameConfigurationService    $configurationService,
         private SpotifyAuthenticationService $spotifyAuthenticationService,
-        private KernelInterface $appKernel
+        private UnsplashImageService           $unsplashService,
+        private KernelInterface              $appKernel
     )
     {
     }
 
-    public function storeImage(){
+    public function storeCurrentlyDisplayedImage(){
         $mode = $this->configurationService->getMode();
 
         $imageData = new ImageData();
         if ($mode == FrameConfiguration::MODE_UNSPLASH){
-
+            $image = $this->unsplashService->getNextRandomImage();
+            dd($image);
         }
         if ($mode == FrameConfiguration::MODE_SPOTIFY){
             // get album url
