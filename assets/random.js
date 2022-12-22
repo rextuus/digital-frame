@@ -14,6 +14,7 @@ import './bootstrap';
 const imageMode = 1;
 let currentMode = 1;
 let next = false;
+let nextCount = 0;
 
 
 var Unsplash = require('unsplash-js');
@@ -27,7 +28,7 @@ const unsplash = Unsplash.createApi({
 var random;
 randomImage();
 
-function randomImage(){
+function randomImageOld(){
     unsplash.photos.getRandom({
         count: 10,
         // orientation: 'portrait'
@@ -47,16 +48,33 @@ function randomImage(){
     });
 }
 
+function randomImage(){
+    let request = new XMLHttpRequest();
+    request.open(('GET'), "http://127.0.0.1:8000/image/random?tag=fire");
+    request.send();
+    request.onload = () => {
+        if (request.status === 200) {
+            let response = JSON.parse(request.response);
+            document.getElementById('random-image').src = response['url'];
+            calculateImagePos();
+        } else {
+            console.log('error ${request.status} ${request.statusText}');
+        }
+    }
+
+}
+
 function change() {
     setMode();
     calculateImagePos();
     if (currentMode === imageMode) {
-        if (next){
-            randomImage();
+        if (next && nextCount < 1){
             next = false;
+            nextCount = nextCount + 1;
             let request = new XMLHttpRequest();
             request.open(('GET'), "http://127.0.0.1:8000/configuration/next");
             request.send();
+            randomImage();
         }
     } else {
         window.location.replace("http://127.0.0.1:8000/stage");
@@ -75,6 +93,10 @@ function setMode() {
         if (request.status === 200) {
             currentMode = JSON.parse(request.response)['mode'];
             next = JSON.parse(request.response)['isNext'];
+            if (next && nextCount === 1){
+                next = false;
+                nextCount = 0;
+            }
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }
@@ -87,5 +109,4 @@ function calculateImagePos(){
     let distanceFromBottom = window.innerHeight - (image.offsetTop + image.offsetHeight);
     let total = distanceFromTop + distanceFromBottom;
     image.style.marginTop = (total/2) + "px";
-    console.log(window.innerHeight, distanceFromTop, distanceFromBottom)
 }

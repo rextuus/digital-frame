@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="Add">
-      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashApiService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageData.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Image.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Image.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/Image/ImageStoreService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Image/ImageStoreService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +252,8 @@
       <workItem from="1671231002241" duration="1033000" />
       <workItem from="1671234145703" duration="10457000" />
       <workItem from="1671302551073" duration="14568000" />
-      <workItem from="1671550438539" duration="16608000" />
+      <workItem from="1671550438539" duration="19453000" />
+      <workItem from="1671671370265" duration="958000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -339,7 +332,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671550933666</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Work on new image storing">
+      <created>1671579505476</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1671579505476</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,6 +357,7 @@
     <MESSAGE value="Optimized spotify variant for portrait mode" />
     <MESSAGE value="Changed image" />
     <MESSAGE value="Added image store functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added image store functionality" />
+    <MESSAGE value="Work on new image storing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on new image storing" />
   </component>
 </project>
