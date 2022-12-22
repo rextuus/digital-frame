@@ -51,6 +51,7 @@ class ConfigurationController extends AbstractController
     {
         $configurationData = new ConfigurationData();
         $configurationData->setMode(1);
+        $configurationData->setNewTag(null);
         $form = $this->createForm(ConfigurationType::class, $configurationData);
 
         $form->handleRequest($request);
@@ -74,10 +75,17 @@ class ConfigurationController extends AbstractController
                 }
             }
 
+
+            /** @var ConfigurationData $data */
+            $data = $form->getData();
             $configurationService->updateConfiguration($newMode, $next);
 
-            $task = $form->getData();
+            $currentTag = $data->getTag();
+            if ($data->getNewTag()){
+                $currentTag = $data->getNewTag();
+            }
 
+            $configurationService->setCurrentTag($currentTag);
 
             // ... perform some action, such as saving the task to the database
 

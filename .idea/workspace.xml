@@ -7,6 +7,17 @@
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ImageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ImageController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/UnsplashImageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UnsplashImageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,7 +264,7 @@
       <workItem from="1671234145703" duration="10457000" />
       <workItem from="1671302551073" duration="14568000" />
       <workItem from="1671550438539" duration="19453000" />
-      <workItem from="1671671370265" duration="958000" />
+      <workItem from="1671671370265" duration="7429000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -339,7 +350,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671579505476</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fixed next bug">
+      <created>1671746712586</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1671746712586</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -358,6 +376,7 @@
     <MESSAGE value="Changed image" />
     <MESSAGE value="Added image store functionality" />
     <MESSAGE value="Work on new image storing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on new image storing" />
+    <MESSAGE value="Fixed next bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed next bug" />
   </component>
 </project>

@@ -22,6 +22,9 @@ class FrameConfiguration
     #[ORM\Column]
     private bool $next = false;
 
+    #[ORM\Column(length: 255)]
+    private ?string $currentTag = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -47,6 +50,18 @@ class FrameConfiguration
     public function setNext(bool $next): self
     {
         $this->next = $next;
+
+        return $this;
+    }
+
+    public function getCurrentTag(): ?string
+    {
+        return $this->currentTag;
+    }
+
+    public function setCurrentTag(string $currentTag): self
+    {
+        $this->currentTag = $currentTag;
 
         return $this;
     }

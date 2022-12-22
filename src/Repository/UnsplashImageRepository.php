@@ -81,4 +81,17 @@ class UnsplashImageRepository extends ServiceEntityRepository
 
         return $result[0];
     }
+
+    public function getDistinctTags()
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i.tag')
+            ->distinct();
+        $result = $qb->getQuery()->getResult();
+        if (empty($result)){
+            return [];
+        }
+
+        return $result;
+    }
 }

@@ -45,4 +45,17 @@ class FrameConfigurationService
         $configuration = $this->repository->find(1);
         return $configuration->isNext();
     }
+
+    public function setCurrentTag(string $tag): void
+    {
+        $configuration = $this->repository->find(1);
+        $configuration->setCurrentTag($tag);
+        $this->repository->save($configuration, true);
+    }
+
+    public function getCurrentTag(): string
+    {
+        $configuration = $this->repository->find(1);
+        return $configuration->getCurrentTag();
+    }
 }

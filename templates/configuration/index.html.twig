@@ -33,6 +33,14 @@
                 {{ form_row(form.next, { 'label': 'Next', 'class': 'switch-button' }) }}
             </div>
             <div class="col">
+                {{ form_row(form.tag, { 'label': 'Tag', 'class': '' }) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.newTag, { 'class': '' }) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 {{ form_row(form.store, { 'label': 'Store in DB'}) }}
             </div>
         </div>

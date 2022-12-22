@@ -50,7 +50,7 @@ function randomImageOld(){
 
 function randomImage(){
     let request = new XMLHttpRequest();
-    request.open(('GET'), "http://127.0.0.1:8000/image/random?tag=fire");
+    request.open(('GET'), "http://127.0.0.1:8000/image/random");
     request.send();
     request.onload = () => {
         if (request.status === 200) {

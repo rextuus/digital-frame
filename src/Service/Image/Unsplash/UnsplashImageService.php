@@ -8,10 +8,13 @@ use App\Repository\ImageRepository;
 use App\Repository\UnsplashImageRepository;
 use App\Service\Image\ImageData;
 use DateTime;
+use PHPUnit\Util\Exception;
 use Symfony\Component\HttpClient\HttpClient;
+use function PHPUnit\Framework\identicalTo;
 
 class UnsplashImageService
 {
+    private $tryCounter = 0;
 
     public function __construct
     (
@@ -56,6 +59,7 @@ class UnsplashImageService
 
     public function getNextRandomImage(?string $tag): UnsplashImage
     {
+        $this->tryCounter = $this->tryCounter + 1;
         $image = $this->imageRepository->findNotShownImageByTag($tag);
 
         // we need new images
@@ -66,7 +70,11 @@ class UnsplashImageService
                 $this->storeNewImageByTag($tag);
             }
             // TODO make some counter mechanism
-//            $image = $this->getNextRandomImage($tag);
+            if ($this->tryCounter < 3){
+                $image = $this->getNextRandomImage($tag);
+            }else{
+                throw new Exception('Cant load new images for tag: '.$tag);
+            }
         }
 
         $data = (new UnsplashImageData())->initFrom($image);
@@ -91,5 +99,10 @@ class UnsplashImageService
 
             $this->storeImage($data);
         }
+    }
+
+    public function getStoredTags()
+    {
+        return $this->imageRepository->getDistinctTags();
     }
 }

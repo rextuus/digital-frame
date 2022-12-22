@@ -18,6 +18,7 @@ document.getElementById(activeButton).classList.add('btn-enabled');
 
 if (activeButton !== 'configuration_image'){
     document.getElementById('configuration_next'). style.display = 'none';
+    document.getElementById('configuration_tag'). style.display = 'none';
 }
 
 // var Unsplash = require('unsplash-js');
