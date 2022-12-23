@@ -73,6 +73,7 @@ git pull
 git stash pop
 composer install
 ./node_modules/.bin/encore dev
+php bin/console d:s:u --force
 
 start chromium as kiosk in fullscreen:
 sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
