@@ -26,12 +26,11 @@ and just ask the backend for new images until its store is empty
 
 
 sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
-Der screen bleibt nach neustart so wie er zuletzt eingestellt wurde
 DISPLAY=:0 xrandr --output HDMI-1 --rotate right
 
 https://pimylifeup.com/raspberry-pi-rotate-screen/
 
-php 8.1
+php 8.1:
 sudo wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
@@ -43,19 +42,46 @@ sudo apt install -y php8.1-common php8.1-cli
 sudo apt install -y php8.1-common php8.1-cli php8.1-mysql php8.1-xml php8.1-curl php8.1-zip php8.1-gd php8.1-imap 
 
 
-Composer
+Composer:
 wget -O composer-setup.php https://getcomposer.org/installer
 
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 
-NVM & NPM
+NVM & NPM:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 
 nvm install 16.9.0
 
-Create new git ssh token
+Create new git ssh token:
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 
+cat ~/.ssh/id_rsa.pub
+
+Save in your git account as new ssh-key
+
+Download project:
+git@github.com:rextuus/digital-frame.git
+
+run npm install in project root
+
+Deployment script:
+#!/bin/bash
+cd digital-frame
+git stash
+git pull
+git stash pop
+composer install
+./node_modules/.bin/encore dev
+
+start chromium as kiosk in fullscreen:
+sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+@xset s off
+@xset -dpms
+@xset s noblank
+@chromium-browser --kiosk http://google.com/
+
+start server/project on startup:
 
 
 
