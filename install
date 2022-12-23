@@ -79,9 +79,11 @@ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
 @xset s off
 @xset -dpms
 @xset s noblank
-@chromium-browser --kiosk http://google.com/
+@chromium-browser --kiosk http://localhost:8000/digital-frame/stage
 
 start server/project on startup:
+sudo nano /etc/rc.local
+cd /digital-frame/public && php -S 0.0.0.0:8000
 
 
 
