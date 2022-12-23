@@ -30,3 +30,25 @@ Der screen bleibt nach neustart so wie er zuletzt eingestellt wurde
 DISPLAY=:0 xrandr --output HDMI-1 --rotate right
 
 https://pimylifeup.com/raspberry-pi-rotate-screen/
+
+php 8.1 installieren
+sudo wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+
+sudo apt update
+
+sudo apt install -y php8.1-common php8.1-cli
+
+sudo apt install -y php8.1-common php8.1-cli php8.1-mysql php8.1-xml php8.1-curl php8.1-zip php8.1-gd php8.1-imap 
+
+php --version
+
+
+NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+nvm install 16.9.0
+
+
+
+
