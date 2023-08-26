@@ -5,19 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/greeting.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/greeting.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entity/Greeting.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repository/GreetingRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationUpdateData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingCreateData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/GreetingFactory.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/GreetingService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Synchronization/DigitalFrameApiGateway.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Synchronization/GreetingSynchronizationService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stage/greeting.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/random.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/random.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ImageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ImageController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/StageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/StageController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/UnsplashImageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UnsplashImageRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationData.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +64,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.1">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
@@ -197,6 +212,9 @@
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/teapot/status-code" />
+      <path value="$PROJECT_DIR$/vendor/cloudinary/transformation-builder-sdk" />
+      <path value="$PROJECT_DIR$/vendor/cloudinary/cloudinary_php" />
     </include_path>
   </component>
   <component name="ProjectId" id="2I3fmASnUWkiofHDN4bJHYFBhKw" />
@@ -205,27 +223,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Service/Image/Unsplash" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.General" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/wolfgang/Documents/programming/betStat",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ]
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/Service/Image/Unsplash" />
-      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/Service/Greeting" />
       <recent name="$PROJECT_DIR$/assets/styles" />
       <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/templates/stage" />
+      <recent name="$PROJECT_DIR$/src/Service/Image/Unsplash" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -265,6 +288,10 @@
       <workItem from="1671302551073" duration="14568000" />
       <workItem from="1671550438539" duration="19453000" />
       <workItem from="1671671370265" duration="7429000" />
+      <workItem from="1691701332791" duration="2127000" />
+      <workItem from="1691953621780" duration="14409000" />
+      <workItem from="1692026701218" duration="12534000" />
+      <workItem from="1692189554688" duration="1064000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -364,7 +391,6 @@
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="SHOW_UNVERSIONED_FILES_WHILE_COMMIT" value="false" />
     <MESSAGE value="Progress" />
     <MESSAGE value="Version 1.0" />
     <MESSAGE value="Added docker image" />

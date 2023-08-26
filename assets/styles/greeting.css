@@ -1,0 +1,28 @@
+body {
+    color: rgba(0,0,0,.5);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .5em;
+    top: 15%;
+    background: linear-gradient(to right, #000000, teal); /* Standard syntax */
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    line-height: 0;
+}
+
+img {
+    border: solid black;
+    width: 95%;
+    height: auto;
+    display: block;
+}

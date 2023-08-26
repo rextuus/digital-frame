@@ -24,6 +24,7 @@ Encore
     .addEntry('stage', './assets/stage.js')
     .addEntry('spotify', './assets/spotify.js')
     .addEntry('random', './assets/random.js')
+    .addEntry('greeting', './assets/greeting.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

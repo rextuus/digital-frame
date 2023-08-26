@@ -6,11 +6,13 @@ use ApiPlatform\Symfony\Bundle\DependencyInjection\Configuration;
 use App\Entity\Image;
 use App\Service\FrameConfiguration\Form\ConfigurationData;
 use App\Service\FrameConfiguration\Form\ConfigurationType;
+use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Image\ImageData;
 use App\Service\Image\ImageService;
 use App\Service\Image\ImageStoreService;
 use App\Service\SpotifyAuthenticationService;
+use App\Service\Synchronization\GreetingSynchronizationService;
 use ColorThief\ColorThief;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,31 +26,56 @@ class ConfigurationController extends AbstractController
 
     private const MODES = [
         1 => 'configuration_image',
-        2 => 'configuration_spotify'
+        2 => 'configuration_spotify',
+        3 => 'configuration_greeting'
     ];
 
     #[Route('/configuration/change', name: 'app_configuration_change')]
-    public function change(Request $request, FrameConfigurationService $configurationService): Response
-    {
-        $mode = (int) $request->query->get('mode');
-        if ($mode){
-            $configurationService->updateConfiguration($mode);
-        }else{
+    public function change(
+        Request $request,
+        FrameConfigurationService $configurationService,
+        GreetingSynchronizationService $greetingSynchronizationService
+    ): Response {
+        $mode = (int)$request->query->get('mode');
+        if ($mode) {
+            $data = $configurationService->getDefaultUpdateData();
+            $data->setMode($mode);
+            $configurationService->update($data);
+        } else {
             $mode = $configurationService->getMode();
+            dump($mode);
         }
+
+        // check if new greetings are available and display instant if so TODO make this switchable
+        if ($greetingSynchronizationService->checkForNewGreetings()) {
+            $data = $configurationService->getDefaultUpdateData();
+            $data->setMode(3);
+            $data->setNext(false);
+            $configurationService->update($data);
+            $mode = 3;
+        }
+
+
         return new JsonResponse(['mode' => $mode, 'isNext' => $configurationService->isNext()]);
     }
 
     #[Route('/configuration/next', name: 'app_configuration_next')]
     public function next(Request $request, FrameConfigurationService $configurationService): Response
     {
-        $configurationService->updateConfiguration(null, false);
+        $data = $configurationService->getDefaultUpdateData();
+        $data->setMode(null);
+        $data->setNext(false);
+        $configurationService->update($data);
         return new JsonResponse(['next' => false]);
     }
 
     #[Route('/configuration/landing', name: 'app_configuration_landing')]
-    public function view(Request $request, FrameConfigurationService $configurationService, ImageService $imageService, ImageStoreService $imageStoreService): Response
-    {
+    public function view(
+        Request $request,
+        FrameConfigurationService $configurationService,
+        ImageService $imageService,
+        ImageStoreService $imageStoreService
+    ): Response {
         $configurationData = new ConfigurationData();
         $configurationData->setMode(1);
         $configurationData->setNewTag(null);
@@ -59,18 +86,22 @@ class ConfigurationController extends AbstractController
             $isSpotify = $form->get('spotify')->isClicked();
             $isImage = $form->get('image')->isClicked();
             $isStore = $form->get('store')->isClicked();
+            $isGreeting = $form->get('greeting')->isClicked();
 
             $newMode = $configurationService->getMode();
             $next = $form->get('next')->isClicked();
 
-            if (!$next){
-                if ($isSpotify){
+            if (!$next) {
+                if ($isGreeting) {
+                    $newMode = 3;
+                }
+                if ($isSpotify) {
                     $newMode = 2;
                 }
-                if ($isImage){
+                if ($isImage) {
                     $newMode = 1;
                 }
-                if ($isStore){
+                if ($isStore) {
                     $imageStoreService->storeCurrentlyDisplayedImage();
                 }
             }
@@ -78,10 +109,14 @@ class ConfigurationController extends AbstractController
 
             /** @var ConfigurationData $data */
             $data = $form->getData();
-            $configurationService->updateConfiguration($newMode, $next);
+
+            $data2 = $configurationService->getDefaultUpdateData();
+            $data2->setMode($newMode);
+            $data2->setNext($next);
+            $configurationService->update($data2);
 
             $currentTag = $data->getTag();
-            if ($data->getNewTag()){
+            if ($data->getNewTag()) {
                 $currentTag = $data->getNewTag();
             }
 
@@ -105,12 +140,11 @@ class ConfigurationController extends AbstractController
         $backgroundColor = [0 => 0, 1 => 0, 2 => 0];
 
         $imageUrl = $request->query->get('url');
-        if ($imageUrl){
+        if ($imageUrl) {
             try {
                 $backgroundColor = ColorThief::getColor($imageUrl, 6);
             } catch (\Exception $e) {
                 $backgroundColor[3] = $e->getTraceAsString();
-
             }
         }
         return new JsonResponse($backgroundColor);

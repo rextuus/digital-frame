@@ -44,6 +44,7 @@ class ConfigurationType extends AbstractType
         $builder
             ->add('spotify', SubmitType::class, ['label' => 'Switch to Spotify', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('image', SubmitType::class, ['label' => 'Switch to Unsplash', 'attr' => ['class' => 'btn btn-disabled']])
+            ->add('greeting', SubmitType::class, ['label' => 'Switch to Greetings', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('next', SubmitType::class, ['label' => 'Next', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('store', SubmitType::class, ['label' => 'Store in DB', 'attr' => ['class' => 'btn btn-enabled']])
             ->add('newTag', TextType::class, ['label' => false, 'required' => false, 'attr' => ['class' => '']])
