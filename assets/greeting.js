@@ -16,7 +16,6 @@ let currentMode = 3;
 
 function change() {
     setMode();
-
     if (currentMode === greetingMode) {
 
     } else {
@@ -35,9 +34,17 @@ function setMode() {
     request.onload = () => {
         if (request.status === 200) {
             currentMode = JSON.parse(request.response)['mode'];
-            console.log(currentMode);
+            calculateImagePos();
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }
     }
+}
+
+function calculateImagePos(){
+    let image = document.getElementById('random-image');
+    let distanceFromTop = image.offsetTop;
+    let distanceFromBottom = window.innerHeight - (image.offsetTop + image.offsetHeight);
+    let total = distanceFromTop + distanceFromBottom;
+    image.style.marginTop = (total/2) + "px";
 }
