@@ -8,10 +8,6 @@ use App\Entity\Greeting;
 use App\Entity\User;
 use DateTimeInterface;
 
-/**
- * @author  Wolfgang Hinzmann <wolfgang.hinzmann@doccheck.com>
- * @license 2023 DocCheck Community GmbH
- */
 class GreetingData
 {
     private string $filePath;
@@ -19,6 +15,7 @@ class GreetingData
     private ?DateTimeInterface $displayed = null;
     private ?DateTimeInterface $delivered = null;
     private ?DateTimeInterface $uploaded = null;
+    private ?DateTimeInterface $lastSynced = null;
     private string $name;
     private int $remoteId;
 
@@ -77,6 +74,17 @@ class GreetingData
         return $this;
     }
 
+    public function getLastSynced(): ?DateTimeInterface
+    {
+        return $this->lastSynced;
+    }
+
+    public function setLastSynced(?DateTimeInterface $lastSynced): GreetingData
+    {
+        $this->lastSynced = $lastSynced;
+        return $this;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -107,6 +115,7 @@ class GreetingData
         $this->setCdnUrl($Greeting->getCdnUrl());
         $this->setRemoteId($Greeting->getRemoteId());
         $this->setName($Greeting->getName());
+        $this->setLastSynced($Greeting->getLastSynced());
         return $this;
     }
 }

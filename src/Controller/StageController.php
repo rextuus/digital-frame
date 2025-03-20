@@ -2,27 +2,28 @@
 
 namespace App\Controller;
 
+use App\Entity\ArtsyImage;
+use App\Service\Artsy\ArtsyService;
+use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Greeting\Form\GreetingData;
 use App\Service\Greeting\GreetingService;
-use App\Service\SpotifyAuthenticationService;
+use App\Service\Spotify\SpotifyService;
 use App\Service\Synchronization\GreetingSynchronizationService;
 use DateTime;
+use SpotifyWebAPI\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/stage')]
 class StageController extends AbstractController
 {
-    const MODE_REDIRECTS = [
-        1 => 'app_stage_image',
-        2 => 'app_stage_spotify',
-        3 => 'app_stage_greeting',
-    ];
-
-    private const UNSPLASH_TOKEN = 'IggqUsh5jKqF7WtHOiX64x8BYrLSfC86SyrmySDaWFY';
-
+    public function __construct(
+        #[Autowire(env: 'string:UNSPLASH_TOKEN')] private readonly string $unsplashToken
+    ) {
+    }
 
     #[Route('/', name: 'app_stage')]
     public function index(
@@ -32,31 +33,53 @@ class StageController extends AbstractController
         $currentMode = $configurationService->getMode();
         if ($greetingSynchronizationService->checkForNewGreetings()){
             $data = $configurationService->getDefaultUpdateData();
-            $data->setMode(3);
+            $data->setMode(DisplayMode::GREETING);
             $data->setNext(false);
             $configurationService->update($data);
-            $currentMode = 3;
+            $currentMode = DisplayMode::GREETING;
         }
 
-        return $this->redirectToRoute(self::MODE_REDIRECTS[$currentMode]);
+        return $this->redirectToRoute($currentMode->getRedirect());
     }
 
     #[Route('/spotify', name: 'app_stage_spotify')]
-    public function spotify(SpotifyAuthenticationService $spotifyAuthenticationService): Response
+    public function spotify(SpotifyService $spotifyService): Response
     {
         return $this->render('stage/spotify.html.twig', [
             'controller_name' => 'StageController',
-            'token' => $spotifyAuthenticationService->getValidAccessToken(),
+            'token' => $spotifyService->getValidAccessToken()->getAccessToken(),
             'marginTop' => '40px',
         ]);
     }
 
-    #[Route('/image', name: 'app_stage_image')]
+    #[Route('/image', name: 'app_stage_unsplash')]
     public function image(): Response
     {
-        return $this->render('stage/image.html.twig', [
+        return $this->render('stage/unsplash.html.twig', [
             'controller_name' => 'StageController',
-            'token' => self::UNSPLASH_TOKEN
+            'token' => $this->unsplashToken
+        ]);
+    }
+
+    #[Route('/artsy/{image<\d+>?}', name: 'app_stage_artsy')]
+    public function artsy(
+        ArtsyService $artsyService,
+        FrameConfigurationService $configurationService,
+        ?int $image = null
+    ): Response {
+        $nextImage = null;
+        if ($image !== null){
+            $nextImage = $artsyService->getArtworkById($image);
+        }
+
+        if ($nextImage === null){
+            $nextImage = $artsyService->getCurrentArtwork();
+        }
+        $configurationService->setCurrentArtworkId($nextImage->getId());
+
+        return $this->render('stage/artsy.html.twig', [
+            'controller_name' => 'StageController',
+            'image' => $nextImage,
         ]);
     }
 
@@ -64,13 +87,12 @@ class StageController extends AbstractController
     public function greeting(GreetingSynchronizationService $greetingSynchronizationService, GreetingService $greetingService): Response
     {
         //synchronize images
-        $greetingSynchronizationService->synchronizeGreetings();
+        $greetingSynchronizationService->synchronizeGreetingsFromServer();
         $greetings = $greetingService->getNewNonDisplayedGreetings();
 
         $url = 'test.de';
         if (count($greetings) > 0){
             $url = $greetings[0]->getCdnUrl();
-            $greetingSynchronizationService->markAsDisplayed([$greetings[0]->getRemoteId()]);
             $data = (new GreetingData())->initFrom($greetings[0]);
             $data->setDisplayed(new DateTime());
             $greetingService->update($greetings[0], $data);

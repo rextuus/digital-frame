@@ -1,0 +1,67 @@
+{# templates/spotify/test.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Test Player
+{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card shadow col-md-6 p-4 text-center">
+            <h1 class="h5 mb-4">Please wait while we process your test...</h1>
+
+            {# Progress bar section #}
+            <div class="progress mb-3">
+                <div
+                        id="progress-bar"
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        style="width: 0%;"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                ></div>
+            </div>
+
+            <p id="status-message">Test will complete in <strong>{{ calculatedRuntime }}</strong> seconds...</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        console.log('Script started with Turbo');
+
+        // Add your logic inside the turbo:load event
+        document.addEventListener('turbo:load', () => {
+            console.log('DOM fully loaded via Turbo');
+            const progressBar = document.getElementById('progress-bar');
+            const statusMessage = document.getElementById('status-message');
+            const runtimeInSeconds = {{ calculatedRuntime|json_encode|raw }};
+            const redirectUrl = {{ redirectUrl|json_encode|raw }};
+
+            // Convert runtime to milliseconds
+            const totalRuntimeInMs = runtimeInSeconds * 1000;
+            const progressUpdateInterval = 100; // Update every 100ms
+            let elapsedMs = 0;
+
+            // Progress bar update
+            const updateProgressBar = () => {
+                elapsedMs += progressUpdateInterval;
+                const progressPercentage = Math.min((elapsedMs / totalRuntimeInMs) * 100, 100); // Cap at 100%
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.setAttribute('aria-valuenow', progressPercentage.toFixed(0));
+
+                if (elapsedMs >= totalRuntimeInMs) {
+                    clearInterval(progressInterval);
+                    statusMessage.textContent = "Redirecting now...";
+                    window.location.href = redirectUrl; // Redirect once progress is complete
+                }
+            };
+
+            // Start progress bar update
+            const progressInterval = setInterval(updateProgressBar, progressUpdateInterval);
+        });
+    </script>
+{% endblock %}

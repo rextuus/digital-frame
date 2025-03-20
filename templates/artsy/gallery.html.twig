@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artsy Gallery{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+
+{% block body %}
+    <h1 class="text-center mb-4">Artsy Image Gallery</h1>
+    <div class="container mt-5">
+        {{ component('Gallery') }}
+    </div>
+{% endblock %}

@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Service\Image\Unsplash;
+namespace App\Service\Unsplash;
 
-use App\Service\Image\ImageData;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Unsplash\HttpClient;
 use Unsplash\Photo;
 use Unsplash\Search;
-use function dd;
 
 class UnsplashApiService
 {
-    private const ACCESS_KEY = 'IggqUsh5jKqF7WtHOiX64x8BYrLSfC86SyrmySDaWFY';
-    private const SECRET = 'MUjMY6ouEe8X7f3qz6fO7B3vJjpsbZYTgIdOMrmf1Kw';
     private const DEFAULT_PAGES = 30;
     private const DEFAULT_ORIENTATION = 'portrait';
 
-    public function __construct()
-    {
+    public function __construct(
+        #[Autowire('%env(UNSPLASH_ACCESS_KEY)%')]
+        private readonly string $unsplashAccessKey,
+        #[Autowire('%env(UNSPLASH_SECRET)%')]
+        private readonly string $unsplashSecret,
+    ) {
     }
-
 
     private function getClient(): void
     {
         HttpClient::init([
-            'applicationId'	=> self::ACCESS_KEY,
-            'secret'	=> self::SECRET,
+            'applicationId'	=> $this->unsplashAccessKey,
+            'secret'	=> $this->unsplashSecret,
             'callbackUrl'	=> 'https://your-application.com/oauth/callback',
             'utmSource' => 'digital-frame'
         ]);
@@ -32,14 +32,21 @@ class UnsplashApiService
         HttpClient::$connection->getConnectionUrl($scopes);
     }
 
+    /**
+     * @return array<Photo>
+     */
     public function getRandomImageLinks(): array
     {
         $this->getClient();
 
         $filters = ['count' => self::DEFAULT_PAGES, 'orientation' => self::DEFAULT_ORIENTATION];
+
         return Photo::random($filters)->toArray();
     }
 
+    /**
+     * @return array<Photo>
+     */
     public function getImageLinksByTag(string $search): array
     {
         $this->getClient();
@@ -54,6 +61,7 @@ class UnsplashApiService
             self::DEFAULT_PAGES,
             self::DEFAULT_ORIENTATION
         );
+
         return $result->getArrayObject()->toArray();
     }
 }

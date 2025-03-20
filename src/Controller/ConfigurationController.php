@@ -2,16 +2,13 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Symfony\Bundle\DependencyInjection\Configuration;
-use App\Entity\Image;
+use App\Service\Artsy\ArtsyService;
+use App\Service\Favorite\LastImageDto;
+use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\Form\ConfigurationData;
 use App\Service\FrameConfiguration\Form\ConfigurationType;
-use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
 use App\Service\FrameConfiguration\FrameConfigurationService;
-use App\Service\Image\ImageData;
-use App\Service\Image\ImageService;
-use App\Service\Image\ImageStoreService;
-use App\Service\SpotifyAuthenticationService;
+use App\Service\Spotify\SpotifyService;
 use App\Service\Synchronization\GreetingSynchronizationService;
 use ColorThief\ColorThief;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,13 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ConfigurationController extends AbstractController
 {
-    private int $mode = 0;
-
-    private const MODES = [
-        1 => 'configuration_image',
-        2 => 'configuration_spotify',
-        3 => 'configuration_greeting'
-    ];
+    public function __construct(
+        private readonly SpotifyService $spotifyService,
+    ) {
+    }
 
     #[Route('/configuration/change', name: 'app_configuration_change')]
     public function change(
@@ -36,23 +30,22 @@ class ConfigurationController extends AbstractController
         FrameConfigurationService $configurationService,
         GreetingSynchronizationService $greetingSynchronizationService
     ): Response {
-        $mode = (int)$request->query->get('mode');
+        $mode = DisplayMode::tryFrom((int)$request->query->get('mode'));
         if ($mode) {
             $data = $configurationService->getDefaultUpdateData();
             $data->setMode($mode);
             $configurationService->update($data);
         } else {
             $mode = $configurationService->getMode();
-            dump($mode);
         }
 
         // check if new greetings are available and display instant if so TODO make this switchable
         if ($greetingSynchronizationService->checkForNewGreetings()) {
             $data = $configurationService->getDefaultUpdateData();
-            $data->setMode(3);
+            $data->setMode(DisplayMode::GREETING);
             $data->setNext(false);
             $configurationService->update($data);
-            $mode = 3;
+            $mode = DisplayMode::GREETING;
         }
 
 
@@ -63,19 +56,19 @@ class ConfigurationController extends AbstractController
     public function next(Request $request, FrameConfigurationService $configurationService): Response
     {
         $data = $configurationService->getDefaultUpdateData();
-        $data->setMode(null);
         $data->setNext(false);
         $configurationService->update($data);
         return new JsonResponse(['next' => false]);
     }
 
-    #[Route('/configuration/landing', name: 'app_configuration_landing')]
+    #[Route('/', name: 'app_configuration_landing')]
     public function view(
         Request $request,
         FrameConfigurationService $configurationService,
-        ImageService $imageService,
-        ImageStoreService $imageStoreService
+        ArtsyService $artsyService
     ): Response {
+        $currentMode = $configurationService->getMode();
+
         $configurationData = new ConfigurationData();
         $configurationData->setMode(1);
         $configurationData->setNewTag(null);
@@ -86,23 +79,27 @@ class ConfigurationController extends AbstractController
             $isSpotify = $form->get('spotify')->isClicked();
             $isImage = $form->get('image')->isClicked();
             $isStore = $form->get('store')->isClicked();
+            $isArtsy = $form->get('artsy')->isClicked();
             $isGreeting = $form->get('greeting')->isClicked();
 
-            $newMode = $configurationService->getMode();
+            $newMode = $currentMode;
             $next = $form->get('next')->isClicked();
 
             if (!$next) {
+                if ($isArtsy) {
+                    $newMode = DisplayMode::ARTSY;
+                }
                 if ($isGreeting) {
-                    $newMode = 3;
+                    $newMode = DisplayMode::GREETING;
                 }
                 if ($isSpotify) {
-                    $newMode = 2;
+                    $newMode = DisplayMode::SPOTIFY;
                 }
                 if ($isImage) {
-                    $newMode = 1;
+                    $newMode = DisplayMode::UNSPLASH;
                 }
                 if ($isStore) {
-                    $imageStoreService->storeCurrentlyDisplayedImage();
+//                    $imageStoreService->storeCurrentlyDisplayedImage();
                 }
             }
 
@@ -127,11 +124,38 @@ class ConfigurationController extends AbstractController
             return $this->redirectToRoute('app_configuration_landing');
         }
 
+        $lastArtwork = null;
+        match ($currentMode){
+            DisplayMode::UNSPLASH => $lastArtwork = null,
+            DisplayMode::SPOTIFY => $lastArtwork = null,
+            DisplayMode::GREETING => $lastArtwork = null,
+            DisplayMode::ARTSY => $lastArtwork = null,
+        };
+
+        $lastDisplayedArtworkId = $configurationService->getCurrentArtworkId();
+        if ($lastDisplayedArtworkId !== null) {
+            $lastArtwork = $artsyService->getArtworkById($lastDisplayedArtworkId);
+        }
+
+//        $this->getLastSpotifyImage();
+
         $configurationService->getMode();
         return $this->render('configuration/index.html.twig', [
             'form' => $form->createView(),
-            'activeButton' => self::MODES[$configurationService->getMode()]
+            'lastArtwork' => $lastArtwork,
+            'activeButton' => $configurationService->getMode()->getActiveButton()
         ]);
+    }
+
+    private function getLastSpotifyImage(): LastImageDto
+    {
+        $dto = new LastImageDto();
+        $metaData = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong();
+        $dto->setUrl($metaData['url']);
+        $dto->setArtist($metaData['artist']);
+        $dto->setTitle($metaData['name'].' ('.$metaData['album'].')');
+
+        return $dto;
     }
 
     #[Route('/configuration/background', name: 'app_configuration_background')]

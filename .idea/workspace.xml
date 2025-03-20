@@ -5,33 +5,93 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/greeting.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/styles/greeting.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Greeting.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/GreetingRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationUpdateData.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingCreateData.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingData.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/GreetingFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Greeting/GreetingService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Synchronization/DigitalFrameApiGateway.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Synchronization/GreetingSynchronizationService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/stage/greeting.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/artsy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/artsy.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Command/InitArtsyCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Command/SynchronizeGreetingsFromServerCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/ArtsyController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/SpotifyController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entity/ArtsyImage.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entity/Favorite.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entity/SpotifyAccessToken.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repository/ArtsyImageRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repository/FavoriteRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repository/SpotifyAccessTokenRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Artsy/ArtistInformation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Artsy/ArtsyService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Artsy/ArtworkDimensionFilter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Artsy/Category.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Artsy/SearchType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/ArtsyConverter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/SpotifyConverter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/UnsplashConverter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/Exception/ConverterNotSupportsException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/FavoriteConvertable.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/LastImageDto.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/ModeToFavoriteConvertProvider.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/ModeToFavoriteConverterInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/DisplayMode.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Spotify/SpotifyService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Spotify/SpotifyToFavoriteDto.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Synchronization/Exception/GreetingApiException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Util/SentryService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Twig/Components/Gallery.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/artsy/gallery.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/components/Gallery.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/spotify/info.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/spotify/search.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/spotify/select_duration.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/spotify/test.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stage/unsplash.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/controllers.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/controllers.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/spotify.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/spotify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/stage.scss" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/stage.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/sensio_framework_extra.yaml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ImageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UnsplashController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/StageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/StageController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Greeting.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Greeting.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Image.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/UnsplashImage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/UnsplashImage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/GreetingRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/GreetingRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/ImageRepository.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationUpdateData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationUpdateData.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationFactory.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingCreateData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingCreateData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Greeting/Form/GreetingData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Greeting/GreetingFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Greeting/GreetingFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Greeting/GreetingService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Greeting/GreetingService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/ImageData.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/ImageFactory.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/ImageService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/ImageStoreService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashApiService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Unsplash/UnsplashApiService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Unsplash/UnsplashImageData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Unsplash/UnsplashImageFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Image/Unsplash/UnsplashImageService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Unsplash/UnsplashImageService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/SpotifyAuthenticationService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Synchronization/DigitalFrameApiGateway.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Synchronization/DigitalFrameApiGateway.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Synchronization/GreetingSynchronizationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Synchronization/GreetingSynchronizationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/stage/image.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stage/artsy.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/stage/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stage/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +113,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;rextuus&quot;
+  }
+}</component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -61,6 +127,12 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/rextuus/digital-frame.git&quot;,
+    &quot;accountId&quot;: &quot;19ebb18a-95f4-4ebb-a4c6-6b99949abb0a&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -215,8 +287,22 @@
       <path value="$PROJECT_DIR$/vendor/teapot/status-code" />
       <path value="$PROJECT_DIR$/vendor/cloudinary/transformation-builder-sdk" />
       <path value="$PROJECT_DIR$/vendor/cloudinary/cloudinary_php" />
+      <path value="$PROJECT_DIR$/vendor/psr/clock" />
+      <path value="$PROJECT_DIR$/vendor/symfony/clock" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php83" />
+      <path value="$PROJECT_DIR$/vendor/symfony/ux-twig-component" />
+      <path value="$PROJECT_DIR$/vendor/symfony/ux-live-component" />
+      <path value="$PROJECT_DIR$/vendor/symfony/stimulus-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sentry/sentry-symfony" />
+      <path value="$PROJECT_DIR$/vendor/sentry/sentry" />
+      <path value="$PROJECT_DIR$/vendor/jean85/pretty-package-versions" />
+      <path value="$PROJECT_DIR$/vendor/symfony/psr-http-message-bridge" />
     </include_path>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2I3fmASnUWkiofHDN4bJHYFBhKw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -225,10 +311,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/wolfgang/Documents/programming/betStat",
+    "last_opened_file_path": "/home/wolfgang/Documents/programming/digital-frame",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -244,11 +332,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/Service/Greeting" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/assets/styles" />
       <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/templates/stage" />
-      <recent name="$PROJECT_DIR$/src/Service/Image/Unsplash" />
+      <recent name="$PROJECT_DIR$/src/Service/Greeting" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -259,6 +347,16 @@
       <TestRunner scope="XML" />
       <method v="2" />
     </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="php-symfony_error_handler-5543a6ebd44f-4cf6d9aa" />
+        <option value="php-symfony_mailer-5543a6ebd44f-fd1fbf99" />
+        <option value="php-symfony_mime-5543a6ebd44f-bc31946b" />
+        <option value="php-symfony_monolog_bundle-5543a6ebd44f-feabfd6d" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -292,6 +390,17 @@
       <workItem from="1691953621780" duration="14409000" />
       <workItem from="1692026701218" duration="12534000" />
       <workItem from="1692189554688" duration="1064000" />
+      <workItem from="1695391279131" duration="11000" />
+      <workItem from="1698274597172" duration="1231000" />
+      <workItem from="1707090695597" duration="59000" />
+      <workItem from="1741878093336" duration="7019000" />
+      <workItem from="1741939077876" duration="20269000" />
+      <workItem from="1742199318272" duration="47000" />
+      <workItem from="1742285245820" duration="38000" />
+      <workItem from="1742303578551" duration="11772000" />
+      <workItem from="1742371755176" duration="5872000" />
+      <workItem from="1742459691064" duration="68000" />
+      <workItem from="1742481548324" duration="11862000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>

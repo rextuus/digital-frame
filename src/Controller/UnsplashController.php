@@ -2,22 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\FrameConfiguration;
-use App\Entity\UnsplashImage;
 use App\Service\FrameConfiguration\FrameConfigurationService;
-use App\Service\Image\Unsplash\UnsplashImageService;
+use App\Service\Unsplash\UnsplashImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ImageController extends AbstractController
+class UnsplashController extends AbstractController
 {
     #[Route('/image/random', name: 'app_image_random')]
     public function random(
         Request $request,
-        UnsplashImageService $imageService,
+        UnsplashImageService $unsplashImageService,
         FrameConfigurationService $configurationService
     ): Response
     {
@@ -26,7 +24,10 @@ class ImageController extends AbstractController
             $tag = $configurationService->getCurrentTag();
         }
 
-        $randomImage = $imageService->getNextRandomImage($tag);
+        $randomImage = $unsplashImageService->getNextRandomImage($tag);
+
+        $configurationService->setCurrentArtworkId($randomImage->getId());
+
         return new JsonResponse(['url' => $randomImage->getUrl()]);
     }
 }

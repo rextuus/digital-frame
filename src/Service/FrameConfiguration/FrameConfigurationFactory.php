@@ -7,7 +7,7 @@ use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
 
 class FrameConfigurationFactory
 {
-    public function createConfiguration(int $mode): FrameConfiguration
+    public function createConfiguration(DisplayMode $mode): FrameConfiguration
     {
         $configuration = $this->getInstance();
         $configuration->setMode($mode);

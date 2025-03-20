@@ -20,12 +20,15 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col">
                 {{ form_row(form.spotify, { 'label': 'Switch to Spotify' }) }}
             </div>
             <div class="col">
                 {{ form_row(form.image, { 'label': 'Switch to Unsplash', 'class': 'switch-button' }) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.artsy, { 'label': 'Switch to Artsy', 'class': 'switch-button' }) }}
             </div>
             <div class="col">
                 {{ form_row(form.greeting, { 'label': 'Switch to Greeting', 'class': 'switch-button' }) }}
@@ -35,10 +38,10 @@
             <div class="col">
                 {{ form_row(form.next, { 'label': 'Next', 'class': 'switch-button' }) }}
             </div>
-            <div class="col">
+            <div class="col text-white">
                 {{ form_row(form.tag, { 'label': 'Tag', 'class': '' }) }}
             </div>
-            <div class="col">
+            <div class="col ">
                 {{ form_row(form.newTag, { 'class': '' }) }}
             </div>
         </div>
@@ -50,6 +53,16 @@
 
         {{ form_end(form) }}
     </div>
+
+    <div class="text-white text-center mb-3">
+        {% if lastArtwork is not null %}
+            <p>Current Artwork: {{ lastArtwork.name }} by {{ lastArtwork.artist }}</p>
+            <div class="mt-3">
+                <img src="{{ lastArtwork.mediumResolutionUrl }}" alt="{{ lastArtwork.name }}" class="img-fluid mx-auto d-block border border-light">
+            </div>
+        {% endif %}
+    </div>
+
     <script>
     var activeButton = '{{ activeButton }}';
 </script>

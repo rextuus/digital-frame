@@ -43,6 +43,7 @@ function change() {
                         calculateImagePos();
                         setGradient('rgb(' + backgroundColor.join(',') + ')', 'rgb(0,0,0)');
                     } else {
+                        window.location.replace("http://127.0.0.1:8000/stage");
                         console.log('error ${request.status} ${request.statusText}');
                     }
                 }
@@ -75,6 +76,12 @@ function setGradient(color1, color2) {
 
 
 window.onload = function () {
+    // after 60 minutes accesToken needs to be refreshed
+    let minutes = 61;
+    setTimeout(() => {
+        window.location.replace("http://127.0.0.1:8000/stage");
+    }, minutes * 60 * 1000);
+
     setInterval(change, 5000);
 };
 

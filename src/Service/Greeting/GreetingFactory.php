@@ -9,10 +9,6 @@ use App\Service\Greeting\Form\GreetingCreateData;
 use App\Service\Greeting\Form\GreetingData;
 use DateTime;
 
-/**
- * @author  Wolfgang Hinzmann <wolfgang.hinzmann@doccheck.com>
- * @license 2023 DocCheck Community GmbH
- */
 class GreetingFactory
 {
     public function __construct() { }
@@ -34,6 +30,7 @@ class GreetingFactory
         $greeting->setUploaded($data->getUploaded());
         $greeting->setDelivered($data->getDelivered());
         $greeting->setDisplayed($data->getDisplayed());
+        $greeting->setLastSynced($data->getLastSynced());
         $greeting->setCdnUrl($data->getCdnUrl());
         $greeting->setRemoteId($data->getRemoteId());
     }

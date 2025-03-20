@@ -1,0 +1,56 @@
+<div{{ attributes }}>
+    <div class="col pl-5">
+        <span>{{ this.page }}</span>/<span>{{ this.totalPages }}</span>
+        <label>
+            <input
+                    type="checkbox"
+                    data-action="live#action"
+                    data-live-action-param="toggleOnlyPaintings"
+                    {% if this.onlyPaintings %}checked{% endif %}
+            >
+            Only Paintings
+        </label>
+    </div>
+    <div class="container pt-5">
+    {% if this.hasPreviousPages() %}
+        <div class="row">
+            <div class="col">
+                <button data-action="live#action" data-live-action-param="loadBefore" class="btn btn-primary">
+                    Previous
+                </button>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        {% for image in this.getImages() %}
+
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ image.mediumResolutionUrl }}" alt="{{ image.name }}" class="card-img-top">
+                    <div class="card-body text-center d-flex flex-column align-items-center">
+                        <h5 class="card-title mb-2">{{ image.name }}</h5>
+                        <p class="card-text text-muted mt-1">Artist: {{ image.artist }}</p>
+                        <button
+                                data-action="live#action"
+                                data-live-action-param="display"
+                                data-live-id-param="{{ image.id }}"
+                                class="btn btn-primary btn-lg">
+                            Display
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if this.hasMorePages() %}
+        <div class="row">
+            <div class="col">
+                <button data-action="live#action" data-live-action-param="loadMore" class="btn btn-primary btn-lg">
+                    Next
+                </button>
+            </div>
+        </div>
+    {% endif %}
+</div>
+</div>

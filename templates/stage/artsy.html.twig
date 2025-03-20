@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('artsy') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('artsy') }}
+{% endblock %}
+{% block body %}
+    <div class="bg-container">
+        <img id="random-image" src="{{image.bestResolutionUrl}}"/>
+    </div>
+{% endblock %}

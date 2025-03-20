@@ -13,7 +13,7 @@ class FrameConfigurationService
     {
     }
 
-    public function createConfiguration(int $mode): FrameConfiguration
+    public function createConfiguration(DisplayMode $mode): FrameConfiguration
     {
         $configuration = $this->factory->createConfiguration($mode);
         $configuration->setNext(false);
@@ -54,7 +54,7 @@ class FrameConfigurationService
         return $configuration;
     }
 
-    public function getMode(): ?int
+    public function getMode(): DisplayMode
     {
         $configuration = $this->getConfiguration();
 
@@ -86,8 +86,43 @@ class FrameConfigurationService
     {
         $configuration = $this->repository->find(1);
         if(is_null($configuration)){
-            $configuration = $this->createConfiguration(1);
+            $configuration = $this->createConfiguration(DisplayMode::UNSPLASH);
         }
         return $configuration;
+    }
+
+    public function getNextImageId(): ?int
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->getNextImageId();
+    }
+
+    public function setNextImageId(?int $nextImageId): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setNextImageId($nextImageId);
+        $this->repository->save($configuration, true);
+    }
+
+    public function setNext(bool $next): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setNext($next);
+        $this->repository->save($configuration, true);
+    }
+
+    public function setCurrentArtworkId(int $artworkId): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setCurrentlyDisplayedArtworkId($artworkId);
+        $this->repository->save($configuration, true);
+    }
+
+    public function getCurrentArtworkId(): ?int
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->getCurrentlyDisplayedArtworkId();
     }
 }

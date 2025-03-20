@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FrameConfigurationRepository;
+use App\Service\FrameConfiguration\DisplayMode;
+use Doccheck\Crm\Application\Domain\Order\OrderType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FrameConfigurationRepository::class)]
@@ -20,8 +22,8 @@ class FrameConfiguration
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $mode = null;
+    #[ORM\Column(type: 'integer', nullable: false, enumType: DisplayMode::class)]
+    private DisplayMode $mode = DisplayMode::UNSPLASH;
 
     #[ORM\Column]
     private bool $next = false;
@@ -35,17 +37,23 @@ class FrameConfiguration
     #[ORM\Column]
     private ?int $shutDownTime = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nextImageId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $currentlyDisplayedArtworkId = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMode(): ?int
+    public function getMode(): DisplayMode
     {
         return $this->mode;
     }
 
-    public function setMode(int $mode): self
+    public function setMode(DisplayMode $mode): self
     {
         $this->mode = $mode;
 
@@ -96,6 +104,30 @@ class FrameConfiguration
     public function setShutDownTime(int $shutDownTime): static
     {
         $this->shutDownTime = $shutDownTime;
+
+        return $this;
+    }
+
+    public function getNextImageId(): ?int
+    {
+        return $this->nextImageId;
+    }
+
+    public function setNextImageId(?int $nextImageId): static
+    {
+        $this->nextImageId = $nextImageId;
+
+        return $this;
+    }
+
+    public function getCurrentlyDisplayedArtworkId(): ?int
+    {
+        return $this->currentlyDisplayedArtworkId;
+    }
+
+    public function setCurrentlyDisplayedArtworkId(?int $currentlyDisplayedArtworkId): static
+    {
+        $this->currentlyDisplayedArtworkId = $currentlyDisplayedArtworkId;
 
         return $this;
     }

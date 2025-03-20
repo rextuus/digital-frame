@@ -3,8 +3,7 @@
 namespace App\Service\FrameConfiguration\Form;
 
 use App\Service\FrameConfiguration\FrameConfigurationService;
-use App\Service\Image\ImageService;
-use App\Service\Image\Unsplash\UnsplashImageService;
+use App\Service\Unsplash\UnsplashImageService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -44,6 +43,7 @@ class ConfigurationType extends AbstractType
         $builder
             ->add('spotify', SubmitType::class, ['label' => 'Switch to Spotify', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('image', SubmitType::class, ['label' => 'Switch to Unsplash', 'attr' => ['class' => 'btn btn-disabled']])
+            ->add('artsy', SubmitType::class, ['label' => 'Switch to Artsy', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('greeting', SubmitType::class, ['label' => 'Switch to Greetings', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('next', SubmitType::class, ['label' => 'Next', 'attr' => ['class' => 'btn btn-disabled']])
             ->add('store', SubmitType::class, ['label' => 'Store in DB', 'attr' => ['class' => 'btn btn-enabled']])

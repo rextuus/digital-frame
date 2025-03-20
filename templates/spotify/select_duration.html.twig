@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container mt-5" data-controller="select-song-duration">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mb-4">Torhymne exakt einstellen</h1>
+
+                {{ component('TrackComponent', {participant: participant, player: player, track: track}) }}
+
+
+                <div class="alert alert-dark">
+                    <strong>Songlänge:</strong> <span data-select-song-duration-target="maximum">{{ trackDuration }}</span>
+                </div>
+                <div class="alert alert-dark">
+                    <strong>Ausschnittlänge maximal:</strong> <span data-select-song-duration-target="range">{{ playTimeLimit }}</span>
+                </div>
+                <div class="alert alert-info">
+                    <strong>Ausschnittlänge aktuell:</strong> <span data-select-song-duration-target="currentLabel">30</span>
+                </div>
+
+                {{ form_start(form) }}
+                <div class="form-group mb-3">
+                    {{ form_widget(form.start, {
+                        attr: {
+                            'class': 'form-control',
+                            'data-select-song-duration-target': 'start',
+                            'data-action': 'input->select-song-duration#adjust'
+                        }
+                    }) }}
+                    <small class="">
+                        <strong>Von:</strong> <span data-select-song-duration-target="startLabel">0s</span>
+                    </small>
+                </div>
+
+                <div class="form-group mb-3">
+                    {{ form_widget(form.end, {
+                        attr: {
+                            'class': 'form-control',
+                            'data-select-song-duration-target': 'end',
+                            'data-action': 'input->select-song-duration#adjust'
+                        }
+                    }) }}
+                    <small class="">
+                        <strong>Bis:</strong> <span data-select-song-duration-target="endLabel">60s</span>
+                    </small>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    {{ form_widget(form.save, { attr: { 'class': 'btn btn-primary px-4' } }) }}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

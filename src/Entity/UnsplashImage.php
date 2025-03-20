@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UnsplashImageRepository;
+use App\Service\Favorite\FavoriteConvertable;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UnsplashImageRepository::class)]
-class UnsplashImage
+class UnsplashImage implements FavoriteConvertable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

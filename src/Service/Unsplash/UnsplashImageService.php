@@ -1,28 +1,23 @@
 <?php
 
-namespace App\Service\Image\Unsplash;
+namespace App\Service\Unsplash;
 
-use App\Entity\Image;
 use App\Entity\UnsplashImage;
-use App\Repository\ImageRepository;
 use App\Repository\UnsplashImageRepository;
-use App\Service\Image\ImageData;
 use DateTime;
 use PHPUnit\Util\Exception;
-use Symfony\Component\HttpClient\HttpClient;
-use function PHPUnit\Framework\identicalTo;
+use Unsplash\Photo;
 
 class UnsplashImageService
 {
-    private $tryCounter = 0;
+    private int $tryCounter = 0;
 
     public function __construct
     (
-        private UnsplashImageFactory $imageFactory,
-        private UnsplashImageRepository $imageRepository,
-        private UnsplashApiService $api
-    )
-    {
+        private readonly UnsplashImageFactory $imageFactory,
+        private readonly UnsplashImageRepository $imageRepository,
+        private readonly UnsplashApiService $api
+    ) {
     }
 
     public function storeImage(UnsplashImageData $data): UnsplashImage
@@ -45,13 +40,15 @@ class UnsplashImageService
         return $image;
     }
 
-    public function storeNewRandomImages (){
+    public function storeNewRandomImages(): void
+    {
         $newImages = $this->api->getRandomImageLinks();
 
         $this->storeImagesFromApiResponse($newImages);
     }
 
-    public function storeNewImageByTag (string $tag){
+    public function storeNewImageByTag(string $tag): void
+    {
         $newImages = $this->api->getImageLinksByTag($tag);
 
         $this->storeImagesFromApiResponse($newImages, $tag);
@@ -80,12 +77,12 @@ class UnsplashImageService
         $data = (new UnsplashImageData())->initFrom($image);
         $data->setViewed(new DateTime());
         $this->updateImage($data, $image);
+
         return $image;
     }
 
     /**
-     * @param array $newImages
-     * @return void
+     * @param array<Photo> $newImages
      */
     protected function storeImagesFromApiResponse(array $newImages, string $tag = 'random'): void
     {
@@ -104,5 +101,10 @@ class UnsplashImageService
     public function getStoredTags()
     {
         return $this->imageRepository->getDistinctTags();
+    }
+
+    public function getImageById(int $id): ?UnsplashImage
+    {
+        return $this->imageRepository->find($id);
     }
 }

@@ -5,24 +5,15 @@ declare(strict_types=1);
 namespace App\Service\Greeting;
 
 use App\Entity\Greeting;
-use App\Entity\User;
-use App\Message\GreetingUpload;
 use App\Repository\GreetingRepository;
 use App\Service\Greeting\Form\GreetingData;
-use Symfony\Component\Messenger\MessageBusInterface;
 
-/**
- * @author  Wolfgang Hinzmann <wolfgang.hinzmann@doccheck.com>
- * @license 2023 DocCheck Community GmbH
- */
 class GreetingService
 {
-
     public function __construct(
-        private GreetingRepository $repository,
-        private GreetingFactory $factory
-    )
-    {
+        private readonly GreetingRepository $repository,
+        private readonly GreetingFactory $factory
+    ) {
     }
 
     public function createByData(GreetingData $data): Greeting
@@ -47,11 +38,18 @@ class GreetingService
     }
 
     /**
-     * @param User $frame
-     * @return Greeting[]
+     * @return array<Greeting>
      */
     public function getNewNonDisplayedGreetings(): array
     {
-       return $this->repository->findBy(['displayed' => null]);
+       return $this->repository->findBy(['displayed' => null], ['displayed' => 'ASC']);
+    }
+
+    /**
+     * @return array<Greeting>
+     */
+    public function getDisplayedGreetingsNeedingSync(): array
+    {
+        return $this->repository->getDisplayedGreetingsNeedingSync();
     }
 }

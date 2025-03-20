@@ -5,25 +5,22 @@ declare(strict_types=1);
 namespace App\Service\FrameConfiguration\Form;
 
 use App\Entity\FrameConfiguration;
+use App\Service\FrameConfiguration\DisplayMode;
 
-/**
- * @author  Wolfgang Hinzmann <wolfgang.hinzmann@doccheck.com>
- * @license 2023 DocCheck Community GmbH
- */
 class ConfigurationUpdateData
 {
-    private ?int $mode;
+    private DisplayMode $mode;
     private bool $next;
     private string $currentTag;
     private int $greetingDisplayTime;
     private int $shutDownTime;
 
-    public function getMode(): ?int
+    public function getMode(): DisplayMode
     {
         return $this->mode;
     }
 
-    public function setMode(?int $mode): ConfigurationUpdateData
+    public function setMode(DisplayMode $mode): ConfigurationUpdateData
     {
         $this->mode = $mode;
         return $this;

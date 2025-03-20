@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Service\Image\Unsplash;
+namespace App\Service\Unsplash;
 
-use App\Entity\Image;
 use App\Entity\UnsplashImage;
-use App\Service\Image\ImageData;
 
 class UnsplashImageFactory
 {

@@ -45,6 +45,9 @@ class Greeting
     #[ORM\Column]
     private ?int $remoteId = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $lastSynced = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -151,6 +154,18 @@ class Greeting
     public function setRemoteId(int $remoteId): static
     {
         $this->remoteId = $remoteId;
+
+        return $this;
+    }
+
+    public function getLastSynced(): ?\DateTimeInterface
+    {
+        return $this->lastSynced;
+    }
+
+    public function setLastSynced(\DateTimeInterface $lastSynced): static
+    {
+        $this->lastSynced = $lastSynced;
 
         return $this;
     }
