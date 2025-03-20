@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=unclutter -idle 0 -jitter 20 -root
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Unclutter Mouse Hider
+Comment=Hides the mouse cursor when idle

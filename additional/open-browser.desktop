@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=chromium-browser --kiosk http://localhost:8000/stage
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Open Symfony Server Page
+Comment=Auto-start Chromium browser on localhost

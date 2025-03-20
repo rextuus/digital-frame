@@ -1,0 +1,22 @@
+sudo nano /etc/systemd/system/symfony-server.service
+
+[Unit]
+Description=Symfony Local Server
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/symfony serve --allow-http --no-tls --allow-all-ip --dir=/home/master/digital-frame
+WorkingDirectory=/home/master/digital-frame
+Restart=always
+User=master
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable symfony-server
+
+// testen
+sudo systemctl start symfony-server
+sudo systemctl status symfony-server

@@ -1,0 +1,2 @@
+mkdir -p ~/.config/autostart
+nano ~/.config/autostart/open-browser.desktop
