@@ -18,5 +18,5 @@ interface ModeToFavoriteConverterInterface
     /**
      * @throws ConverterNotSupportsException
      */
-    public function convertToFavoriteEntity(FavoriteConvertable $favoriteConvertable): Favorite;
+    public function convertToFavoriteEntity(?FavoriteConvertable $favoriteConvertable = null): Favorite;
 }

@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Service\Favorite\Converter;
 
-use App\Entity\ArtsyImage;
 use App\Entity\Favorite;
-use App\Service\Artsy\ArtsyService;
+use App\Entity\Greeting;
 use App\Service\Favorite\Exception\ConverterNotSupportsException;
 use App\Service\Favorite\FavoriteConvertable;
 use App\Service\Favorite\LastImageDto;
 use App\Service\Favorite\ModeToFavoriteConverterInterface;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\Greeting\GreetingService;
 use Exception;
 
-class ArtsyConverter implements ModeToFavoriteConverterInterface
+class GreetingConverter implements ModeToFavoriteConverterInterface
 {
-    private DisplayMode $mode = DisplayMode::ARTSY;
+    private DisplayMode $mode = DisplayMode::GREETING;
 
     public function __construct(
         private readonly FrameConfigurationService $configurationService,
-        private readonly ArtsyService $artsyService,
+        private readonly GreetingService $greetingService,
     ) {
     }
 
@@ -37,24 +37,27 @@ class ArtsyConverter implements ModeToFavoriteConverterInterface
     {
         $dto = new LastImageDto();
 
-        $lastArtwork = $this->getLastArtwork();
+        $lastGreeting = $this->getLastGreeting();
 
-        if ($lastArtwork === null) {
-            return $dto;
+        $url = 'No greeting showed currently';
+        $name = 'No greeting showed currently';
+        if ($lastGreeting !== null) {
+            $url = $lastGreeting->getCdnUrl();
+            $name = $lastGreeting->getName();
+            $dto->setFound(true);
         }
 
-        $dto->setFound(true);
-        $dto->setUrl($lastArtwork->getMediumResolutionUrl());
-        $dto->setArtist($lastArtwork->getArtist());
-        $dto->setTitle($lastArtwork->getName());
+        $dto->setUrl($url);
+        $dto->setArtist($name);
+        $dto->setTitle($name);
 
         return $dto;
     }
 
     public function convertToFavoriteEntity(?FavoriteConvertable $favoriteConvertable = null): Favorite
     {
-        if (!$favoriteConvertable instanceof ArtsyImage) {
-            $favoriteConvertable = $this->getLastArtwork();
+        if (!$favoriteConvertable instanceof Greeting) {
+            $favoriteConvertable = $this->getLastGreeting();
 
             $class = get_class($favoriteConvertable);
             if ($favoriteConvertable === null) {
@@ -68,19 +71,19 @@ class ArtsyConverter implements ModeToFavoriteConverterInterface
         $favorite->setDisplayMode($this->mode);
         $favorite->setEntityId($favoriteConvertable->getId());
         $favorite->setTitle($favoriteConvertable->getName());
-        $favorite->setArtist($favoriteConvertable->getArtist());
-        $favorite->setDisplayUrl($favoriteConvertable->getBestResolutionUrl());
+        $favorite->setArtist($favoriteConvertable->getName());
+        $favorite->setDisplayUrl($favoriteConvertable->getCdnUrl());
 
         return $favorite;
     }
 
-    private function getLastArtwork(): ?ArtsyImage
+    private function getLastGreeting(): ?Greeting
     {
         $lastDisplayedArtworkId = $this->configurationService->getCurrentlyDisplayedImageId();
-        $lastArtwork = null;
+        $lastGreeting = null;
         if ($lastDisplayedArtworkId !== null) {
-            $lastArtwork = $this->artsyService->getArtworkById($lastDisplayedArtworkId);
+            $lastGreeting = $this->greetingService->find($lastDisplayedArtworkId);
         }
-        return $lastArtwork;
+        return $lastGreeting;
     }
 }

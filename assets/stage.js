@@ -10,22 +10,8 @@ import './styles/stage.scss';
 
 // start the Stimulus application
 import './bootstrap';
+
 var mode;
-
-console.log(document.getElementById(activeButton));
-document.getElementById(activeButton).classList.remove('btn-disabled');
-document.getElementById(activeButton).classList.add('btn-enabled');
-
-document.getElementById('configuration_next'). style.display = 'none';
-document.getElementById('configuration_tag'). style.display = 'none';
-if (activeButton === 'configuration_image'){
-    document.getElementById('configuration_next'). style.display = 'block';
-    document.getElementById('configuration_tag'). style.display = 'block';
-}
-
-if (activeButton === 'configuration_artsy'){
-    document.getElementById('configuration_next'). style.display = 'block';
-}
 
 function setMode(){
     let request = new XMLHttpRequest();

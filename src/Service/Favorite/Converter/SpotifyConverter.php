@@ -30,22 +30,30 @@ class SpotifyConverter implements ModeToFavoriteConverterInterface
     {
         $dto = new LastImageDto();
         $metaData = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong();
-        $dto->setUrl($metaData['url']);
-        $dto->setArtist($metaData['artist']);
-        $dto->setTitle($metaData['name'] . ' (' . $metaData['album'] . ')');
+
+        $url = $metaData['url'] ?? 'Spotify currently not running';
+        $found = array_key_exists('url', $metaData);
+        $artist = $metaData['artist'] ?? 'Spotify currently not running';
+        $name = $metaData['name'] ?? 'Spotify currently not running';
+        $album = $metaData['album'] ?? '';
+
+        $dto->setUrl($url);
+        $dto->setArtist($artist);
+        $dto->setTitle($name . ' (' . $album . ')');
+        $dto->setFound($found);
 
         return $dto;
     }
 
-    public function convertToFavoriteEntity(FavoriteConvertable $favoriteConvertable): Favorite
+    public function convertToFavoriteEntity(?FavoriteConvertable $favoriteConvertable = null): Favorite
     {
-        if (!$favoriteConvertable instanceof SpotifyToFavoriteDto) {
+        $metaData = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong();
+
+        if (!array_key_exists('url', $metaData)) {
             throw new ConverterNotSupportsException(
-                'SpotifyConverter expects an SpotifyToFavoriteDto, got ' . get_class($favoriteConvertable)
+                'Cant fetch necessary information from spotify'
             );
         }
-
-        $metaData = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong();
 
         $favorite = new Favorite();
         $favorite->setDisplayMode($this->mode);

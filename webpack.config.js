@@ -26,6 +26,7 @@ Encore
     .addEntry('random', './assets/random.js')
     .addEntry('greeting', './assets/greeting.js')
     .addEntry('artsy', './assets/artsy.js')
+    .addEntry('config', './assets/config.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

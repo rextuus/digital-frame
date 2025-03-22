@@ -46,19 +46,30 @@ class ArtsyImageRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array<Category> $types
-     * @return <ArtsyImage>
+     * @param array<Category> $categories
+     * @return array<ArtsyImage>
      */
-    public function findPaginatedImages(int $page, int $limit, array $types): array
-    {
-        $types = array_map(fn($type) => $type->value, $types);
+    public function findPaginatedImages(
+        int $page,
+        int $limit,
+        array $categories,
+        string $sort = 'ASC',
+        ArtworkDimensionFilter $artworkDimensionFilter = ArtworkDimensionFilter::ALL
+    ): array {
+        $categories = array_map(fn($type) => $type->value, $categories);
 
         $qb = $this->createQueryBuilder('a');
         $qb->select('a')
-            ->where($qb->expr()->in('a.category', $types))
+            ->where($qb->expr()->in('a.category', $categories))
+            ->orderBy('a.id', $sort)
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
 
+        match ($artworkDimensionFilter) {
+            ArtworkDimensionFilter::LANDSCAPE => $qb->andWhere($qb->expr()->gt('a.width', 'a.height')),
+            ArtworkDimensionFilter::PORTRAIT => $qb->andWhere($qb->expr()->gt('a.height', 'a.width')),
+            default => $qb,
+        };
 
         return $qb->getQuery()->getResult();
     }

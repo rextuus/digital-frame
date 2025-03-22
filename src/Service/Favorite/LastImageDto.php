@@ -11,9 +11,7 @@ class LastImageDto
     private string $url;
     private ?string $title;
     private ?string $artist;
-    private DisplayMode $displayMode;
-
-    private ?int $entityId;
+    private bool $found = false;
 
     public function getUrl(): string
     {
@@ -45,6 +43,17 @@ class LastImageDto
     public function setArtist(?string $artist): LastImageDto
     {
         $this->artist = $artist;
+        return $this;
+    }
+
+    public function isFound(): bool
+    {
+        return $this->found;
+    }
+
+    public function setFound(bool $found): LastImageDto
+    {
+        $this->found = $found;
         return $this;
     }
 }

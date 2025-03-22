@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Service\Artsy\ArtsyService;
+use App\Service\Favorite\FavoriteService;
 use App\Service\Favorite\LastImageDto;
+use App\Service\Favorite\ModeToFavoriteConvertProvider;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\Form\ConfigurationData;
 use App\Service\FrameConfiguration\Form\ConfigurationType;
@@ -11,6 +13,7 @@ use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Spotify\SpotifyService;
 use App\Service\Synchronization\GreetingSynchronizationService;
 use ColorThief\ColorThief;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,53 +24,57 @@ class ConfigurationController extends AbstractController
 {
     public function __construct(
         private readonly SpotifyService $spotifyService,
+        private readonly ModeToFavoriteConvertProvider $modeToFavoriteConvertProvider,
+        private readonly FrameConfigurationService $configurationService
     ) {
     }
 
     #[Route('/configuration/change', name: 'app_configuration_change')]
     public function change(
         Request $request,
-        FrameConfigurationService $configurationService,
         GreetingSynchronizationService $greetingSynchronizationService
     ): Response {
+        // Todo for what is the query param?
         $mode = DisplayMode::tryFrom((int)$request->query->get('mode'));
         if ($mode) {
-            $data = $configurationService->getDefaultUpdateData();
+            $data = $this->configurationService->getDefaultUpdateData();
             $data->setMode($mode);
-            $configurationService->update($data);
+            $this->configurationService->update($data);
         } else {
-            $mode = $configurationService->getMode();
+            $mode = $this->configurationService->getMode();
         }
 
         // check if new greetings are available and display instant if so TODO make this switchable
         if ($greetingSynchronizationService->checkForNewGreetings()) {
-            $data = $configurationService->getDefaultUpdateData();
+            $data = $this->configurationService->getDefaultUpdateData();
             $data->setMode(DisplayMode::GREETING);
             $data->setNext(false);
-            $configurationService->update($data);
+            $this->configurationService->update($data);
             $mode = DisplayMode::GREETING;
         }
 
-
-        return new JsonResponse(['mode' => $mode, 'isNext' => $configurationService->isNext()]);
+        return new JsonResponse(['mode' => $mode, 'isNext' => $this->configurationService->isNext()]);
     }
 
+    /**
+     * @deprecated
+     */
     #[Route('/configuration/next', name: 'app_configuration_next')]
-    public function next(Request $request, FrameConfigurationService $configurationService): Response
+    public function next(): Response
     {
-        $data = $configurationService->getDefaultUpdateData();
+        $data = $this->configurationService->getDefaultUpdateData();
         $data->setNext(false);
-        $configurationService->update($data);
+        $this->configurationService->update($data);
         return new JsonResponse(['next' => false]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/', name: 'app_configuration_landing')]
-    public function view(
-        Request $request,
-        FrameConfigurationService $configurationService,
-        ArtsyService $artsyService
-    ): Response {
-        $currentMode = $configurationService->getMode();
+    public function view(Request $request, FavoriteService $favoriteService): Response
+    {
+        $currentMode = $this->configurationService->getMode();
 
         $configurationData = new ConfigurationData();
         $configurationData->setMode(1);
@@ -89,61 +96,71 @@ class ConfigurationController extends AbstractController
                 if ($isArtsy) {
                     $newMode = DisplayMode::ARTSY;
                 }
-                if ($isGreeting) {
+                elseif ($isGreeting) {
                     $newMode = DisplayMode::GREETING;
                 }
-                if ($isSpotify) {
+                elseif ($isSpotify) {
                     $newMode = DisplayMode::SPOTIFY;
                 }
-                if ($isImage) {
+                elseif ($isImage) {
                     $newMode = DisplayMode::UNSPLASH;
-                }
-                if ($isStore) {
-//                    $imageStoreService->storeCurrentlyDisplayedImage();
                 }
             }
 
+            // when new mode is given we mark this in config and can wait until it will be changed from stage
+            $waitUntilIsSwitchedViaStageController = $currentMode !== $newMode || $next;
+            if ($waitUntilIsSwitchedViaStageController) {
+                $this->configurationService->setWaitForModeSwitch(true);
+            }
 
             /** @var ConfigurationData $data */
             $data = $form->getData();
 
-            $data2 = $configurationService->getDefaultUpdateData();
-            $data2->setMode($newMode);
-            $data2->setNext($next);
-            $configurationService->update($data2);
+            $updateData = $this->configurationService->getDefaultUpdateData();
+            $updateData->setMode($newMode);
+            $updateData->setNext($next);
+            $this->configurationService->update($updateData);
 
+            // update Tag if new one was added
             $currentTag = $data->getTag();
             if ($data->getNewTag()) {
                 $currentTag = $data->getNewTag();
             }
+            $this->configurationService->setCurrentTag($currentTag);
 
-            $configurationService->setCurrentTag($currentTag);
+            if ($isStore){
+                $converter = $this->modeToFavoriteConvertProvider->getFittingConverter();
+                $favoriteService->storeFavorite($converter->convertToFavoriteEntity());
+            }
 
-            // ... perform some action, such as saving the task to the database
+            // wait for switch
+            if ($waitUntilIsSwitchedViaStageController){
+                $counter = 0;
+                $waitForSwitch = true;
+                while ($waitForSwitch){
+                    sleep(1);
+
+                    $waitForSwitch = $this->configurationService->isWaitingForModeSwitch();
+                    if (!$waitForSwitch){
+                        sleep(2);
+                    }
+
+                    $counter++;
+                    if ($counter > 30){
+                        throw new Exception('Timeout waiting for mode switch');
+                    }
+                }
+            }
 
             return $this->redirectToRoute('app_configuration_landing');
         }
 
-        $lastArtwork = null;
-        match ($currentMode){
-            DisplayMode::UNSPLASH => $lastArtwork = null,
-            DisplayMode::SPOTIFY => $lastArtwork = null,
-            DisplayMode::GREETING => $lastArtwork = null,
-            DisplayMode::ARTSY => $lastArtwork = null,
-        };
+        $converter = $this->modeToFavoriteConvertProvider->getFittingConverter();
 
-        $lastDisplayedArtworkId = $configurationService->getCurrentArtworkId();
-        if ($lastDisplayedArtworkId !== null) {
-            $lastArtwork = $artsyService->getArtworkById($lastDisplayedArtworkId);
-        }
-
-//        $this->getLastSpotifyImage();
-
-        $configurationService->getMode();
         return $this->render('configuration/index.html.twig', [
             'form' => $form->createView(),
-            'lastArtwork' => $lastArtwork,
-            'activeButton' => $configurationService->getMode()->getActiveButton()
+            'activeButton' => $this->configurationService->getMode()->getActiveButton(),
+            'lastImageDto' => $converter->getLastImageDto()
         ]);
     }
 
@@ -153,7 +170,7 @@ class ConfigurationController extends AbstractController
         $metaData = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong();
         $dto->setUrl($metaData['url']);
         $dto->setArtist($metaData['artist']);
-        $dto->setTitle($metaData['name'].' ('.$metaData['album'].')');
+        $dto->setTitle($metaData['name'] . ' (' . $metaData['album'] . ')');
 
         return $dto;
     }
@@ -167,7 +184,7 @@ class ConfigurationController extends AbstractController
         if ($imageUrl) {
             try {
                 $backgroundColor = ColorThief::getColor($imageUrl, 6);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $backgroundColor[3] = $e->getTraceAsString();
             }
         }

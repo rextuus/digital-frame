@@ -6,6 +6,8 @@
 body{
     background-color: #ffffff;
     overflow: hidden;
+    cursor: none;
+
 }
 .bg-container {
     /*max-width: 100%;*/

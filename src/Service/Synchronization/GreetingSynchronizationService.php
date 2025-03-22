@@ -9,12 +9,12 @@ use App\Service\Greeting\GreetingService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GreetingSynchronizationService
+readonly class GreetingSynchronizationService
 {
     public function __construct(
-        private readonly DigitalFrameApiGateway $apiGateway,
-        private readonly GreetingService $greetingService,
-        private readonly EntityManagerInterface $entityManager
+        private DigitalFrameApiGateway $apiGateway,
+        private GreetingService $greetingService,
+        private EntityManagerInterface $entityManager
     ) {
     }
 
@@ -26,7 +26,13 @@ class GreetingSynchronizationService
     public function synchronizeDisplayedGreetingsToServer(): void
     {
         $greetingsToSync = $this->greetingService->getDisplayedGreetingsNeedingSync();
-        $ids = array_map(fn (Greeting $greeting) => $greeting->getRemoteId(), $greetingsToSync);
+
+        $ids = array_map(
+            function (Greeting $greeting) {
+                return $greeting->getRemoteId();
+            },
+            $greetingsToSync
+        );
 
         $this->apiGateway->markGreetingsAsDisplayed($ids);
 

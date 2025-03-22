@@ -1,0 +1,9 @@
+sudo nano /boot/config.txt
+sudo nano /boot/firmware/config.txt
+display_hdmi_rotate=1
+
+!!! AUSKOMMENTIEREN
+dtoverlay=vc4-kms-v3d
+
+sudo nano /boot/firmware/cmdline.txt
+video=HDMI-A-1:1920x1080@60,rotate=90

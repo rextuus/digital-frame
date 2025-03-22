@@ -41,7 +41,14 @@ class FrameConfiguration
     private ?int $nextImageId = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $currentlyDisplayedArtworkId = null;
+    private ?int $currentlyDisplayedImageId = null;
+
+    #[ORM\Column(type: 'integer', nullable: false, enumType: DisplayMode::class)]
+    private DisplayMode $currentlyDisplayedMode = DisplayMode::UNSPLASH;
+
+    // this is flag which is set to true in the configController and should be reset if stage switched the mode
+    #[ORM\Column(options: ['default' => false])]
+    private bool $waitForModeSwitch = false;
 
     public function getId(): ?int
     {
@@ -120,14 +127,37 @@ class FrameConfiguration
         return $this;
     }
 
-    public function getCurrentlyDisplayedArtworkId(): ?int
+    public function getCurrentlyDisplayedImageId(): ?int
     {
-        return $this->currentlyDisplayedArtworkId;
+        return $this->currentlyDisplayedImageId;
     }
 
-    public function setCurrentlyDisplayedArtworkId(?int $currentlyDisplayedArtworkId): static
+    public function setCurrentlyDisplayedImageId(?int $currentlyDisplayedImageId): static
     {
-        $this->currentlyDisplayedArtworkId = $currentlyDisplayedArtworkId;
+        $this->currentlyDisplayedImageId = $currentlyDisplayedImageId;
+
+        return $this;
+    }
+
+    public function getCurrentlyDisplayedMode(): DisplayMode
+    {
+        return $this->currentlyDisplayedMode;
+    }
+
+    public function setCurrentlyDisplayedMode(DisplayMode $currentlyDisplayedMode): FrameConfiguration
+    {
+        $this->currentlyDisplayedMode = $currentlyDisplayedMode;
+        return $this;
+    }
+
+    public function isWaitForModeSwitch(): bool
+    {
+        return $this->waitForModeSwitch;
+    }
+
+    public function setWaitForModeSwitch(bool $waitForModeSwitch): static
+    {
+        $this->waitForModeSwitch = $waitForModeSwitch;
 
         return $this;
     }

@@ -41,20 +41,45 @@ class ConfigurationType extends AbstractType
         }
 
         $builder
-            ->add('spotify', SubmitType::class, ['label' => 'Switch to Spotify', 'attr' => ['class' => 'btn btn-disabled']])
-            ->add('image', SubmitType::class, ['label' => 'Switch to Unsplash', 'attr' => ['class' => 'btn btn-disabled']])
-            ->add('artsy', SubmitType::class, ['label' => 'Switch to Artsy', 'attr' => ['class' => 'btn btn-disabled']])
-            ->add('greeting', SubmitType::class, ['label' => 'Switch to Greetings', 'attr' => ['class' => 'btn btn-disabled']])
-            ->add('next', SubmitType::class, ['label' => 'Next', 'attr' => ['class' => 'btn btn-disabled']])
-            ->add('store', SubmitType::class, ['label' => 'Store in DB', 'attr' => ['class' => 'btn btn-enabled']])
-            ->add('newTag', TextType::class, ['label' => false, 'required' => false, 'attr' => ['class' => '']])
-            ->add(
-                'tag',
-                ChoiceType::class,
-                [
-                    'label' => 'Select tag',
-                    'attr' => ['class' => 'btn btn-enabled'],
-                    'choices' => $choices
-                ]);
+            ->add('spotify', SubmitType::class, [
+                'label' => '<i class="fa-brands fa-spotify fa-2x"></i><br><span>Spotify</span>',
+                'label_html' => true,
+                'attr' => ['class' => 'btn btn-disabled', 'name' => 'spotify']
+            ])
+            ->add('image', SubmitType::class, [
+                'label' => '<i class="fa-brands fa-unsplash fa-2x"></i><br><span>Unsplash</span>',
+                'label_html' => true,
+                'attr' => ['class' => 'btn btn-disabled', 'name' => 'image']
+            ])
+            ->add('artsy', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-palette fa-2x"></i><br><span>Artsy</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'artsy']
+            ])
+            ->add('greeting', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-image fa-2x"></i><br><span>Greeting</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'greeting']
+            ])
+            ->add('next', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-forward fa-2x"></i><br><span>Next</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'next']
+            ])
+            ->add('store', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-heart fa-2x"></i><br><span>Favorite</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'store']
+            ])
+            ->add('newTag', TextType::class, [
+                'label' => false,
+                'required' => false,
+            ])
+            ->add('tag', ChoiceType::class, [
+                'label' => '<i class="fa-solid fa-tag fa-2x"></i><br><span>Search-Tag</span>',
+                'label_html' => true,
+                'label_attr' => ['style' => 'margin-right: 10px', 'id' => 'tag-label'],
+                'choices' => $choices
+            ]);
     }
 }

@@ -37,16 +37,13 @@ class UnsplashConverter implements ModeToFavoriteConverterInterface
     {
         $dto = new LastImageDto();
 
-        $lastDisplayedArtworkId = $this->configurationService->getCurrentArtworkId();
-        $lastArtwork = null;
-        if ($lastDisplayedArtworkId !== null) {
-            $lastArtwork = $this->unsplashImageService->getImageById($lastDisplayedArtworkId);
-        }
+        $lastArtwork = $this->getLastArtwork();
 
         if ($lastArtwork === null) {
-            throw new Exception('No last artwork set in configuration');
+            return $dto;
         }
 
+        $dto->setFound(true);
         $dto->setUrl($lastArtwork->getUrl());
         $dto->setArtist($lastArtwork->getTag());
         $dto->setTitle($lastArtwork->getName());
@@ -54,12 +51,17 @@ class UnsplashConverter implements ModeToFavoriteConverterInterface
         return $dto;
     }
 
-    public function convertToFavoriteEntity(FavoriteConvertable $favoriteConvertable): Favorite
+    public function convertToFavoriteEntity(?FavoriteConvertable $favoriteConvertable = null): Favorite
     {
         if (!$favoriteConvertable instanceof UnsplashImage) {
-            throw new ConverterNotSupportsException(
-                'UnsplashConverter expects an UnsplashImage, got ' . get_class($favoriteConvertable)
-            );
+            $favoriteConvertable = $this->getLastArtwork();
+
+            $class = get_class($favoriteConvertable);
+            if ($favoriteConvertable === null) {
+                throw new ConverterNotSupportsException(
+                    'UnsplashConverter expects an UnsplashImage, got ' . $class
+                );
+            }
         }
 
         $favorite = new Favorite();
@@ -70,5 +72,15 @@ class UnsplashConverter implements ModeToFavoriteConverterInterface
         $favorite->setDisplayUrl($favoriteConvertable->getUrl());
 
         return $favorite;
+    }
+
+    private function getLastArtwork(): ?UnsplashImage
+    {
+        $lastDisplayedArtworkId = $this->configurationService->getCurrentlyDisplayedImageId();
+        $lastArtwork = null;
+        if ($lastDisplayedArtworkId !== null) {
+            $lastArtwork = $this->unsplashImageService->getImageById($lastDisplayedArtworkId);
+        }
+        return $lastArtwork;
     }
 }

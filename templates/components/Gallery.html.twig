@@ -1,56 +1,94 @@
-<div{{ attributes }}>
-    <div class="col pl-5">
-        <span>{{ this.page }}</span>/<span>{{ this.totalPages }}</span>
-        <label>
-            <input
-                    type="checkbox"
-                    data-action="live#action"
-                    data-live-action-param="toggleOnlyPaintings"
-                    {% if this.onlyPaintings %}checked{% endif %}
-            >
-            Only Paintings
-        </label>
-    </div>
-    <div class="container pt-5">
-    {% if this.hasPreviousPages() %}
-        <div class="row">
-            <div class="col">
-                <button data-action="live#action" data-live-action-param="loadBefore" class="btn btn-primary">
-                    Previous
-                </button>
-            </div>
-        </div>
-    {% endif %}
-    <div class="row">
-        {% for image in this.getImages() %}
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="{{ image.mediumResolutionUrl }}" alt="{{ image.name }}" class="card-img-top">
-                    <div class="card-body text-center d-flex flex-column align-items-center">
-                        <h5 class="card-title mb-2">{{ image.name }}</h5>
-                        <p class="card-text text-muted mt-1">Artist: {{ image.artist }}</p>
-                        <button
-                                data-action="live#action"
-                                data-live-action-param="display"
-                                data-live-id-param="{{ image.id }}"
-                                class="btn btn-primary btn-lg">
-                            Display
-                        </button>
-                    </div>
+<div{{ attributes }} class="row mt-5">
+    <!-- Top Section: Page Details and Checkbox -->
+    <div class="container">
+        <div class="row mb-5">
+            {% for category in this.categories %}
+                <div class="col text-center" id="category-{{ category }}">
+                    <button
+                            data-action="live#action"
+                            data-live-action-param="toggleCategory"
+                            data-live-category-param="{{ category }}"
+                            class="btn {{ this.buttonCssForCategory(category) }} mr-3">
+                        <i class="{{ this.fontAwesomeClassForCategory(category) }} fa-2x"></i><br><span>{{ category }}</span>
+                    </button>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-
-    {% if this.hasMorePages() %}
-        <div class="row">
-            <div class="col">
-                <button data-action="live#action" data-live-action-param="loadMore" class="btn btn-primary btn-lg">
-                    Next
+            {% endfor %}
+        </div>
+        <div class="row mb-5">
+            <div class="col text-center">
+                <button
+                        data-action="live#action"
+                        data-live-action-param="toggleOrientation"
+                        class="btn btn-primary mr-3">
+                    <i class="{{ this.FontAwesomeClassForCurrentOrientation }} fa-2x"></i><br><span>{{ this.orientation.name }}</span>
                 </button>
             </div>
         </div>
-    {% endif %}
-</div>
+
+        <div class="row g-4">
+            {% for image in this.getImages() %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    {{ component('ArtsyCard', { image: image, id: image.id }) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="col text-center text-white">
+                <span>{{ this.page }}</span>/<span>{{ this.totalPages }}</span>
+            </div>
+
+        </div>
+
+        <div class="row mt-5 mb-5 bg-dark">
+            {% if this.page != 1 %}
+                <div class="col text-center">
+                    <button
+                            data-action="live#action"
+                            data-live-action-param="setPage"
+                            data-live-page-param="1"
+                            class="btn btn-secondary"
+                    >
+                        1
+                    </button>
+                </div>
+            {% endif %}
+
+
+            <div class="col text-center">
+                {% if this.hasPreviousPages() %}
+                    <button data-action="live#action" data-live-action-param="loadBefore"
+                            class="btn btn-secondary mr-3">
+                        Previous
+                    </button>
+                {% endif %}
+            </div>
+
+
+
+
+            <div class="col text-center">
+                {% if this.hasMorePages() %}
+                    <button data-action="live#action" data-live-action-param="loadMore" class="btn btn-secondary">
+                        Next
+                    </button>
+                {% endif %}
+            </div>
+
+            {% if this.page != this.totalPages %}
+                <div class="col text-center">
+                    <button
+                            data-action="live#action"
+                            data-live-action-param="setPage"
+                            data-live-page-param="{{ this.totalPages }}"
+                            class="btn btn-secondary"
+                    >
+                        {{ this.totalPages }}
+                    </button>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
 </div>

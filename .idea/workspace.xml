@@ -5,17 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/additional/choromium_kiosk_autostart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/additional/hide_mouse" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/additional/open-browser.desktop" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/additional/relay_control.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/additional/syfmony_server_on_boot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/additional/unclutter.desktop" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/additional/display_rotation" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/controllers/form_loading_controller.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/config.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/GreetingConverter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/Favorite/FavoriteService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Twig/Components/ArtsyCard.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/components/ArtsyCard.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/additional/hide_mouse" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/additional/unclutter.desktop" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/styles/app.scss" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/random.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/random.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/stage.scss" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/stage.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ArtsyController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ArtsyController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConfigurationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/StageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/StageController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UnsplashController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UnsplashController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Favorite.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Favorite.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FrameConfiguration.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/ArtsyImageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ArtsyImageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/GreetingRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/GreetingRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Artsy/ArtworkDimensionFilter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Artsy/ArtworkDimensionFilter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Artsy/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Artsy/Category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Favorite/Converter/ArtsyConverter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/ArtsyConverter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Favorite/Converter/SpotifyConverter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/SpotifyConverter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Favorite/Converter/UnsplashConverter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Favorite/Converter/UnsplashConverter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Favorite/LastImageDto.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Favorite/LastImageDto.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Favorite/ModeToFavoriteConvertProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Favorite/ModeToFavoriteConvertProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Favorite/ModeToFavoriteConverterInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Favorite/ModeToFavoriteConverterInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/Form/ConfigurationType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FrameConfiguration/FrameConfigurationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Synchronization/GreetingSynchronizationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Synchronization/GreetingSynchronizationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Twig/Components/Gallery.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Twig/Components/Gallery.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/artsy/gallery.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/artsy/gallery.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/components/Gallery.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/components/Gallery.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configuration/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +270,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/wolfgang/Documents/programming/digital-frame",
+    "last_opened_file_path": "/home/wolfgang/Documents/programming/digital-frame/assets",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -255,9 +286,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/assets/styles" />
       <recent name="$PROJECT_DIR$/assets" />
+      <recent name="$PROJECT_DIR$/assets/styles" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/templates/stage" />
       <recent name="$PROJECT_DIR$/src/Service/Greeting" />
     </key>
@@ -323,7 +354,8 @@
       <workItem from="1742303578551" duration="11772000" />
       <workItem from="1742371755176" duration="5872000" />
       <workItem from="1742459691064" duration="68000" />
-      <workItem from="1742481548324" duration="17990000" />
+      <workItem from="1742481548324" duration="22340000" />
+      <workItem from="1742550352223" duration="50175000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -432,7 +464,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742503504395</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1742510115310</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1742510115310</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

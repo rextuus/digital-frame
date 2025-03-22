@@ -21,7 +21,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class StageController extends AbstractController
 {
     public function __construct(
-        #[Autowire(env: 'string:UNSPLASH_TOKEN')] private readonly string $unsplashToken
+        #[Autowire(env: 'string:UNSPLASH_TOKEN')]
+        private readonly string $unsplashToken,
+        private readonly FrameConfigurationService $configurationService,
     ) {
     }
 
@@ -31,7 +33,7 @@ class StageController extends AbstractController
         GreetingSynchronizationService $greetingSynchronizationService
     ): Response {
         $currentMode = $configurationService->getMode();
-        if ($greetingSynchronizationService->checkForNewGreetings()){
+        if ($greetingSynchronizationService->checkForNewGreetings()) {
             $data = $configurationService->getDefaultUpdateData();
             $data->setMode(DisplayMode::GREETING);
             $data->setNext(false);
@@ -39,12 +41,16 @@ class StageController extends AbstractController
             $currentMode = DisplayMode::GREETING;
         }
 
+        $this->configurationService->setWaitForModeSwitch(false);
+
         return $this->redirectToRoute($currentMode->getRedirect());
     }
 
     #[Route('/spotify', name: 'app_stage_spotify')]
     public function spotify(SpotifyService $spotifyService): Response
     {
+        $this->configurationService->setCurrentDisplayedImage(null, DisplayMode::SPOTIFY);
+
         return $this->render('stage/spotify.html.twig', [
             'controller_name' => 'StageController',
             'token' => $spotifyService->getValidAccessToken()->getAccessToken(),
@@ -68,14 +74,20 @@ class StageController extends AbstractController
         ?int $image = null
     ): Response {
         $nextImage = null;
-        if ($image !== null){
+        if ($image !== null) {
             $nextImage = $artsyService->getArtworkById($image);
         }
 
-        if ($nextImage === null){
-            $nextImage = $artsyService->getCurrentArtwork();
+        if ($nextImage === null) {
+            // check if was forced from gallery
+            if ($this->configurationService->isNext()){
+                $nextImage = $artsyService->getArtworkById($this->configurationService->getNextImageId());
+                $this->configurationService->setNext(false);
+            }else{
+                $nextImage = $artsyService->getCurrentArtwork();
+            }
         }
-        $configurationService->setCurrentArtworkId($nextImage->getId());
+        $configurationService->setCurrentDisplayedImage($nextImage->getId(), DisplayMode::ARTSY);
 
         return $this->render('stage/artsy.html.twig', [
             'controller_name' => 'StageController',
@@ -84,21 +96,28 @@ class StageController extends AbstractController
     }
 
     #[Route('/greeting', name: 'app_stage_greeting')]
-    public function greeting(GreetingSynchronizationService $greetingSynchronizationService, GreetingService $greetingService): Response
-    {
+    public function greeting(
+        GreetingSynchronizationService $greetingSynchronizationService,
+        GreetingService $greetingService
+    ): Response {
         //synchronize images
         $greetingSynchronizationService->synchronizeGreetingsFromServer();
         $greetings = $greetingService->getNewNonDisplayedGreetings();
 
         $url = 'test.de';
-        if (count($greetings) > 0){
-            $url = $greetings[0]->getCdnUrl();
+        $greetingId = null;
+        if (count($greetings) > 0) {
+            $greeting = $greetings[0];
+            $greetingId = $greeting->getId();
+
+            $url = $greeting->getCdnUrl();
+
             $data = (new GreetingData())->initFrom($greetings[0]);
             $data->setDisplayed(new DateTime());
             $greetingService->update($greetings[0], $data);
-        }
 
-        //todo get the oldest not shown image. If there are multiple:
+        }
+        $this->configurationService->setCurrentDisplayedImage($greetingId, DisplayMode::GREETING);
 
         return $this->render('stage/greeting.html.twig', [
             'url' => $url

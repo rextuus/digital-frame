@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\FavoriteRepository;
 use App\Service\FrameConfiguration\DisplayMode;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FavoriteRepository::class)]
@@ -28,6 +30,17 @@ class Favorite
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
+
+    /**
+     * @var Collection<int, FavoriteList>
+     */
+    #[ORM\ManyToMany(targetEntity: FavoriteList::class, mappedBy: 'favorites')]
+    private Collection $favoriteLists;
+
+    public function __construct()
+    {
+        $this->favoriteLists = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +103,33 @@ class Favorite
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FavoriteList>
+     */
+    public function getFavoriteLists(): Collection
+    {
+        return $this->favoriteLists;
+    }
+
+    public function addFavoriteList(FavoriteList $favoriteList): static
+    {
+        if (!$this->favoriteLists->contains($favoriteList)) {
+            $this->favoriteLists->add($favoriteList);
+            $favoriteList->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteList(FavoriteList $favoriteList): static
+    {
+        if ($this->favoriteLists->removeElement($favoriteList)) {
+            $favoriteList->removeFavorite($this);
+        }
 
         return $this;
     }

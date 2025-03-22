@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\Artsy\ArtsyService;
+use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +44,8 @@ class ArtsyController extends AbstractController
             $currentArtWork = $artsyService->getCurrentArtWork();
         }
 
-        $this->configurationService->setCurrentArtworkId($currentArtWork->getId());
+        $this->configurationService->setCurrentDisplayedImage($currentArtWork->getId(), DisplayMode::ARTSY);
+        $this->configurationService->setWaitForModeSwitch(false);
 
         return new JsonResponse(['image_url' => $currentArtWork->getBestResolutionUrl()]);
     }

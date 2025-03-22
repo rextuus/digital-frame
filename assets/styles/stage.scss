@@ -17,6 +17,8 @@ body{
     background: #1e1e24;
     align-items: center;
     justify-content: center;
+    cursor: none;
+
 }
 h1{
     text-align: center;
@@ -44,6 +46,8 @@ body {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
+    cursor: none;
+
 }
 
 
@@ -340,4 +344,80 @@ p {
     outline-color: rgba(255, 255, 255, 0);
     outline-offset: 15px;
     text-shadow: 1px 1px 2px #427388;
+}
+
+/* Loading Screen Styles */
+#loading-overlay {
+    display: none !important; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    z-index: 1050; /* Ensure it appears above everything else */
+    color: white;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+}
+
+#loading-overlay .loading-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+
+/* Override Bootstrap's default grid/flex rules if needed */
+.body-container {
+    display: flex;
+    flex-direction: column; /* Stack all sections vertically */
+    align-items: center; /* Center contents horizontally */
+    gap: 2rem; /* Add space between stacked elements */
+}
+
+/* Ensure individual sections take full width on smaller screens */
+.body-container > .row {
+    width: 100%;
+}
+
+/* Styling for form section */
+.card {
+    max-width: 600px; /* Limit card width for better formatting */
+    width: 100%; /* Ensure responsiveness */
+}
+
+/* Responsive adjustments for artwork section */
+.artwork-section {
+    text-align: center;
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        border: 1px solid #fff;
+    }
+}
+
+/* Force buttons to fit in their rows */
+.btn {
+    width: 100%;
+    margin-bottom: 0.5rem; /* Space between buttons */
+}
+
+/* Small screen adjustments */
+@media (max-width: 576px) {
+    .body-container {
+        gap: 1.5rem; /* Reduce gap for smaller screens */
+    }
+
+    .card {
+        max-width: 100%; /* Stretch full width on small screens */
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Unsplash\UnsplashImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,8 @@ class UnsplashController extends AbstractController
 
         $randomImage = $unsplashImageService->getNextRandomImage($tag);
 
-        $configurationService->setCurrentArtworkId($randomImage->getId());
+        $configurationService->setCurrentDisplayedImage($randomImage->getId(), DisplayMode::UNSPLASH);
+        $configurationService->setWaitForModeSwitch(false);
 
         return new JsonResponse(['url' => $randomImage->getUrl()]);
     }

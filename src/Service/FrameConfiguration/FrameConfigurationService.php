@@ -5,12 +5,16 @@ namespace App\Service\FrameConfiguration;
 use App\Entity\FrameConfiguration;
 use App\Repository\FrameConfigurationRepository;
 use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
-class FrameConfigurationService
+readonly class FrameConfigurationService
 {
-
-    public function __construct(private FrameConfigurationRepository $repository, private FrameConfigurationFactory $factory)
-    {
+    public function __construct(
+        private FrameConfigurationRepository $repository,
+        private FrameConfigurationFactory $factory,
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
     public function createConfiguration(DisplayMode $mode): FrameConfiguration
@@ -30,10 +34,15 @@ class FrameConfigurationService
 
         return (new ConfigurationUpdateData())->initFrom($configuration);
     }
-    public function updateConfiguration(?int $mode, bool $isNext = false, string $defaultGreetingTime = FrameConfiguration::DEFAULT_DISPLAY_TIME){
+
+    public function updateConfiguration(
+        ?int $mode,
+        bool $isNext = false,
+        string $defaultGreetingTime = FrameConfiguration::DEFAULT_DISPLAY_TIME
+    ) {
         $configuration = $this->getConfiguration();
 
-        if (is_null($mode)){
+        if (is_null($mode)) {
             $mode = $configuration->getMode();
         }
         $configuration->setMode($mode);
@@ -44,7 +53,7 @@ class FrameConfigurationService
 
     public function update(ConfigurationUpdateData $data, FrameConfiguration $configuration = null): FrameConfiguration
     {
-        if (is_null($configuration)){
+        if (is_null($configuration)) {
             $configuration = $this->getConfiguration();
         }
 
@@ -59,6 +68,14 @@ class FrameConfigurationService
         $configuration = $this->getConfiguration();
 
         return $configuration->getMode();
+    }
+
+    public function setMode(DisplayMode $mode): void
+    {
+        $configuration = $this->getConfiguration();
+
+        $configuration->setMode($mode);
+        $this->repository->save($configuration, true);
     }
 
     public function isNext(): bool
@@ -82,12 +99,18 @@ class FrameConfigurationService
         return $configuration->getCurrentTag();
     }
 
-    public function getConfiguration(): FrameConfiguration
+    public function getConfiguration(bool $forceRefresh = false): FrameConfiguration
     {
         $configuration = $this->repository->find(1);
-        if(is_null($configuration)){
+
+        if (is_null($configuration)) {
             $configuration = $this->createConfiguration(DisplayMode::UNSPLASH);
         }
+
+        if ($forceRefresh) {
+            $this->entityManager->refresh($configuration); // Refresh from database
+        }
+
         return $configuration;
     }
 
@@ -112,17 +135,39 @@ class FrameConfigurationService
         $this->repository->save($configuration, true);
     }
 
-    public function setCurrentArtworkId(int $artworkId): void
+    public function setCurrentDisplayedImage(?int $artworkId, DisplayMode $mode): void
     {
         $configuration = $this->getConfiguration();
-        $configuration->setCurrentlyDisplayedArtworkId($artworkId);
+        $configuration->setCurrentlyDisplayedImageId($artworkId);
+        $configuration->setCurrentlyDisplayedMode($mode);
         $this->repository->save($configuration, true);
     }
 
-    public function getCurrentArtworkId(): ?int
+    public function getCurrentlyDisplayedImageId(): ?int
     {
         $configuration = $this->getConfiguration();
 
-        return $configuration->getCurrentlyDisplayedArtworkId();
+        return $configuration->getCurrentlyDisplayedImageId();
+    }
+
+    public function getCurrentlyDisplayedImageMode(): DisplayMode
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->getCurrentlyDisplayedMode();
+    }
+
+    public function setWaitForModeSwitch(bool $shouldWait): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setWaitForModeSwitch($shouldWait);
+        $this->repository->save($configuration, true);
+    }
+
+    public function isWaitingForModeSwitch(): bool
+    {
+        $configuration = $this->getConfiguration(true);
+
+        return $configuration->isWaitForModeSwitch();
     }
 }

@@ -3,18 +3,21 @@
 {% block title %}Artsy Gallery{% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('config') }}
 {% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('config') }}
 {% endblock %}
 
 
 {% block body %}
-    <h1 class="text-center mb-4">Artsy Image Gallery</h1>
-    <div class="container mt-5">
+    <div class="container body-container my-5">
+        <!-- Header Section -->
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white">Artsy Images</h2>
+            </div>
+        </div>
         {{ component('Gallery') }}
     </div>
 {% endblock %}

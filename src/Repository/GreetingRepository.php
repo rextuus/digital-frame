@@ -34,8 +34,8 @@ class GreetingRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('g');
 
-        $qb->where($qb->expr()->lt('g.displayed', 'g.lastSynced'));
+        $qb->where($qb->expr()->gt('g.displayed', 'g.lastSynced'));
 
-        return $qb->getQuery()->getArrayResult();
+        return $qb->getQuery()->getResult();
     }
 }
