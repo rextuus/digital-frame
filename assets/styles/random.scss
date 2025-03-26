@@ -1,21 +1,26 @@
-body{
+body {
     background-color: #ffffff;
     overflow: hidden;
     cursor: none;
-
+    margin: 0; /* Remove default margins */
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
 }
+
 .bg-container {
     display: flex;
     justify-content: center;
-    text-align: center;
-    line-height: 0;
+    align-items: center; /* Center the image vertically */
+    width: 100vw; /* Match the width of the screen */
+    height: 100vh; /* Match the height of the screen */
+    margin: 0; /* Remove default margins */
+    padding: 0;
 }
 
 .image {
-    width: 100%;
-    height: auto;
+    object-fit: cover; /* Ensure the image fully covers the container */
+    width: 100%;       /* Make the image take full width */
+    height: 100%;      /* Make the image take full height */
     display: block;
-
-    margin-left: auto;
-    margin-right: auto;
 }

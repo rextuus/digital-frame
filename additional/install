@@ -4,3 +4,6 @@ sudo mv composer.phar /usr/local/bin/composer
 sudo apt install -y nodejs npm
 
 git clone https://github.com/rextuus/digital-frame.git
+
+curl -sS https://get.symfony.com/cli/installer | bash
+sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
