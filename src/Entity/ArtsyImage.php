@@ -26,9 +26,6 @@ class ArtsyImage implements FavoriteConvertable
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $viewed = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nextPageUrl = null;
-
     #[ORM\Column]
     private ?float $height = null;
 
@@ -53,6 +50,9 @@ class ArtsyImage implements FavoriteConvertable
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $nextPageUrlStored = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $date = null;
+
 
     public function getId(): ?int
     {
@@ -67,18 +67,6 @@ class ArtsyImage implements FavoriteConvertable
     public function setBestResolutionUrl(string $bestResolutionUrl): static
     {
         $this->bestResolutionUrl = $bestResolutionUrl;
-
-        return $this;
-    }
-
-    public function getNextPageUrl(): ?string
-    {
-        return $this->nextPageUrl;
-    }
-
-    public function setNextPageUrl(?string $nextPageUrl): static
-    {
-        $this->nextPageUrl = $nextPageUrl;
 
         return $this;
     }
@@ -197,6 +185,18 @@ class ArtsyImage implements FavoriteConvertable
     public function setNextPageUrlStored(?\DateTimeInterface $nextPageUrlStored): static
     {
         $this->nextPageUrlStored = $nextPageUrlStored;
+
+        return $this;
+    }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }

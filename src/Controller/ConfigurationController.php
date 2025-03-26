@@ -88,10 +88,14 @@ class ConfigurationController extends AbstractController
             $isStore = $form->get('store')->isClicked();
             $isArtsy = $form->get('artsy')->isClicked();
             $isGreeting = $form->get('greeting')->isClicked();
+            $isNasa = $form->get('nasa')->isClicked();
+            $isGreetingInterruption = $form->get('greetingInterruption')->isClicked();
+            $isSpotifyInterruption = $form->get('spotifyInterruption')->isClicked();
 
             $newMode = $currentMode;
             $next = $form->get('next')->isClicked();
 
+            // detect new mode
             if (!$next) {
                 if ($isArtsy) {
                     $newMode = DisplayMode::ARTSY;
@@ -105,6 +109,18 @@ class ConfigurationController extends AbstractController
                 elseif ($isImage) {
                     $newMode = DisplayMode::UNSPLASH;
                 }
+                elseif ($isNasa) {
+                    $newMode = DisplayMode::NASA;
+                }
+            }
+
+            // handle setting toggles
+            if ($isGreetingInterruption) {
+                $this->configurationService->toggleShouldGreetingInterrupt();
+            }
+
+            if ($isSpotifyInterruption) {
+                $this->configurationService->toggleShouldSpotifyInterrupt();
             }
 
             // when new mode is given we mark this in config and can wait until it will be changed from stage
@@ -157,9 +173,11 @@ class ConfigurationController extends AbstractController
 
         $converter = $this->modeToFavoriteConvertProvider->getFittingConverter();
 
+        $buttonMap = $this->configurationService->getActiveButtonMap();
+
         return $this->render('configuration/index.html.twig', [
             'form' => $form->createView(),
-            'activeButton' => $this->configurationService->getMode()->getActiveButton(),
+            'buttonMap' => $buttonMap,
             'lastImageDto' => $converter->getLastImageDto()
         ]);
     }

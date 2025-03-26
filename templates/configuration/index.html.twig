@@ -5,7 +5,6 @@
     {{ encore_entry_script_tags('config') }}
 {% endblock %}
 {% block stylesheets %}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     {{ encore_entry_link_tags('config') }}
 {% endblock %}
 {% block body %}
@@ -23,20 +22,27 @@
                         <div class="card-body" >
                             {{ form_start(form, { 'attr': { 'data-action': 'submit->form-loading#startLoading' } }) }}
                             {{ form_errors(form) }}
+
+                            {# Mode row #}
                             <div class="row mb-5 text-center">
-                                <div class="col-6 col-md-3">
-                                    {{ form_row(form.spotify, { 'attr': {'class': 'btn btn-primary btn-disabled switch-button'} }) }}
+                                <div class="col-4 col-md-2">
+                                    {{ form_row(form.spotify, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['spotify'] } }) }}
                                 </div>
-                                <div class="col-6 col-md-3">
-                                    {{ form_row(form.image, { 'attr': {'class': 'btn btn-primary  btn-disabled switch-button'} }) }}
+                                <div class="col-4 col-md-2">
+                                    {{ form_row(form.image, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['unsplash'] } }) }}
                                 </div>
-                                <div class="col-6 col-md-3">
-                                    {{ form_row(form.artsy, { 'attr': {'class': 'btn btn-primary  btn-disabled switch-button'} }) }}
+                                <div class="col-4 col-md-2">
+                                    {{ form_row(form.artsy, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['artsy'] } }) }}
                                 </div>
-                                <div class="col-6 col-md-3">
-                                    {{ form_row(form.greeting, { 'attr': {'class': 'btn btn-primary  btn-disabled switch-button'} }) }}
+                                <div class="col-4 col-md-2">
+                                    {{ form_row(form.greeting, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['greeting'] } }) }}
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    {{ form_row(form.nasa, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['nasa'] } }) }}
                                 </div>
                             </div>
+
+                            {# Tag and next row #}
                             <div class="row mb-5 border-bottom border-primary rounded align-items-center p-3">
                                 <div class="col-12 col-md-4 text-end">
                                     {{ form_row(form.next, { 'attr': {'class': 'btn btn-secondary'} }) }}
@@ -50,6 +56,18 @@
                                     }) }}
                                 </div>
                             </div>
+
+                            {# Settings row #}
+                            <div class="row mb-5 border-bottom border-primary rounded justify-content-center p-3">
+                                <div class="col-12 col-md-4">
+                                    {{ form_row(form.spotifyInterruption, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['spotifyInterruption'] } }) }}
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    {{ form_row(form.greetingInterruption, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['greetingInterruption'] } }) }}
+                                </div>
+                            </div>
+
+                            {# Favorite row #}
                             <div class="row text-center">
                                 <div class="col-12">
                                     {{ form_row(form.store, { 'attr': {'class': 'btn btn-danger'} }) }}
@@ -82,9 +100,4 @@
                 </div>
             </div>
         </div>
-
-
-    <script>
-        var activeButton = '{{ activeButton }}';
-    </script>
 {% endblock %}

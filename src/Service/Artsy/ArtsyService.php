@@ -3,7 +3,9 @@
 namespace App\Service\Artsy;
 
 use App\Entity\ArtsyImage;
+use App\Entity\ArtsyNextLink;
 use App\Repository\ArtsyImageRepository;
+use App\Repository\ArtsyNextLinkRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -28,6 +30,7 @@ class ArtsyService
         private readonly string $apiUrl,
         private readonly EntityManagerInterface $entityManager,
         private readonly ArtsyImageRepository $artsyImageRepository,
+        private readonly ArtsyNextLinkRepository $artsyNextLinkRepository,
     )
     {
     }
@@ -143,6 +146,12 @@ class ArtsyService
             $data = $response->toArray();
 
             $nextLink = $data['_links']['next']['href'] ?? null;
+
+            $artsyNextLink = new ArtsyNextLink();
+            $artsyNextLink->setCurrentLink($currentUrl);
+            $artsyNextLink->setNextLink($nextLink);
+            $this->entityManager->persist($artsyNextLink);
+
             $results = $data['_embedded']['artworks'] ?? [];
         } catch (\Exception $e) {
             return null;
@@ -150,16 +159,10 @@ class ArtsyService
 
         // Check if the 'image_url' key exists. Return null if not.
         $last = array_key_last($results);
-        $artworks = [];
         foreach ($results as $key => $value) {
             $artistInformation = $this->resolveArtistInformation($value['_links']['artists']['href']);
 
-            $link = null;
-            if ($last === $key){
-                $link = $nextLink;
-            }
-
-            $artworks[] = $this->storeArtwork($value, $artistInformation, $link);
+            $this->storeArtwork($value, $artistInformation, $last === $key);
         }
 
 //        dd($artworks);
@@ -168,12 +171,17 @@ class ArtsyService
 
     public function storeArtworksFromNextPageUrlInDatabase(): void
     {
-        $imageWithNextUrl = $this->artsyImageRepository->getNextPageUrl();
+        $nextLinks = $this->artsyNextLinkRepository->findBy(['stored' => null]);
 
-        $this->getArtworks($imageWithNextUrl->getNextPageUrl());
+        if (count($nextLinks) === 0) {
+            throw new \Exception('No next link found in database');
+        }
+        $nextLink = $nextLinks[array_key_first($nextLinks)];
 
-        $imageWithNextUrl->setNextPageUrlStored(new DateTime());
-        $this->entityManager->persist($imageWithNextUrl);
+        $this->getArtworks($nextLink->getNextLink());
+
+        $nextLink->setStored(new DateTime());
+        $this->entityManager->persist($nextLink);
         $this->entityManager->flush();
     }
 
@@ -199,10 +207,12 @@ class ArtsyService
         return $artistInformation;
     }
 
-    public function storeArtwork(array $values, ?ArtistInformation $artistInformation, ?string $nextLink = null): ArtsyImage
+    public function storeArtwork(array $values, ?ArtistInformation $artistInformation, bool $store): ArtsyImage
     {
         $artsyImage = new ArtsyImage();
-        $artsyImage->setName($values['title']);
+        $name = $values['title'];
+        $artsyImage->setName($name);
+        $artsyImage->setDate($values['date']);
 
         $artistName = $values['slug'];
         if ($artistInformation !== null) {
@@ -210,10 +220,10 @@ class ArtsyService
         }
         $artsyImage->setArtist($artistName);
 
-        $link = $values['_links']['thumbnail']['href'];
+        $link = $values['_links']['thumbnail']['href'] ?? '-';
         $artsyImage->setMediumResolutionUrl($link);
 
-        $imageVersions = $values['image_versions'];
+        $imageVersions = $values['image_versions'] ?? [];
 
         $priorityOrder = ['larger', 'large', 'medium'];
         $highestResolution = 'medium';
@@ -232,7 +242,6 @@ class ArtsyService
         $artsyImage->setMaxVersion($highestResolution);
         $artsyImage->setWidth($width);
         $artsyImage->setHeight($height);
-        $artsyImage->setNextPageUrl($nextLink);
         $artsyImage->setViewed(null);
 
         $categoryValue = $values['category'];
@@ -243,9 +252,13 @@ class ArtsyService
         }
         $artsyImage->setCategory($category);
 
-        $this->entityManager->persist($artsyImage);
+        // check if may already exist
+        $existing = $this->artsyImageRepository->findBy(['name' => $name, 'artist' => $artistName]);
+        if (count($existing) === 0) {
+            $this->entityManager->persist($artsyImage);
+        }
 
-        if ($nextLink !== null) {
+        if ($store) {
             $this->entityManager->flush();
         }
 

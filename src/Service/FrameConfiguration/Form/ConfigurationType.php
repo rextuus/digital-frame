@@ -12,31 +12,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ConfigurationType extends AbstractType
 {
-
-
-    public function __construct(private UnsplashImageService $imageService, private FrameConfigurationService $configurationService)
-    {
+    public function __construct(
+        private readonly UnsplashImageService $imageService,
+        private readonly FrameConfigurationService $configurationService
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-//        $builder->add('mode', ChoiceType::class, [
-//            'choices'  => [
-//                'Image' => 1,
-//                'Spotify' => 2,
-//            ],
-//        ]);
-        $tags = array_map(function ($tag){
+        $tags = array_map(function ($tag) {
             return $tag['tag'];
         }, $this->imageService->getStoredTags());
         $choices = [];
         $currentTag = $this->configurationService->getCurrentTag();
         $choices[$currentTag] = $currentTag;
         $choices['random'] = 'random';
-        foreach ($tags as $tag){
+        foreach ($tags as $tag) {
             $choices[$tag] = $tag;
         }
-        if (empty($choices)){
+        if (empty($choices)) {
             $choices['random'] = 'random';
         }
 
@@ -44,12 +38,12 @@ class ConfigurationType extends AbstractType
             ->add('spotify', SubmitType::class, [
                 'label' => '<i class="fa-brands fa-spotify fa-2x"></i><br><span>Spotify</span>',
                 'label_html' => true,
-                'attr' => ['class' => 'btn btn-disabled', 'name' => 'spotify']
+                'attr' => ['name' => 'spotify']
             ])
             ->add('image', SubmitType::class, [
                 'label' => '<i class="fa-brands fa-unsplash fa-2x"></i><br><span>Unsplash</span>',
                 'label_html' => true,
-                'attr' => ['class' => 'btn btn-disabled', 'name' => 'image']
+                'attr' => ['name' => 'image']
             ])
             ->add('artsy', SubmitType::class, [
                 'label' => '<i class="fa-solid fa-palette fa-2x"></i><br><span>Artsy</span>',
@@ -60,6 +54,11 @@ class ConfigurationType extends AbstractType
                 'label' => '<i class="fa-solid fa-image fa-2x"></i><br><span>Greeting</span>',
                 'label_html' => true,
                 'attr' => ['name' => 'greeting']
+            ])
+            ->add('nasa', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-shuttle-space fa-2x"></i><br><span>Nasa</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'nasa']
             ])
             ->add('next', SubmitType::class, [
                 'label' => '<i class="fa-solid fa-forward fa-2x"></i><br><span>Next</span>',
@@ -80,6 +79,17 @@ class ConfigurationType extends AbstractType
                 'label_html' => true,
                 'label_attr' => ['style' => 'margin-right: 10px', 'id' => 'tag-label'],
                 'choices' => $choices
-            ]);
+            ])
+            ->add('spotifyInterruption', SubmitType::class, [
+                'label' => '<i class="fa-brands fa-spotify fa-2x"></i> <i class="fa-solid fa-bolt"></i><br><span>Interrupt</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'spotifyInterruption']
+            ])
+            ->add('greetingInterruption', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-image fa-2x"></i> <i class="fa-solid fa-bolt"></i><br><span>Interrupt</span>',
+                'label_html' => true,
+                'attr' => ['name' => 'greetingInterruption']
+            ])
+        ;
     }
 }

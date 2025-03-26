@@ -8,6 +8,7 @@ use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Greeting\Form\GreetingData;
 use App\Service\Greeting\GreetingService;
+use App\Service\Nasa\NasaService;
 use App\Service\Spotify\SpotifyService;
 use App\Service\Synchronization\GreetingSynchronizationService;
 use DateTime;
@@ -121,6 +122,16 @@ class StageController extends AbstractController
 
         return $this->render('stage/greeting.html.twig', [
             'url' => $url
+        ]);
+    }
+
+    #[Route('/nasa', name: 'app_stage_nasa')]
+    public function nasa(NasaService $nasaService): Response
+    {
+        $imageOfTheDay = $nasaService->getImageOfTheDay();
+
+        return $this->render('stage/nasa.html.twig', [
+            'image' => $imageOfTheDay,
         ]);
     }
 }

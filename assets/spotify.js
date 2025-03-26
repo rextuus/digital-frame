@@ -1,14 +1,4 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-
-// any CSS you import will output into a single css file (app.css in this case)
-import './styles/spotify.css';
-
-// start the Stimulus application
+import './styles/spotify.scss';
 import './bootstrap';
 
 var Spotify = require('spotify-web-api-js');
@@ -65,13 +55,24 @@ function setGradient(color1, color2) {
     let css = document.querySelector("h4");
     let body = document.getElementById("gradient");
 
+    if (!body) {
+        console.error("The element with id 'gradient' does not exist.");
+        return;
+    }
+
     body.style.background =
         "radial-gradient("
         + color1
         + ", "
         + color2
         + ")";
-    css.textContent = document.body.style.background + ";";
+
+    // Only update css if <h4> exists
+    if (css) {
+        css.textContent = body.style.background + ";";
+    } else {
+        console.warn("The <h4> element does not exist in the DOM.");
+    }
 }
 
 

@@ -8,18 +8,7 @@ enum DisplayMode: int
     case SPOTIFY = 2;
     case GREETING = 3;
     case ARTSY = 4;
-
-    public function getActiveButton(): string
-    {
-        match ($this) {
-            self::UNSPLASH => $value = 'configuration_image',
-            self::SPOTIFY => $value = 'configuration_spotify',
-            self::GREETING => $value = 'configuration_greeting',
-            self::ARTSY => $value = 'configuration_artsy'
-        };
-
-        return $value;
-    }
+    case NASA = 5;
 
     public function getRedirect(): string
     {
@@ -27,7 +16,8 @@ enum DisplayMode: int
             self::UNSPLASH => $value = 'app_stage_unsplash',
             self::SPOTIFY => $value = 'app_stage_spotify',
             self::GREETING => $value = 'app_stage_greeting',
-            self::ARTSY => $value = 'app_stage_artsy'
+            self::ARTSY => $value = 'app_stage_artsy',
+            self::NASA => $value = 'app_stage_nasa',
         };
 
         return $value;

@@ -5,6 +5,8 @@ namespace App\Service\FrameConfiguration;
 use App\Entity\FrameConfiguration;
 use App\Repository\FrameConfigurationRepository;
 use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -169,5 +171,93 @@ readonly class FrameConfigurationService
         $configuration = $this->getConfiguration(true);
 
         return $configuration->isWaitForModeSwitch();
+    }
+
+    public function shouldSpotifyInterrupt(): bool
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->isShouldSpotifyInterrupt();
+    }
+
+    public function toggleShouldSpotifyInterrupt(): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setShouldSpotifyInterrupt(!$configuration->isShouldSpotifyInterrupt());
+        $this->repository->save($configuration, true);
+    }
+
+    public function shouldGreetingInterrupt(): bool
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->isShouldGreetingInterrupt();
+    }
+
+    public function toggleShouldGreetingInterrupt(): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setShouldGreetingInterrupt(!$configuration->isShouldGreetingInterrupt());
+        $this->repository->save($configuration, true);
+    }
+
+    public function getDisplayState(): DisplayState
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->getDisplayState();
+    }
+
+    public function setDisplayState(DisplayState $state): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setDisplayState($state);
+        $this->repository->save($configuration, true);
+    }
+
+    public function getForcedSpotifyInterruption(): ?DateTimeInterface
+    {
+        $configuration = $this->getConfiguration();
+
+        return $configuration->getForcedSpotifyInterruption();
+    }
+
+    public function forceSpotifyInterruption(): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setForcedSpotifyInterruption(new DateTime());
+        $configuration->setModeBeforeInterruption($configuration->getMode());
+        $configuration->setMode(DisplayMode::SPOTIFY);
+        $this->repository->save($configuration, true);
+    }
+
+    public function releaseSpotifyInterruption(): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setForcedSpotifyInterruption(null);
+        $configuration->setMode($configuration->getModeBeforeInterruption());
+        $this->repository->save($configuration, true);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getActiveButtonMap(): array
+    {
+        $configuration = $this->getConfiguration();
+        $disabledClass = 'btn-disabled';
+        $enabledClass = 'btn-enabled';
+
+        $currentMode = $configuration->getMode();
+
+        return [
+            'spotifyInterruption' => $configuration->isShouldSpotifyInterrupt() ? $enabledClass : $disabledClass,
+            'greetingInterruption' => $configuration->isShouldGreetingInterrupt() ? $enabledClass : $disabledClass,
+            'spotify' => $currentMode === DisplayMode::SPOTIFY ? $enabledClass : $disabledClass,
+            'unsplash' => $currentMode === DisplayMode::UNSPLASH ? $enabledClass : $disabledClass,
+            'greeting' => $currentMode === DisplayMode::GREETING ? $enabledClass : $disabledClass,
+            'artsy' => $currentMode === DisplayMode::ARTSY ? $enabledClass : $disabledClass,
+            'nasa' => $currentMode === DisplayMode::NASA ? $enabledClass : $disabledClass,
+        ];
     }
 }

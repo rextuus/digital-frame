@@ -1,0 +1,8 @@
+ [Desktop Entry]
+ Type=Application
+ Exec=/home/master/rotate-screen.sh
+ Hidden=false
+ NoDisplay=false
+ X-GNOME-Autostart-enabled=true
+ Name=Rotate Screen
+ Comment=Rotate screen to 90 degrees using wlr-randr at startup

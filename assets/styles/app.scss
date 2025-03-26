@@ -1,22 +1,4 @@
 @use 'bootstrap/scss/bootstrap' as *;
-/*body {*/
-/*    background-color: lightgray;*/
-/*}*/
-
-body {
-}
-
-div {
-    display: flex;
-    margin-top: 10px;
-}
-
 #the-canvas {
     transform: scaleX(0) translate(0%, 0%) ;
 }
-
-/*#the-canvas {*/
-/*    position:absolute;*/
-/*    width:100%;*/
-/*    height:100%;*/
-/*}*/

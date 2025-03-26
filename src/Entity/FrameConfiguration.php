@@ -4,8 +4,9 @@ namespace App\Entity;
 
 use App\Repository\FrameConfigurationRepository;
 use App\Service\FrameConfiguration\DisplayMode;
-use Doccheck\Crm\Application\Domain\Order\OrderType;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use \App\Service\FrameConfiguration\DisplayState;
 
 #[ORM\Entity(repositoryClass: FrameConfigurationRepository::class)]
 class FrameConfiguration
@@ -49,6 +50,31 @@ class FrameConfiguration
     // this is flag which is set to true in the configController and should be reset if stage switched the mode
     #[ORM\Column(options: ['default' => false])]
     private bool $waitForModeSwitch = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $shouldSpotifyInterrupt = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $shouldGreetingInterrupt = false;
+
+    #[ORM\Column(
+        type: 'integer',
+        nullable: false,
+        enumType: DisplayMode::class,
+        options: ['default' => DisplayMode::UNSPLASH]
+    )]
+    private DisplayMode $modeBeforeInterruption = DisplayMode::UNSPLASH;
+
+    #[ORM\Column(
+        type: 'string',
+        nullable: false,
+        enumType: DisplayState::class,
+        options: ['default' => DisplayState::OFF]
+    )]
+    private DisplayState $displayState = DisplayState::OFF;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $forcedSpotifyInterruption = null;
 
     public function getId(): ?int
     {
@@ -158,6 +184,65 @@ class FrameConfiguration
     public function setWaitForModeSwitch(bool $waitForModeSwitch): static
     {
         $this->waitForModeSwitch = $waitForModeSwitch;
+
+        return $this;
+    }
+
+    public function isShouldSpotifyInterrupt(): ?bool
+    {
+        return $this->shouldSpotifyInterrupt;
+    }
+
+    public function setShouldSpotifyInterrupt(bool $shouldSpotifyInterrupt): static
+    {
+        $this->shouldSpotifyInterrupt = $shouldSpotifyInterrupt;
+
+        return $this;
+    }
+
+    public function isShouldGreetingInterrupt(): ?bool
+    {
+        return $this->shouldGreetingInterrupt;
+    }
+
+    public function setShouldGreetingInterrupt(bool $shouldGreetingInterrupt): static
+    {
+        $this->shouldGreetingInterrupt = $shouldGreetingInterrupt;
+
+        return $this;
+    }
+
+    public function getModeBeforeInterruption(): DisplayMode
+    {
+        return $this->modeBeforeInterruption;
+    }
+
+    public function setModeBeforeInterruption(DisplayMode $modeBeforeInterruption): FrameConfiguration
+    {
+        $this->modeBeforeInterruption = $modeBeforeInterruption;
+        return $this;
+    }
+
+    public function getDisplayState(): DisplayState
+    {
+        return $this->displayState;
+    }
+
+    public function setDisplayState(DisplayState $displayState): static
+    {
+        $this->displayState = $displayState;
+
+        return $this;
+    }
+
+    public function getForcedSpotifyInterruption(): ?\DateTimeInterface
+    {
+        return $this->forcedSpotifyInterruption;
+    }
+
+    public function setForcedSpotifyInterruption(?\DateTimeInterface $forcedSpotifyInterruption): static
+    {
+        $this->forcedSpotifyInterruption = $forcedSpotifyInterruption;
 
         return $this;
     }

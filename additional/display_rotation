@@ -7,3 +7,14 @@ dtoverlay=vc4-kms-v3d
 
 sudo nano /boot/firmware/cmdline.txt
 video=HDMI-A-1:1920x1080@60,rotate=90
+
+
+#RAPSI 4 Variante
+nano ~/rotate-screen.sh
+#!/bin/bash
+wlr-randr --output HDMI-A-1 --transform 90
+
+chmod +x ~/rotate-screen.sh
+
+mkdir -p ~/.config/autostart
+nano ~/.config/autostart/rotate-screen.desktop

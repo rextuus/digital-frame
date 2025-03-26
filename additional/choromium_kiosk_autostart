@@ -1,2 +1,3 @@
+sudo apt install -y chromium-browser
 mkdir -p ~/.config/autostart
 nano ~/.config/autostart/open-browser.desktop

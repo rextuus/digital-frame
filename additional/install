@@ -1,0 +1,6 @@
+sudo apt install -y php8.2 php8.2-cli php8.2-common php8.2-xml php8.2-mbstring php8.2-curl php8.2-zip php8.2-sqlite3 unzip curl git
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+sudo apt install -y nodejs npm
+
+git clone https://github.com/rextuus/digital-frame.git

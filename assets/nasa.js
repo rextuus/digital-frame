@@ -1,12 +1,12 @@
-import './styles/greeting.css';
+import './styles/nasa.scss';
 import './bootstrap';
 
-const greetingMode = 3;
-let currentMode = 3;
+const nasaMode = 5;
+let currentMode = 5;
 
 function change() {
     setMode();
-    if (currentMode === greetingMode) {
+    if (currentMode === nasaMode) {
 
     } else {
         window.location.replace("http://127.0.0.1:8000/stage");
@@ -24,7 +24,7 @@ function setMode() {
     request.onload = () => {
         if (request.status === 200) {
             currentMode = JSON.parse(request.response)['mode'];
-            calculateImagePos();
+            // calculateImagePos();
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }
@@ -32,7 +32,7 @@ function setMode() {
 }
 
 function calculateImagePos(){
-    let image = document.getElementById('random-image');
+    let image = document.getElementById('displayed-image');
     let distanceFromTop = image.offsetTop;
     let distanceFromBottom = window.innerHeight - (image.offsetTop + image.offsetHeight);
     let total = distanceFromTop + distanceFromBottom;
