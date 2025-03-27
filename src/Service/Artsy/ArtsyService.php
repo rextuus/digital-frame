@@ -215,7 +215,7 @@ class ArtsyService
         $artsyImage->setDate($values['date']);
 
         $artistName = $values['slug'];
-        if ($artistInformation !== null) {
+        if ($artistInformation !== null && $artistInformation->getName() !== null) {
             $artistName = $artistInformation->getName();
         }
         $artsyImage->setArtist($artistName);

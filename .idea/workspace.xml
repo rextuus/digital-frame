@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/digital-frame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/digital-frame.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/relay_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/artsy.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/artsy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/artsy.scss" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/artsy.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Artsy/ArtistInformation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Artsy/ArtistInformation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Artsy/ArtsyService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Artsy/ArtsyService.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -323,7 +327,7 @@
       <workItem from="1742978002962" duration="66000" />
       <workItem from="1742984556208" duration="18000" />
       <workItem from="1743021134488" duration="9754000" />
-      <workItem from="1743093504830" duration="8697000" />
+      <workItem from="1743093504830" duration="11878000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>
@@ -488,7 +492,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743111218210</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1743111965762</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1743111965762</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

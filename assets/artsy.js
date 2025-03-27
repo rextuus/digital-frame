@@ -17,7 +17,7 @@ let next = false;
 let nextCount = 0;
 
 var random;
-calculateImagePos();
+// calculateImagePos();
 
 function nextArtwork(){
     let request = new XMLHttpRequest();
@@ -27,7 +27,7 @@ function nextArtwork(){
         if (request.status === 200) {
             let response = JSON.parse(request.response);
             document.getElementById('random-image').src = response['image_url'];
-            calculateImagePos();
+            // calculateImagePos();
         } else {
             console.log('error ${request.status} ${request.statusText}');
         }
@@ -38,7 +38,7 @@ function nextArtwork(){
 
 function change() {
     setMode();
-    calculateImagePos();
+    // calculateImagePos();
     if (currentMode === imageMode) {
         if (next && nextCount < 1){
             next = false;
