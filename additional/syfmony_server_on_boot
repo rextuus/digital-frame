@@ -2,12 +2,15 @@ sudo nano /etc/systemd/system/symfony-server.service
 
 [Unit]
 Description=Symfony Local Server
-After=network.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 ExecStart=/usr/local/bin/symfony serve --allow-http --no-tls --allow-all-ip --dir=/home/master/digital-frame
 WorkingDirectory=/home/master/digital-frame
+ExecStartPre=/bin/sleep 5
 Restart=always
+RestartSec=3
 User=master
 
 [Install]

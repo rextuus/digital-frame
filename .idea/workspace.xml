@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="171d698d-71c3-48bc-afa9-d5e91b4467e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/styles/random.scss" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/random.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/additional/display_rotation" beforeDir="false" afterPath="$PROJECT_DIR$/additional/display_rotation" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/additional/syfmony_server_on_boot" beforeDir="false" afterPath="$PROJECT_DIR$/additional/syfmony_server_on_boot" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,6 +323,7 @@
       <workItem from="1742978002962" duration="66000" />
       <workItem from="1742984556208" duration="18000" />
       <workItem from="1743021134488" duration="9754000" />
+      <workItem from="1743093504830" duration="7395000" />
     </task>
     <task id="LOCAL-00001" summary="Progress">
       <created>1669934400318</created>

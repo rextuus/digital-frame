@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ImageRepository;
+use App\Repository\GreetingRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[ORM\Entity(repositoryClass: GreetingRepository::class)]
 class Greeting
 {
     #[ORM\Id]
