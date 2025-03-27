@@ -65,18 +65,6 @@ class Greeting
         return $this;
     }
 
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): static
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
     public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
