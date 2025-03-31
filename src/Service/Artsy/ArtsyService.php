@@ -269,11 +269,6 @@ class ArtsyService
     {
         $artsyImage = $this->artsyImageRepository->findCurrentArtwork();
 
-        // if it's last one collect more
-        if ($artsyImage->getNextPageUrl() !== null) {
-            $this->getArtworks($artsyImage->getNextPageUrl());
-        }
-
         // mark new on as viewed
         $artsyImage->setViewed(new DateTime());
         $this->entityManager->persist($artsyImage);
