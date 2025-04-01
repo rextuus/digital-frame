@@ -26,19 +26,19 @@
                             {# Mode row #}
                             <div class="row mb-5 text-center">
                                 <div class="col-4 col-md-2">
-                                    {{ form_row(form.spotify, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['spotify'] } }) }}
+                                    {{ form_row(form.spotify, { 'attr': {'class': buttonMap.buttonClasses('spotify') } }) }}
                                 </div>
                                 <div class="col-4 col-md-2">
-                                    {{ form_row(form.image, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['unsplash'] } }) }}
+                                    {{ form_row(form.image, { 'attr': {'class': buttonMap.buttonClasses('unsplash') } }) }}
                                 </div>
                                 <div class="col-4 col-md-2">
-                                    {{ form_row(form.artsy, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['artsy'] } }) }}
+                                    {{ form_row(form.artsy, { 'attr': {'class': buttonMap.buttonClasses('artsy') } }) }}
                                 </div>
                                 <div class="col-4 col-md-2">
-                                    {{ form_row(form.greeting, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['greeting'] } }) }}
+                                    {{ form_row(form.greeting, { 'attr': {'class': buttonMap.buttonClasses('greeting') } }) }}
                                 </div>
                                 <div class="col-4 col-md-2">
-                                    {{ form_row(form.nasa, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['nasa'] } }) }}
+                                    {{ form_row(form.nasa, { 'attr': {'class': buttonMap.buttonClasses('nasa') } }) }}
                                 </div>
                             </div>
 
@@ -55,21 +55,33 @@
                                         'attr': {'class': 'form-control', 'placeholder': 'Enter new tag'}
                                     }) }}
                                 </div>
+
                             </div>
 
                             {# Settings row #}
                             <div class="row mb-5 border-bottom border-primary rounded justify-content-center p-3">
-                                <div class="col-12 col-md-4">
-                                    {{ form_row(form.spotifyInterruption, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['spotifyInterruption'] } }) }}
+                                <div class="col-3">
+                                    {{ form_row(form.spotifyInterruption, { 'attr': {'class': buttonMap.buttonClasses('spotifyInterruption') } }) }}
                                 </div>
-                                <div class="col-12 col-md-4">
-                                    {{ form_row(form.greetingInterruption, { 'attr': {'class': 'btn btn-primary ' ~ buttonMap['greetingInterruption'] } }) }}
+                                <div class="col-3">
+                                    {{ form_row(form.greetingInterruption, { 'attr': {'class': buttonMap.buttonClasses('greetingInterruption') } }) }}
+                                </div>
+                                <div class="col-3 border-start border-primary">
+                                    <div class="mb-2">
+                                        {{ form_row(form.color, { 'attr': {'class': buttonMap.buttonClasses('changeColor')}}) }}
+                                    </div>
+                                    <div>
+                                        {{ form_row(form.changeColor, { 'attr': {'class': buttonMap.buttonClasses('changeColor')} }) }}
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    {{ form_row(form.blur, { 'attr': {'class': buttonMap.buttonClasses('blur')} }) }}
                                 </div>
                             </div>
 
                             {# Favorite row #}
                             <div class="row text-center">
-                                <div class="col-12">
+                                <div class="col-4">
                                     {{ form_row(form.store, { 'attr': {'class': 'btn btn-danger'} }) }}
                                 </div>
                             </div>

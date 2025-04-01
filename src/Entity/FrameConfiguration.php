@@ -76,6 +76,12 @@ class FrameConfiguration
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $forcedSpotifyInterruption = null;
 
+    /**
+     * @var array<string, string>
+     */
+    #[ORM\Column(type: Types::JSON, nullable: false, options: ['default' => '{}'])]
+    private array $backgroundColors = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -243,6 +249,18 @@ class FrameConfiguration
     public function setForcedSpotifyInterruption(?\DateTimeInterface $forcedSpotifyInterruption): static
     {
         $this->forcedSpotifyInterruption = $forcedSpotifyInterruption;
+
+        return $this;
+    }
+
+    public function getBackgroundColors(): array
+    {
+        return $this->backgroundColors;
+    }
+
+    public function setBackgroundColors(array $backgroundColors): static
+    {
+        $this->backgroundColors = $backgroundColors;
 
         return $this;
     }

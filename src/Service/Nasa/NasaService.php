@@ -31,6 +31,9 @@ class NasaService
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
+            if ($data['media_type'] !== 'image') {
+                $data['hdurl'] = 'error';
+            };
             $imageOfTheDay->setUrl($data['hdurl']);
             $imageOfTheDay->setExplanation($data['explanation']);
             $imageOfTheDay->setDate(new DateTime($data['date']));

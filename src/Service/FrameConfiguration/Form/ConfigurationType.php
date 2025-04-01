@@ -5,10 +5,13 @@ namespace App\Service\FrameConfiguration\Form;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Unsplash\UnsplashImageService;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 class ConfigurationType extends AbstractType
 {
@@ -33,6 +36,24 @@ class ConfigurationType extends AbstractType
         if (empty($choices)) {
             $choices['random'] = 'random';
         }
+        $builder->add('color', ColorType::class, [
+            'label' => false,
+            'label_html' => true,
+            'required' => false,
+            'attr' => [
+                'class' => 'form-control-color',
+            ]
+        ]);
+        $builder->add('changeColor', SubmitType::class, [
+            'label' => '<i class="fa-solid fa-palette fa-2x"></i><br><span>Change color</span>',
+            'label_html' => true,
+            'attr' => ['name' => 'spotifyInterruption']
+        ]);
+        $builder->add('blur', SubmitType::class, [
+            'label' => '<i class="fa-solid fa-palette fa-2x"></i><br><span>Blur Background</span>',
+            'label_html' => true,
+            'attr' => ['name' => 'spotifyInterruption']
+        ]);
 
         $builder
             ->add('spotify', SubmitType::class, [

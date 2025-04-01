@@ -10,6 +10,10 @@ class ConfigurationData
 
     private ?string $newTag;
 
+    private ?string $color;
+
+    private bool $blur = false;
+
     /**
      * @return int
      */
@@ -56,5 +60,27 @@ class ConfigurationData
     public function setNewTag(?string $newTag): void
     {
         $this->newTag = $newTag;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): ConfigurationData
+    {
+        $this->color = $color;
+        return $this;
+    }
+
+    public function isBlur(): bool
+    {
+        return $this->blur;
+    }
+
+    public function setBlur(bool $blur): ConfigurationData
+    {
+        $this->blur = $blur;
+        return $this;
     }
 }

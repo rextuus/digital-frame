@@ -26,4 +26,5 @@
 npm-debug.log
 yarn-error.log
 .idea/php.xml
+.idea
 ###< symfony/webpack-encore-bundle ###

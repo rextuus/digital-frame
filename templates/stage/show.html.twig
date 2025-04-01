@@ -4,14 +4,12 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('artsy') }}
+    {{ encore_entry_script_tags('stage') }}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('artsy') }}
+    {{ encore_entry_link_tags('stage') }}
 {% endblock %}
 {% block body %}
-    <div class="bg-container">
-        <img id="random-image" src="{{image.bestResolutionUrl}}"/>
-    </div>
+    {{ component('StageComponent') }}
 {% endblock %}

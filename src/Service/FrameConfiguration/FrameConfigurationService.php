@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 readonly class FrameConfigurationService
 {
+    public const COLOR_BLUR = 'blur';
+
     public function __construct(
         private FrameConfigurationRepository $repository,
         private FrameConfigurationFactory $factory,
@@ -242,22 +244,104 @@ readonly class FrameConfigurationService
     /**
      * @return array<string, string>
      */
-    public function getActiveButtonMap(): array
+    public function getBackGroundColors(): array
     {
         $configuration = $this->getConfiguration();
-        $disabledClass = 'btn-disabled';
-        $enabledClass = 'btn-enabled';
+        if ($configuration->getBackgroundColors() === []) {
+            $defaults = [];
+            foreach (DisplayMode::cases() as $displayMode){
+                $defaults[$displayMode->value] = self::COLOR_BLUR;
+            }
+
+            $configuration->setBackgroundColors($defaults);
+            $this->repository->save($configuration, true);
+
+            return $defaults;
+        }
+
+        return $configuration->getBackgroundColors();
+    }
+
+    public function getBackgroundColorForCurrentMode(): string
+    {
+        $configuration = $this->getConfiguration();
+        $backgroundColor = $configuration->getBackgroundColors();
+
+        return $backgroundColor[$configuration->getMode()->value] ?? self::COLOR_BLUR;
+    }
+
+    public function setBackgroundColorForCurrentMode(string $string): void
+    {
+        $configuration = $this->getConfiguration();
+        $backgroundColor = $configuration->getBackgroundColors();
+        $backgroundColor[$configuration->getMode()->value] = $string;
+        $configuration->setBackgroundColors($backgroundColor);
+        $this->repository->save($configuration, true);
+    }
+
+    /**
+     * @return ButtonStateCollection
+     */
+    public function getActiveButtonMap(): ButtonStateCollection
+    {
+        $configuration = $this->getConfiguration();
+        $disabledClass = ButtonState::DISABLED_CLASS;
+        $enabledClass = ButtonState::ENABLED_CLASS;
 
         $currentMode = $configuration->getMode();
 
-        return [
-            'spotifyInterruption' => $configuration->isShouldSpotifyInterrupt() ? $enabledClass : $disabledClass,
-            'greetingInterruption' => $configuration->isShouldGreetingInterrupt() ? $enabledClass : $disabledClass,
-            'spotify' => $currentMode === DisplayMode::SPOTIFY ? $enabledClass : $disabledClass,
-            'unsplash' => $currentMode === DisplayMode::UNSPLASH ? $enabledClass : $disabledClass,
-            'greeting' => $currentMode === DisplayMode::GREETING ? $enabledClass : $disabledClass,
-            'artsy' => $currentMode === DisplayMode::ARTSY ? $enabledClass : $disabledClass,
-            'nasa' => $currentMode === DisplayMode::NASA ? $enabledClass : $disabledClass,
-        ];
+        $collection = new ButtonStateCollection();
+
+        $blur = $disabledClass;
+        $changeColor = $enabledClass;
+        if ($configuration->getBackgroundColors()[$currentMode->value] === self::COLOR_BLUR) {
+            $blur = $enabledClass;
+            $changeColor = $disabledClass;
+        }
+        $collection->addButton('blur', new ButtonState($blur));
+        $collection->addButton('changeColor', new ButtonState($changeColor));
+
+        $collection->addButton(
+            'spotifyInterruption',
+            new ButtonState($configuration->isShouldSpotifyInterrupt() ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'greetingInterruption',
+            new ButtonState($configuration->isShouldGreetingInterrupt() ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'spotify',
+            new ButtonState($currentMode === DisplayMode::SPOTIFY ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'unsplash',
+            new ButtonState($currentMode === DisplayMode::UNSPLASH ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'greeting',
+            new ButtonState($currentMode === DisplayMode::GREETING ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'artsy',
+            new ButtonState($currentMode === DisplayMode::ARTSY ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'nasa',
+            new ButtonState($currentMode === DisplayMode::NASA ? $enabledClass : $disabledClass)
+        );
+
+        return $collection;
+
+//        return [
+//            'spotifyInterruption' => $configuration->isShouldSpotifyInterrupt() ? $enabledClass : $disabledClass,
+//            'greetingInterruption' => $configuration->isShouldGreetingInterrupt() ? $enabledClass : $disabledClass,
+//            'spotify' => $currentMode === DisplayMode::SPOTIFY ? $enabledClass : $disabledClass,
+//            'unsplash' => $currentMode === DisplayMode::UNSPLASH ? $enabledClass : $disabledClass,
+//            'greeting' => $currentMode === DisplayMode::GREETING ? $enabledClass : $disabledClass,
+//            'artsy' => $currentMode === DisplayMode::ARTSY ? $enabledClass : $disabledClass,
+//            'nasa' => $currentMode === DisplayMode::NASA ? $enabledClass : $disabledClass,
+//            'blur' => $blur,
+//            'changeColor' => $changeColor,
+//        ];
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/artsy')]
 class ArtsyController extends AbstractController
 {
-    public function __construct(private readonly ArtsyService $artsyService, private FrameConfigurationService $configurationService)
+    public function __construct(private readonly ArtsyService $artsyService)
     {
     }
 
@@ -27,27 +27,6 @@ class ArtsyController extends AbstractController
         }
 
         return new JsonResponse(['image_url' => $artworkImageUrl]);
-    }
-
-    #[Route('/next', name: 'artsy_next')]
-    public function next(ArtsyService $artsyService, FrameConfigurationService $configurationService): Response
-    {
-        $currentArtWork = null;
-
-        $imageId = $configurationService->getNextImageId();
-        if ($imageId !== null){
-            $currentArtWork = $this->artsyService->getArtworkById($imageId);
-            $configurationService->setNextImageId(null);
-        }
-
-        if ($currentArtWork === null){
-            $currentArtWork = $artsyService->getCurrentArtWork();
-        }
-
-        $this->configurationService->setCurrentDisplayedImage($currentArtWork->getId(), DisplayMode::ARTSY);
-        $this->configurationService->setWaitForModeSwitch(false);
-
-        return new JsonResponse(['image_url' => $currentArtWork->getBestResolutionUrl()]);
     }
 
     #[Route('/gallery', name: 'artsy_gallery')]

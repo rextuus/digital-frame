@@ -36,6 +36,7 @@ final class ArtsyCard
         $this->frameConfigurationService->setMode(DisplayMode::ARTSY);
         $this->frameConfigurationService->setNextImageId($id);
         $this->frameConfigurationService->setNext(true);
+        $this->frameConfigurationService->setWaitForModeSwitch(true);
 
         $this->wasDisplayed = true;
     }
