@@ -7,3 +7,7 @@ git clone https://github.com/rextuus/digital-frame.git
 
 curl -sS https://get.symfony.com/cli/installer | bash
 sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
+
+##  dipsplay control braucht rechte
+     sudo usermod -aG gpio www-data
+

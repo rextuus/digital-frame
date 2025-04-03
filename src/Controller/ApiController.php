@@ -33,29 +33,45 @@ class ApiController extends AbstractController
 
     private function executeCommand(DisplayState $displayState): JsonResponse
     {
-        if (!file_exists($this->scriptPath) || !is_readable($this->scriptPath) || !is_executable($this->scriptPath)) {
-            return new JsonResponse([
-                'error' => 'Python script not found or is not readable.',
-            ], 500);
+        if (!file_exists($this->scriptPath) || !is_readable($this->scriptPath)) {
+            return new JsonResponse(['error' => 'Python script not found or is not readable.'], 500);
         }
 
-        // Escaping shell arguments for safety
         $safeCommand = escapeshellarg($displayState->value);
-
-        // Execute the Python script
         $output = [];
         $returnCode = null;
 
-        exec("python3 {$this->scriptPath} $safeCommand", $output, $returnCode);
+        // Execute Python script
+        exec("/usr/bin/python3 {$this->scriptPath} $safeCommand 2>&1", $output, $returnCode);
 
         if ($returnCode !== 0) {
             return new JsonResponse([
                 'error' => 'Command execution failed.',
+                'output' => $output,
+                'return_code' => $returnCode,
+                'command' => "/usr/bin/python3 {$this->scriptPath} $safeCommand",
             ], 500);
         }
 
-        return new JsonResponse([
-            'state' => sprintf('%s', $displayState->value)
-        ], 200);
+        // Execute the shell script after turning the screen on
+        if ($displayState->value === 'on') {
+            $shellScriptPath = '/path/to/your/shell_script.sh';
+            if (file_exists($shellScriptPath) && is_executable($shellScriptPath)) {
+                exec("bash $shellScriptPath 2>&1", $shellOutput, $shellReturnCode);
+
+                if ($shellReturnCode !== 0) {
+                    return new JsonResponse([
+                        'error' => 'Shell script execution failed.',
+                        'shell_script_output' => $shellOutput,
+                        'shell_return_code' => $shellReturnCode,
+                        'shell_command' => "bash $shellScriptPath",
+                    ], 500);
+                }
+            } else {
+                return new JsonResponse(['error' => 'Shell script not found or is not executable.'], 500);
+            }
+        }
+
+        return new JsonResponse(['state' => $displayState->value, 'output' => $output], 200);
     }
 }
