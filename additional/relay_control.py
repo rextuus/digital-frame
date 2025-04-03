@@ -20,12 +20,6 @@ if command == "on":
 elif command == "off":
     GPIO.output(RELAY_PIN, GPIO.HIGH)
     print("Relay is OFF - GPIO HIGH")
-elif command == "status":
-    state = GPIO.input(RELAY_PIN)
-    if state == GPIO.LOW:
-        print("on")
-    else:
-        print("off")
 else:
     print("Invalid command")
     sys.exit(1)

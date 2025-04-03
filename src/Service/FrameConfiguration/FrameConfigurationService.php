@@ -246,6 +246,20 @@ readonly class FrameConfigurationService
         $this->repository->save($configuration, true);
     }
 
+    public function setDisplayStateOn(): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setDisplayState(DisplayState::ON);
+        $this->repository->save($configuration, true);
+    }
+
+    public function setDisplayStateOff(): void
+    {
+        $configuration = $this->getConfiguration();
+        $configuration->setDisplayState(DisplayState::OFF);
+        $this->repository->save($configuration, true);
+    }
+
     /**
      * @return array<string, string>
      */
