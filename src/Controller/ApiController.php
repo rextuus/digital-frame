@@ -9,7 +9,9 @@ use App\Service\FrameConfiguration\FrameConfigurationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 #[Route('/api')]
 class ApiController extends AbstractController
@@ -34,6 +36,21 @@ class ApiController extends AbstractController
     {
         return $this->executeCommand(DisplayState::OFF);
     }
+
+    #[Route('/switch', name: 'api_display_toggle', methods: ['POST'])]
+    public function toggleDisplay(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['state']) || !in_array($data['state'], [DisplayState::ON->value, DisplayState::OFF->value], true)) {
+            return new JsonResponse(['error' => 'Invalid display state. Allowed values are "on" or "off".'], 400);
+        }
+
+        $displayState = $data['state'] === DisplayState::ON ? DisplayState::ON : DisplayState::OFF;
+
+        return $this->executeCommand($displayState);
+    }
+
 
     private function executeCommand(DisplayState $displayState): JsonResponse
     {
