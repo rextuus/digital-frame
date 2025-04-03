@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\FrameConfiguration\DisplayState;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api')]
-readonly class ApiController
+class ApiController extends AbstractController
 {
     public function __construct(
         #[Autowire('%env(DISPLAY_SWITCH_SCRIPT_PATH)%')]
-        private string $scriptPath,
+        private readonly string $scriptPath,
     ) {
     }
 
