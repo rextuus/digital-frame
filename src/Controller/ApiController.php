@@ -15,7 +15,9 @@ class ApiController extends AbstractController
 {
     public function __construct(
         #[Autowire('%env(DISPLAY_SWITCH_SCRIPT_PATH)%')]
-        private readonly string $scriptPath,
+        private readonly string $switchStateScriptPath,
+        #[Autowire('%env(ROTATE_DISPLAY_SCRIPT_PATH)%')]
+        private readonly string $rotateDisplayScriptPath,
     ) {
     }
 
@@ -33,7 +35,7 @@ class ApiController extends AbstractController
 
     private function executeCommand(DisplayState $displayState): JsonResponse
     {
-        if (!file_exists($this->scriptPath) || !is_readable($this->scriptPath)) {
+        if (!file_exists($this->switchStateScriptPath) || !is_readable($this->switchStateScriptPath)) {
             return new JsonResponse(['error' => 'Python script not found or is not readable.'], 500);
         }
 
@@ -42,29 +44,28 @@ class ApiController extends AbstractController
         $returnCode = null;
 
         // Execute Python script
-        exec("/usr/bin/python3 {$this->scriptPath} $safeCommand 2>&1", $output, $returnCode);
+        exec("/usr/bin/python3 {$this->switchStateScriptPath} $safeCommand 2>&1", $output, $returnCode);
 
         if ($returnCode !== 0) {
             return new JsonResponse([
                 'error' => 'Command execution failed.',
                 'output' => $output,
                 'return_code' => $returnCode,
-                'command' => "/usr/bin/python3 {$this->scriptPath} $safeCommand",
+                'command' => "/usr/bin/python3 {$this->switchStateScriptPath} $safeCommand",
             ], 500);
         }
 
         // Execute the shell script after turning the screen on
         if ($displayState->value === 'on') {
-            $shellScriptPath = '/path/to/your/shell_script.sh';
-            if (file_exists($shellScriptPath) && is_executable($shellScriptPath)) {
-                exec("bash $shellScriptPath 2>&1", $shellOutput, $shellReturnCode);
+            if (file_exists($this->rotateDisplayScriptPath) && is_executable($this->rotateDisplayScriptPath)) {
+                exec("bash $this->rotateDisplayScriptPath 2>&1", $shellOutput, $shellReturnCode);
 
                 if ($shellReturnCode !== 0) {
                     return new JsonResponse([
                         'error' => 'Shell script execution failed.',
                         'shell_script_output' => $shellOutput,
                         'shell_return_code' => $shellReturnCode,
-                        'shell_command' => "bash $shellScriptPath",
+                        'shell_command' => "bash $this->rotateDisplayScriptPath",
                     ], 500);
                 }
             } else {
