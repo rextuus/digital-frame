@@ -10,4 +10,6 @@ sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
 
 ##  dipsplay control braucht rechte
      sudo usermod -aG gpio www-data
+   sudo setfacl -m u:www-data:rwx /run/user/1000
+   sudo setfacl -m u:www-data:rw /run/user/1000/wayland-0
 
