@@ -46,7 +46,10 @@ class ApiController extends AbstractController
             return new JsonResponse(['error' => 'Invalid display state. Allowed values are "on" or "off".'], 400);
         }
 
-        $displayState = $data['state'] === DisplayState::ON ? DisplayState::ON : DisplayState::OFF;
+        $displayState = DisplayState::tryFrom($data['state']);
+        if ($displayState === null) {
+            return new JsonResponse(['error' => 'Invalid display state. Allowed values are "on" or "off".'], 400);
+        }
 
         return $this->executeCommand($displayState);
     }
