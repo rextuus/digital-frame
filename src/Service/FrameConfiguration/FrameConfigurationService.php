@@ -229,7 +229,10 @@ readonly class FrameConfigurationService
         $configuration = $this->getConfiguration();
         $configuration->setForcedSpotifyInterruption(new DateTime());
         $configuration->setModeBeforeInterruption($configuration->getMode());
+        $configuration->setCurrentlyDisplayedMode(DisplayMode::SPOTIFY);
         $configuration->setMode(DisplayMode::SPOTIFY);
+        $configuration->setWaitForModeSwitch(true);
+
         $this->repository->save($configuration, true);
     }
 
@@ -238,6 +241,8 @@ readonly class FrameConfigurationService
         $configuration = $this->getConfiguration();
         $configuration->setForcedSpotifyInterruption(null);
         $configuration->setMode($configuration->getModeBeforeInterruption());
+        $configuration->setWaitForModeSwitch(true);
+
         $this->repository->save($configuration, true);
     }
 
