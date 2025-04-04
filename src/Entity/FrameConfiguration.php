@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\FrameConfigurationRepository;
 use App\Service\FrameConfiguration\DisplayMode;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use \App\Service\FrameConfiguration\DisplayState;
@@ -28,9 +30,6 @@ class FrameConfiguration
 
     #[ORM\Column]
     private bool $next = false;
-
-    #[ORM\Column(length: 255)]
-    private ?string $currentTag = null;
 
     #[ORM\Column]
     private ?int $greetingDisplayTime = null;
@@ -77,10 +76,18 @@ class FrameConfiguration
     private ?\DateTimeInterface $forcedSpotifyInterruption = null;
 
     /**
-     * @var array<string, string>
+     * @var Collection<int, BackgroundConfiguration>
      */
-    #[ORM\Column(type: Types::JSON, nullable: false, options: ['default' => '{}'])]
-    private array $backgroundColors = [];
+    #[ORM\OneToMany(mappedBy: 'configuration', targetEntity: BackgroundConfiguration::class, orphanRemoval: true)]
+    private Collection $backgroundConfigurations;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?UnsplashTag $currentTag = null;
+
+    public function __construct()
+    {
+        $this->backgroundConfigurations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,18 +114,6 @@ class FrameConfiguration
     public function setNext(bool $next): self
     {
         $this->next = $next;
-
-        return $this;
-    }
-
-    public function getCurrentTag(): ?string
-    {
-        return $this->currentTag;
-    }
-
-    public function setCurrentTag(string $currentTag): self
-    {
-        $this->currentTag = $currentTag;
 
         return $this;
     }
@@ -253,14 +248,44 @@ class FrameConfiguration
         return $this;
     }
 
-    public function getBackgroundColors(): array
+    /**
+     * @return Collection<int, BackgroundConfiguration>
+     */
+    public function getBackgroundConfigurations(): Collection
     {
-        return $this->backgroundColors;
+        return $this->backgroundConfigurations;
     }
 
-    public function setBackgroundColors(array $backgroundColors): static
+    public function addBackgroundConfiguration(BackgroundConfiguration $backgroundConfiguration): static
     {
-        $this->backgroundColors = $backgroundColors;
+        if (!$this->backgroundConfigurations->contains($backgroundConfiguration)) {
+            $this->backgroundConfigurations->add($backgroundConfiguration);
+            $backgroundConfiguration->setConfiguration($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBackgroundConfiguration(BackgroundConfiguration $backgroundConfiguration): static
+    {
+        if ($this->backgroundConfigurations->removeElement($backgroundConfiguration)) {
+            // set the owning side to null (unless already changed)
+            if ($backgroundConfiguration->getConfiguration() === $this) {
+                $backgroundConfiguration->setConfiguration(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCurrentTag(): ?UnsplashTag
+    {
+        return $this->currentTag;
+    }
+
+    public function setCurrentTag(?UnsplashTag $currentTag): static
+    {
+        $this->currentTag = $currentTag;
 
         return $this;
     }

@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Service\Favorite\FavoriteService;
 use App\Service\Favorite\ModeToFavoriteConvertProvider;
+use App\Service\FrameConfiguration\BackgroundStyle;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\Form\ConfigurationData;
 use App\Service\FrameConfiguration\Form\ConfigurationType;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\FrameConfiguration\ImageStyle;
+use App\Service\Unsplash\UnsplashImageService;
 use ColorThief\ColorThief;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +23,8 @@ class ConfigurationController extends AbstractController
 {
     public function __construct(
         private readonly ModeToFavoriteConvertProvider $modeToFavoriteConvertProvider,
-        private readonly FrameConfigurationService $configurationService
+        private readonly FrameConfigurationService $configurationService,
+        private readonly UnsplashImageService $unsplashImageService
     ) {
     }
 
@@ -31,13 +35,15 @@ class ConfigurationController extends AbstractController
     public function view(Request $request, FavoriteService $favoriteService): Response
     {
         $currentMode = $this->configurationService->getMode();
+        $currentTag = $this->configurationService->getCurrentTag();
 
         $configurationData = new ConfigurationData();
         $configurationData->setMode(1);
         $configurationData->setNewTag(null);
-        $backgroundColor = $this->configurationService->getBackgroundColorForCurrentMode();
-        if ($backgroundColor !== FrameConfigurationService::COLOR_BLUR) {
-            $configurationData->setColor($backgroundColor);
+        $configurationData->setTag($currentTag);
+        $backgroundStyle = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        if ($backgroundStyle->getColor() !== null) {
+            $configurationData->setColor($backgroundStyle->getColor());
         }
         $form = $this->createForm(ConfigurationType::class, $configurationData);
 
@@ -53,6 +59,8 @@ class ConfigurationController extends AbstractController
             $isSpotifyInterruption = $form->get('spotifyInterruption')->isClicked();
             $changeColor = $form->get('changeColor')->isClicked();
             $blur = $form->get('blur')->isClicked();
+            $clear = $form->get('clear')->isClicked();
+            $maximize = $form->get('maximize')->isClicked();
 
             $newMode = $currentMode;
             $next = $form->get('next')->isClicked();
@@ -102,7 +110,8 @@ class ConfigurationController extends AbstractController
             // update Tag if new one was added
             $currentTag = $data->getTag();
             if ($data->getNewTag()) {
-                $currentTag = $data->getNewTag();
+                $newTag = $this->unsplashImageService->createNewTag($data->getNewTag());
+                $currentTag = $newTag;
             }
             $this->configurationService->setCurrentTag($currentTag);
 
@@ -116,7 +125,16 @@ class ConfigurationController extends AbstractController
                 $this->configurationService->setBackgroundColorForCurrentMode($data->getColor());
             }
             if ($blur){
-                $this->configurationService->setBackgroundColorForCurrentMode(FrameConfigurationService::COLOR_BLUR);
+                $this->configurationService->setBackgroundStyleForCurrentMode(BackgroundStyle::BLUR);
+            }
+            if ($clear){
+                $this->configurationService->setBackgroundStyleForCurrentMode(BackgroundStyle::CLEAR);
+                if ($backgroundStyle->getImageStyle() === ImageStyle::ORIGINAL){
+                    $this->configurationService->toggleImageStyleForCurrentMode();
+                }
+            }
+            if ($maximize){
+                $this->configurationService->toggleImageStyleForCurrentMode();
             }
 
             // wait for switch
@@ -149,7 +167,7 @@ class ConfigurationController extends AbstractController
             'form' => $form->createView(),
             'buttonMap' => $buttonMap,
             'lastImageDto' => $converter->getLastImageDto(),
-            'backgroundColor' => $backgroundColor
+            'backgroundColor' => $backgroundStyle
         ]);
     }
 

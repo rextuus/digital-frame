@@ -11,7 +11,6 @@ class FrameConfigurationFactory
     {
         $configuration = $this->getInstance();
         $configuration->setMode($mode);
-        $configuration->setCurrentTag('random');
         return $configuration;
     }
 

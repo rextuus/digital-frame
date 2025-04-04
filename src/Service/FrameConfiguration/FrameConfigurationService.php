@@ -2,30 +2,36 @@
 
 namespace App\Service\FrameConfiguration;
 
+use App\Entity\BackgroundConfiguration;
 use App\Entity\FrameConfiguration;
+use App\Entity\UnsplashTag;
+use App\Repository\BackgroundConfigurationRepository;
 use App\Repository\FrameConfigurationRepository;
 use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
+use App\Service\Unsplash\UnsplashImageService;
 use DateTime;
 use DateTimeInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 readonly class FrameConfigurationService
 {
-    public const COLOR_BLUR = 'blur';
-
     public function __construct(
         private FrameConfigurationRepository $repository,
         private FrameConfigurationFactory $factory,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private UnsplashImageService $unsplashImageService,
+        private BackgroundConfigurationRepository $backgroundConfigurationRepository,
     ) {
     }
 
     public function createConfiguration(DisplayMode $mode): FrameConfiguration
     {
+        $defaultTag = $this->unsplashImageService->createNewTag(UnsplashImageService::TAG_RANDOM);
+
         $configuration = $this->factory->createConfiguration($mode);
         $configuration->setNext(false);
-        $configuration->setCurrentTag('random');
+        $configuration->setCurrentTag($defaultTag);
         $configuration->setGreetingDisplayTime(FrameConfiguration::DEFAULT_DISPLAY_TIME);
         $configuration->setShutDownTime(FrameConfiguration::DEFAULT_DOWN_TIME);
         $this->repository->save($configuration, true);
@@ -89,7 +95,7 @@ readonly class FrameConfigurationService
         return $configuration->isNext();
     }
 
-    public function setCurrentTag(string $tag): void
+    public function setCurrentTag(UnsplashTag $tag): void
     {
         $configuration = $this->getConfiguration();
 
@@ -97,10 +103,18 @@ readonly class FrameConfigurationService
         $this->repository->save($configuration, true);
     }
 
-    public function getCurrentTag(): string
+    public function getCurrentTag(): UnsplashTag
     {
         $configuration = $this->getConfiguration();
-        return $configuration->getCurrentTag();
+
+        $tag = $configuration->getCurrentTag();
+        if ($tag === null) {
+            $tag = $this->unsplashImageService->createNewTag(UnsplashImageService::TAG_RANDOM);
+            $configuration->setCurrentTag($tag);
+            $this->repository->save($configuration, true);
+        }
+
+        return $tag;
     }
 
     public function getConfiguration(bool $forceRefresh = false): FrameConfiguration
@@ -261,41 +275,96 @@ readonly class FrameConfigurationService
     }
 
     /**
-     * @return array<string, string>
+     * @return array<BackgroundConfiguration>
      */
     public function getBackGroundColors(): array
     {
         $configuration = $this->getConfiguration();
-        if ($configuration->getBackgroundColors() === []) {
-            $defaults = [];
+        if ($configuration->getBackgroundConfigurations()->count() === 0) {
             foreach (DisplayMode::cases() as $displayMode){
-                $defaults[$displayMode->value] = self::COLOR_BLUR;
+                $backGroundConfig = new BackgroundConfiguration();
+                $backGroundConfig->setMode($displayMode);
+                $backGroundConfig->setColor(null);
+                $backGroundConfig->setStyle(BackgroundStyle::BLUR);
+                $backGroundConfig->setImageStyle(ImageStyle::ORIGINAL);
+                $backGroundConfig->setConfiguration($configuration);
+                $this->entityManager->persist($backGroundConfig);
+
+                $configuration->addBackgroundConfiguration($backGroundConfig);
+                $this->entityManager->persist($configuration);
             }
-
-            $configuration->setBackgroundColors($defaults);
-            $this->repository->save($configuration, true);
-
-            return $defaults;
+            $this->entityManager->flush();
         }
 
-        return $configuration->getBackgroundColors();
+        return $configuration->getBackgroundConfigurations()->toArray();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getBackgroundColorForCurrentMode(): string
     {
         $configuration = $this->getConfiguration();
-        $backgroundColor = $configuration->getBackgroundColors();
+        foreach ($configuration->getBackgroundConfigurations() as $backgroundConfiguration) {
+            if ($backgroundConfiguration->getMode() === $configuration->getMode()) {
+                return $backgroundConfiguration->getColor();
+            }
+        }
 
-        return $backgroundColor[$configuration->getMode()->value] ?? self::COLOR_BLUR;
+        throw new Exception('No background color found for current mode');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getBackgroundConfigurationForCurrentMode(): BackgroundConfiguration
+    {
+        $configuration = $this->getConfiguration();
+        foreach ($this->getBackGroundColors() as $backgroundConfiguration) {
+            if ($backgroundConfiguration->getMode() === $configuration->getMode()) {
+                return $backgroundConfiguration;
+            }
+        }
+
+        throw new Exception('No background color found for current mode');
+    }
+
+    public function setBackgroundStyleForCurrentMode(BackgroundStyle $style): void
+    {
+        $configuration = $this->getConfiguration();
+
+        $backgroundConfig = $this->backgroundConfigurationRepository->findOneBy(['mode' => $configuration->getMode()]);
+        $backgroundConfig->setStyle($style);
+        $this->entityManager->persist($backgroundConfig);
+        $this->entityManager->flush();
     }
 
     public function setBackgroundColorForCurrentMode(string $string): void
     {
         $configuration = $this->getConfiguration();
-        $backgroundColor = $configuration->getBackgroundColors();
-        $backgroundColor[$configuration->getMode()->value] = $string;
-        $configuration->setBackgroundColors($backgroundColor);
-        $this->repository->save($configuration, true);
+
+        $backgroundConfig = $this->backgroundConfigurationRepository->findOneBy(['mode' => $configuration->getMode()]);
+        $backgroundConfig->setColor($string);
+        $backgroundConfig->setStyle(BackgroundStyle::COLOR);
+        $this->entityManager->persist($backgroundConfig);
+        $this->entityManager->flush();
+    }
+
+
+    public function toggleImageStyleForCurrentMode(): void
+    {
+        $configuration = $this->getConfiguration();
+
+        $backgroundConfig = $this->backgroundConfigurationRepository->findOneBy(['mode' => $configuration->getMode()]);
+        $currentImageStyle = $backgroundConfig->getImageStyle();
+        if ($currentImageStyle === ImageStyle::ORIGINAL) {
+            $backgroundConfig->setImageStyle(ImageStyle::SCREEN_WIDTH);
+        }else{
+            $backgroundConfig->setImageStyle(ImageStyle::ORIGINAL);
+        }
+
+        $this->entityManager->persist($backgroundConfig);
+        $this->entityManager->flush();
     }
 
     /**
@@ -311,14 +380,28 @@ readonly class FrameConfigurationService
 
         $collection = new ButtonStateCollection();
 
+        $backgroundConfig = $this->getBackgroundConfigurationForCurrentMode();
         $blur = $disabledClass;
+        $clear = $disabledClass;
         $changeColor = $enabledClass;
-        if ($configuration->getBackgroundColors()[$currentMode->value] === self::COLOR_BLUR) {
+        if ($backgroundConfig->getStyle() === BackgroundStyle::BLUR) {
             $blur = $enabledClass;
+            $changeColor = $disabledClass;
+        }
+        if ($backgroundConfig->getStyle() === BackgroundStyle::CLEAR) {
+            $clear = $enabledClass;
             $changeColor = $disabledClass;
         }
         $collection->addButton('blur', new ButtonState($blur));
         $collection->addButton('changeColor', new ButtonState($changeColor));
+        $collection->addButton('clear', new ButtonState($clear));
+
+        $maximized = $disabledClass;
+        if ($backgroundConfig->getImageStyle() === ImageStyle::SCREEN_WIDTH){
+            $maximized = $enabledClass;
+        }
+        $collection->addButton('maximize', new ButtonState($maximized));
+
 
         $collection->addButton(
             'spotifyInterruption',

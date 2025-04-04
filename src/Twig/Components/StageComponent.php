@@ -3,9 +3,12 @@
 namespace App\Twig\Components;
 
 use App\Controller\SpotifyController;
+use App\Entity\BackgroundConfiguration;
 use App\Service\Artsy\ArtsyService;
+use App\Service\FrameConfiguration\BackgroundStyle;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\FrameConfiguration\ImageStyle;
 use App\Service\Nasa\NasaService;
 use App\Service\Spotify\SpotifyService;
 use App\Service\Unsplash\UnsplashImageService;
@@ -21,6 +24,9 @@ final class StageComponent
 
     #[LiveProp(writable: true)]
     public ?string $imageUrl = null;
+
+    #[LiveProp(writable: true)]
+    public ?string $nasaText = null;
 
     #[LiveProp(writable: true)]
     public DisplayMode $currentMode = DisplayMode::UNSPLASH;
@@ -80,12 +86,44 @@ final class StageComponent
 
     public function getBackgroundStyle(): string
     {   //style="background-image: url('{{ this.imageUrl }}');"
-        $color = $this->configurationService->getBackgroundColorForCurrentMode();
-        if ($color !== FrameConfigurationService::COLOR_BLUR) {
-            return sprintf('style="background-color: %s"', $color);
+        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        return match ($backgroundConfig->getStyle()) {
+            BackgroundStyle::COLOR => sprintf('style="background-color: %s"', $backgroundConfig->getColor()),
+            default => sprintf('style="background-image: url(\'%s\')"', $this->getImageUrl()),
+        };
+    }
+
+    public function getClearModeClass(): string
+    {
+        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+
+        return match ($backgroundConfig->getStyle()) {
+            BackgroundStyle::CLEAR => 'clear-mode',
+            default => '',
+        };
+    }
+
+    public function getImageStyleClass(): string
+    {
+        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+
+        return match ($backgroundConfig->getImageStyle()) {
+            ImageStyle::SCREEN_WIDTH => 'maximized',
+            default => '',
+        };
+    }
+
+    public function getNasaText(): ?string
+    {
+        if ($this->currentMode === DisplayMode::NASA && $this->nasaText === null) {
+            $this->nasaText = $this->nasaService->getImageOfTheDay()->getExplanation();
         }
 
-        return sprintf('style="background-image: url(\'%s\')"', $this->getImageUrl());
+        if ($this->currentMode !== DisplayMode::NASA) {
+            $this->nasaText = null;
+        }
+
+        return $this->nasaText;
     }
 
     private function nextUnsplashImage(): void

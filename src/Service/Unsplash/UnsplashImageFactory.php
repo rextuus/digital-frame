@@ -12,7 +12,7 @@ class UnsplashImageFactory
         $image->setName($data->getName());
         $image->setUrl($data->getUrl());
         $image->setColor($data->getColor());
-        $image->setTag($data->getTag());
+        $image->setTerm($data->getTag());
         $image->setViewed(null);
 
         return $image;

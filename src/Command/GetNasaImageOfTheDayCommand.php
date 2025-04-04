@@ -7,6 +7,7 @@ use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Nasa\NasaService;
 use App\Service\Spotify\SpotifyService;
+use App\Service\Unsplash\UnsplashApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -25,6 +26,7 @@ class GetNasaImageOfTheDayCommand extends Command
     public function __construct(
         private readonly NasaService $nasaService,
         private readonly EntityManagerInterface $entityManager,
+        private readonly UnsplashApiService $unsplashApiService,
     ) {
         parent::__construct();
     }
@@ -35,6 +37,9 @@ class GetNasaImageOfTheDayCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->unsplashApiService->getImageLinksByTag('bengalo');
+        dd();
+
         $io = new SymfonyStyle($input, $output);
 
         $imageOfTheDay = $this->nasaService->getImageOfTheDay();

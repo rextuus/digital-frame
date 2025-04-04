@@ -1,13 +1,14 @@
 Thing http:url:raspi_api "Raspberry Pi Display API" [
    baseURL="http://192.168.178.121:8000/api",
-   timeout=5000,
+   timeout=10000,
    commandMethod="POST",
    contentType="application/json",
-   refresh=60
+   refresh=10
 ] {
    Channels:
        Type switch : displaySwitch "Display Switch" [
            commandExtension="/switch",
+           stateExtension="/status",
            onValue="{\"state\":\"on\"}",
            offValue="{\"state\":\"off\"}"
        ]

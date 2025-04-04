@@ -20,7 +20,7 @@ class UnsplashImage implements FavoriteConvertable
     private ?string $url = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $tag = null;
+    private ?string $term = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -30,6 +30,10 @@ class UnsplashImage implements FavoriteConvertable
 
     #[ORM\Column(length: 255)]
     private ?string $color = null;
+
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UnsplashTag $unsplashTag = null;
 
     public function getId(): ?int
     {
@@ -48,14 +52,14 @@ class UnsplashImage implements FavoriteConvertable
         return $this;
     }
 
-    public function getTag(): ?string
+    public function getTerm(): ?string
     {
-        return $this->tag;
+        return $this->term;
     }
 
-    public function setTag(string $tag): self
+    public function setTerm(string $term): self
     {
-        $this->tag = $tag;
+        $this->term = $term;
 
         return $this;
     }
@@ -92,6 +96,18 @@ class UnsplashImage implements FavoriteConvertable
     public function setColor(string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getUnsplashTag(): ?UnsplashTag
+    {
+        return $this->unsplashTag;
+    }
+
+    public function setUnsplashTag(?UnsplashTag $unsplashTag): static
+    {
+        $this->unsplashTag = $unsplashTag;
 
         return $this;
     }

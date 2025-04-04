@@ -1,6 +1,12 @@
-<div{{ attributes }} class="bg-container" data-poll="refresh">
+<div{{ attributes }} class="bg-container {{ this.clearModeClass }}" data-poll="refresh">
     <!-- Blurred background -->
-    <div class="bg-blur" {{this.getBackgroundStyle|raw}}></div>
+    <div class="bg-blur {{ this.clearModeClass }}" {{this.getBackgroundStyle|raw}}></div>
     <!-- Main image -->
-    <img id="main-image" class="image" src="{{ this.imageUrl }}" alt="Digital-Frame">
+    <div class="image-container">
+        <img id="main-image" class="image {{ this.imageStyleClass }}" src="{{ this.imageUrl }}" alt="Digital-Frame">
+        {% set nasaText = this.nasaText %}
+        {% if nasaText is not null %}
+            <div class="p-4 mt-3 nasa-container"><p class="nasa-text">{{ nasaText }}</p></div>
+        {% endif %}
+    </div>
 </div>

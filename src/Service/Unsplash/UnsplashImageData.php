@@ -67,7 +67,7 @@ class UnsplashImageData
     {
         $this->setName($image->getName());
         $this->setColor($image->getColor());
-        $this->setTag($image->getTag());
+        $this->setTag($image->getTerm());
         $this->setUrl($image->getUrl());
         $this->setViewed($image->getViewed());
 

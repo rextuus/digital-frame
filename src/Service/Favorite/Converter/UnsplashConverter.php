@@ -45,7 +45,7 @@ class UnsplashConverter implements ModeToFavoriteConverterInterface
 
         $dto->setFound(true);
         $dto->setUrl($lastArtwork->getUrl());
-        $dto->setArtist($lastArtwork->getTag());
+        $dto->setArtist($lastArtwork->getTerm());
         $dto->setTitle($lastArtwork->getName());
 
         return $dto;
@@ -68,7 +68,7 @@ class UnsplashConverter implements ModeToFavoriteConverterInterface
         $favorite->setDisplayMode($this->mode);
         $favorite->setEntityId($favoriteConvertable->getId());
         $favorite->setTitle($favoriteConvertable->getName());
-        $favorite->setArtist($favoriteConvertable->getTag());
+        $favorite->setArtist($favoriteConvertable->getTerm());
         $favorite->setDisplayUrl($favoriteConvertable->getUrl());
 
         return $favorite;

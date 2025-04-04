@@ -44,45 +44,65 @@
 
                             {# Tag and next row #}
                             <div class="row mb-5 border-bottom border-primary rounded align-items-center p-3">
-                                <div class="col-12 col-md-4 text-end">
+                                <div class="col-6 text-center">
                                     {{ form_row(form.next, { 'attr': {'class': 'btn btn-secondary'} }) }}
                                 </div>
-                                <div class="col-12 col-md-4">
-                                    {{ form_row(form.tag, { 'attr': {'class': 'form-select'} }) }}
+                                <div class="row col-6 text-center border-start border-primary ps-5">
+                                    <div class="col-4 ">
+                                        {{ form_row(form.tag, { 'attr': {'class': 'form-select'} }) }}
+                                    </div>
+                                    <div class="col-4 ">
+                                        {{ form_row(form.newTag, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Enter new tag'}
+                                        }) }}
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-4">
-                                    {{ form_row(form.newTag, {
-                                        'attr': {'class': 'form-control', 'placeholder': 'Enter new tag'}
-                                    }) }}
-                                </div>
+
 
                             </div>
 
                             {# Settings row #}
                             <div class="row mb-5 border-bottom border-primary rounded justify-content-center p-3">
-                                <div class="col-3">
-                                    {{ form_row(form.spotifyInterruption, { 'attr': {'class': buttonMap.buttonClasses('spotifyInterruption') } }) }}
-                                </div>
-                                <div class="col-3">
-                                    {{ form_row(form.greetingInterruption, { 'attr': {'class': buttonMap.buttonClasses('greetingInterruption') } }) }}
-                                </div>
-                                <div class="col-3 border-start border-primary">
-                                    <div class="mb-2">
-                                        {{ form_row(form.color, { 'attr': {'class': buttonMap.buttonClasses('changeColor')}}) }}
+                                <div class="row col-4">
+                                    <div class="col-6">
+                                        {{ form_row(form.spotifyInterruption, { 'attr': {'class': buttonMap.buttonClasses('spotifyInterruption') } }) }}
                                     </div>
-                                    <div>
-                                        {{ form_row(form.changeColor, { 'attr': {'class': buttonMap.buttonClasses('changeColor')} }) }}
+                                    <div class="col-6">
+                                        {{ form_row(form.greetingInterruption, { 'attr': {'class': buttonMap.buttonClasses('greetingInterruption') } }) }}
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    {{ form_row(form.blur, { 'attr': {'class': buttonMap.buttonClasses('blur')} }) }}
+                                <div class="row col-8 border-start border-primary ps-5">
+                                    <div class="col-3">
+                                        <div class="mb-2">
+                                            {{ form_row(form.color, { 'attr': {'class': buttonMap.buttonClasses('changeColor')}}) }}
+                                        </div>
+                                        <div>
+                                            {{ form_row(form.changeColor, { 'attr': {'class': buttonMap.buttonClasses('changeColor')} }) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-3 ">
+                                        {{ form_row(form.blur, { 'attr': {'class': buttonMap.buttonClasses('blur')} }) }}
+                                    </div>
+                                    <div class="col-3">
+                                        {{ form_row(form.clear, { 'attr': {'class': buttonMap.buttonClasses('clear')} }) }}
+                                    </div>
+                                    <div class="col-3  border-start border-primary ps-5">
+                                        {{ form_row(form.maximize, { 'attr': {'class': buttonMap.buttonClasses('maximize')} }) }}
+                                    </div>
                                 </div>
+
+
                             </div>
 
                             {# Favorite row #}
                             <div class="row text-center">
-                                <div class="col-4">
+                                <div class="col-1">
                                     {{ form_row(form.store, { 'attr': {'class': 'btn btn-danger'} }) }}
+                                </div>
+                                <div class="col-11">
+                                    <a href="{{ path('artsy_gallery') }}" target="_blank" class="btn btn-secondary">
+                                        <i class="fa-solid fa-layer-group fa-2x"></i><br><span>Artsy Gallery</span>
+                                    </a>
                                 </div>
                             </div>
                             {{ form_end(form) }}

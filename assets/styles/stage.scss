@@ -19,6 +19,23 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .image-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    &.clear-mode {
+        .image {
+            display: none; /* Hide the main image */
+        }
+        .nasa-container {
+            display: none;
+        }
+    }
 }
 
 .bg-blur {
@@ -32,6 +49,13 @@ body {
     filter: blur(20px); /* Adjust the blur intensity */
     transform: scale(1.1); /* Slightly scale to hide edges */
     z-index: 1; /* Keep it behind the image */
+
+    &.clear-mode {
+        filter: none;
+        transform: none;
+        background-size: auto 100%;
+        background-position: center;
+    }
 }
 
 .image {
@@ -42,4 +66,20 @@ body {
     max-height: 100%;
     display: block;
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.7); /* Optional: Add subtle shadow to lift the image */
+
+    &.maximized{
+        min-width: 1040px;
+    }
+}
+
+.nasa-container{
+    z-index: 2;
+    .nasa-text{
+        background-color: rgba(0, 0, 0, 0.33);
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 10px;
+    }
 }

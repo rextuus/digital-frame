@@ -146,18 +146,22 @@ class SpotifyService
 
     public function getImageUrlOfCurrentlyPlayingSong(): array
     {
-        $api = new SpotifyWebAPI();
-        $api->setAccessToken($this->getValidAccessToken()->getAccessToken());
-        $currentTrack = json_decode(json_encode($api->getMyCurrentTrack()), true);
-        if ($currentTrack === null || !array_key_exists('item', $currentTrack)) {
-            return [];
+        try {
+            $api = new SpotifyWebAPI();
+            $api->setAccessToken($this->getValidAccessToken()->getAccessToken());
+            $currentTrack = json_decode(json_encode($api->getMyCurrentTrack()), true);
+            if ($currentTrack === null || !array_key_exists('item', $currentTrack)) {
+                return [];
+            }
+            return [
+                'url' => $currentTrack['item']['album']['images'][0]['url'],
+                'name' => $currentTrack['item']['name'],
+                'album' => $currentTrack['item']['album']['name'],
+                'artist' => $currentTrack['item']['artists'][0]['name'],
+            ];
+        } catch (Exception $e) {
+            return ['url' => 'spotify_error'];
         }
-        return [
-            'url' => $currentTrack['item']['album']['images'][0]['url'],
-            'name' => $currentTrack['item']['name'],
-            'album' => $currentTrack['item']['album']['name'],
-            'artist' => $currentTrack['item']['artists'][0]['name'],
-        ];
     }
 
     public function getLoginInformation(): string
