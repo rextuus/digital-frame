@@ -1,0 +1,19 @@
+<div {{ attributes }} class="card h-100">
+    <!-- Image -->
+    <img src="{{ image.url }}" alt="{{ image.name }}" class="card-img-top border border-4 border-black" style="max-height: 500px;">
+
+    <!-- Card Body -->
+    <div class="card-body d-flex flex-column text-center">
+        <h5 class="card-title mb-2 text-truncate">{{ image.name }}</h5>
+        <p class="card-text text-muted mb-3">Artist: {{ image.name }}</p>
+        <p class="card-text text-muted mb-3">{{ image.unsplashTag.term }}</p>
+        <button
+                data-action="live#action"
+                data-live-action-param="display"
+                data-live-id-param="{{ image.id }}"
+                class="{{ this.buttonCss }}"
+                {{ this.disabled }}>
+            Display
+        </button>
+    </div>
+</div>

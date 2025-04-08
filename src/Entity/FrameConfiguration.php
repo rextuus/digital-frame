@@ -82,7 +82,7 @@ class FrameConfiguration
     private Collection $backgroundConfigurations;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?UnsplashTag $currentTag = null;
+    private ?SearchTag $currentTag = null;
 
     public function __construct()
     {
@@ -278,12 +278,12 @@ class FrameConfiguration
         return $this;
     }
 
-    public function getCurrentTag(): ?UnsplashTag
+    public function getCurrentTag(): ?SearchTag
     {
         return $this->currentTag;
     }
 
-    public function setCurrentTag(?UnsplashTag $currentTag): static
+    public function setCurrentTag(?SearchTag $currentTag): static
     {
         $this->currentTag = $currentTag;
 

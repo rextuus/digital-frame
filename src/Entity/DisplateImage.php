@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\UnsplashImageRepository;
-use App\Service\Favorite\FavoriteConvertable;
-use DateTime;
+use App\Repository\DisplateImageRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: UnsplashImageRepository::class)]
-class UnsplashImage implements FavoriteConvertable
+#[ORM\Entity(repositoryClass: DisplateImageRepository::class)]
+class DisplateImage
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,19 +19,12 @@ class UnsplashImage implements FavoriteConvertable
     private ?string $url = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $term = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTime $viewed = null;
+    private ?DateTimeInterface $viewed = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $color = null;
-
-    #[ORM\ManyToOne(inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'displateImages')]
     private ?SearchTag $searchTag = null;
 
     public function getId(): ?int
@@ -45,21 +37,9 @@ class UnsplashImage implements FavoriteConvertable
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(string $url): static
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function getTerm(): ?string
-    {
-        return $this->term;
-    }
-
-    public function setTerm(string $term): self
-    {
-        $this->term = $term;
 
         return $this;
     }
@@ -69,33 +49,21 @@ class UnsplashImage implements FavoriteConvertable
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getViewed(): ?DateTime
+    public function getViewed(): ?DateTimeInterface
     {
         return $this->viewed;
     }
 
-    public function setViewed(?DateTime $viewed): self
+    public function setViewed(?DateTimeInterface $viewed): static
     {
         $this->viewed = $viewed;
-
-        return $this;
-    }
-
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
 
         return $this;
     }

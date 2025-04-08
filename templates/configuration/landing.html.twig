@@ -8,128 +8,127 @@
     {{ encore_entry_link_tags('config') }}
 {% endblock %}
 {% block body %}
-        <div class="container body-container my-5">
-            <!-- Header Section -->
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h2 class="text-white">Digital Frame Configuration</h2>
-                </div>
-            </div>
-            <!-- Form Section -->
-            <div class="row justify-content-center" data-controller="form-loading">
-                <div class="col-12">
-                    <div class="card bg-dark text-white">
-                        <div class="card-body" >
-                            {{ form_start(form, { 'attr': { 'data-action': 'submit->form-loading#startLoading' } }) }}
-                            {{ form_errors(form) }}
+    <div class="container body-container my-5">
+    <!-- Header Section -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="text-white">Digital Frame Configuration</h2>
+        </div>
+    </div>
+    <!-- Form Section -->
+    <div class="row justify-content-center" data-controller="form-loading">
+        <div class="col-12">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    {{ form_start(form, { 'attr': { 'data-action': 'submit->form-loading#startLoading' } }) }}
+                    {{ form_errors(form) }}
 
-                            {# Mode row #}
-                            <div class="row mb-5 text-center">
-                                <div class="col-4 col-md-2">
-                                    {{ form_row(form.spotify, { 'attr': {'class': buttonMap.buttonClasses('spotify') } }) }}
-                                </div>
-                                <div class="col-4 col-md-2">
-                                    {{ form_row(form.image, { 'attr': {'class': buttonMap.buttonClasses('unsplash') } }) }}
-                                </div>
-                                <div class="col-4 col-md-2">
-                                    {{ form_row(form.artsy, { 'attr': {'class': buttonMap.buttonClasses('artsy') } }) }}
-                                </div>
-                                <div class="col-4 col-md-2">
-                                    {{ form_row(form.greeting, { 'attr': {'class': buttonMap.buttonClasses('greeting') } }) }}
-                                </div>
-                                <div class="col-4 col-md-2">
-                                    {{ form_row(form.nasa, { 'attr': {'class': buttonMap.buttonClasses('nasa') } }) }}
-                                </div>
-                            </div>
-
-                            {# Tag and next row #}
-                            <div class="row mb-5 border-bottom border-primary rounded align-items-center p-3">
-                                <div class="col-6 text-center">
-                                    {{ form_row(form.next, { 'attr': {'class': 'btn btn-secondary'} }) }}
-                                </div>
-                                <div class="row col-6 text-center border-start border-primary ps-5">
-                                    <div class="col-4 ">
-                                        {{ form_row(form.tag, { 'attr': {'class': 'form-select'} }) }}
-                                    </div>
-                                    <div class="col-4 ">
-                                        {{ form_row(form.newTag, {
-                                            'attr': {'class': 'form-control', 'placeholder': 'Enter new tag'}
-                                        }) }}
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            {# Settings row #}
-                            <div class="row mb-5 border-bottom border-primary rounded justify-content-center p-3">
-                                <div class="row col-4">
-                                    <div class="col-6">
-                                        {{ form_row(form.spotifyInterruption, { 'attr': {'class': buttonMap.buttonClasses('spotifyInterruption') } }) }}
-                                    </div>
-                                    <div class="col-6">
-                                        {{ form_row(form.greetingInterruption, { 'attr': {'class': buttonMap.buttonClasses('greetingInterruption') } }) }}
-                                    </div>
-                                </div>
-                                <div class="row col-8 border-start border-primary ps-5">
-                                    <div class="col-3">
-                                        <div class="mb-2">
-                                            {{ form_row(form.color, { 'attr': {'class': buttonMap.buttonClasses('changeColor')}}) }}
-                                        </div>
-                                        <div>
-                                            {{ form_row(form.changeColor, { 'attr': {'class': buttonMap.buttonClasses('changeColor')} }) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-3 ">
-                                        {{ form_row(form.blur, { 'attr': {'class': buttonMap.buttonClasses('blur')} }) }}
-                                    </div>
-                                    <div class="col-3">
-                                        {{ form_row(form.clear, { 'attr': {'class': buttonMap.buttonClasses('clear')} }) }}
-                                    </div>
-                                    <div class="col-3  border-start border-primary ps-5">
-                                        {{ form_row(form.maximize, { 'attr': {'class': buttonMap.buttonClasses('maximize')} }) }}
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            {# Favorite row #}
-                            <div class="row text-center">
-                                <div class="col-1">
-                                    {{ form_row(form.store, { 'attr': {'class': 'btn btn-danger'} }) }}
-                                </div>
-                                <div class="col-11">
-                                    <a href="{{ path('artsy_gallery') }}" target="_blank" class="btn btn-secondary">
-                                        <i class="fa-solid fa-layer-group fa-2x"></i><br><span>Artsy Gallery</span>
-                                    </a>
-                                </div>
-                            </div>
-                            {{ form_end(form) }}
+                    <!-- Mode row -->
+                    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-2 mb-4 text-center">
+                        <div class="col">
+                            {{ form_row(form.spotify, { 'attr': {'class': buttonMap.buttonClasses('spotify') } }) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(form.image, { 'attr': {'class': buttonMap.buttonClasses('unsplash') } }) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(form.artsy, { 'attr': {'class': buttonMap.buttonClasses('artsy') } }) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(form.greeting, { 'attr': {'class': buttonMap.buttonClasses('greeting') } }) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(form.nasa, { 'attr': {'class': buttonMap.buttonClasses('nasa') } }) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(form.displate, { 'attr': {'class': buttonMap.buttonClasses('displate') } }) }}
                         </div>
                     </div>
-                </div>
 
-                <div id="loading-overlay" data-form-loading-target="overlay" class="d-flex" style="display: none">
-                    <div class="text-center">
-                        <div class="spinner-border text-light"></div>
-                        <p>Please wait, switching mode...</p>
+                    <!-- Tag and next row -->
+                    <div class="row mb-4 border-bottom border-primary rounded align-items-center p-3">
+                        <div class="col-12 col-md-6 text-center mb-3 mb-md-0">
+                            {{ form_row(form.next, { 'attr': {'class': 'btn btn-secondary w-100'} }) }}
+                        </div>
+                        <div class="col-12 col-md-6 border-start border-primary">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-6">
+                                    {{ form_row(form.tag, { 'attr': {'class': 'form-select'} }) }}
+                                </div>
+                                <div class="col-6">
+                                    {{ form_row(form.newTag, { 'attr': {'class': 'form-control', 'placeholder': 'Enter new tag'} }) }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Artwork Section -->
-            <div class="row artwork-section mt-5">
-                <div class="col-12 text-center">
-                    {% if lastImageDto is not null and lastImageDto.found %}
-                        <p class="text-white">Current Artwork: <strong>{{ lastImageDto.title }}</strong> by <em>{{ lastImageDto.artist }}</em></p>
-                        <img src="{{ lastImageDto.url }}" alt="{{ lastImageDto.title }}"
-                             class="img-fluid mx-auto d-block border border-primary rounded"
-                             style="max-width: 300px; max-height: 500px;">
-                    {% else %}
-                        <h2 class="text-white">No artwork is displayed currently</h2>
-                    {% endif %}
+                    <!-- Settings row -->
+                    <div class="row mb-4 border-bottom border-primary rounded p-3">
+                        <div class="row g-3 col-12 col-md-4 justify-content-center mb-3 mb-md-0">
+                            <div class="col-6">
+                                {{ form_row(form.spotifyInterruption, { 'attr': {'class': buttonMap.buttonClasses('spotifyInterruption') } }) }}
+                            </div>
+                            <div class="col-6">
+                                {{ form_row(form.greetingInterruption, { 'attr': {'class': buttonMap.buttonClasses('greetingInterruption') } }) }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8 border-start border-primary">
+                            <div class="row g-3">
+                                <div class="col-6 col-lg-3">
+                                    {{ form_row(form.color, { 'attr': {'class': buttonMap.buttonClasses('changeColor')} }) }}
+                                    {{ form_row(form.changeColor, { 'attr': {'class': buttonMap.buttonClasses('changeColor')} }) }}
+                                </div>
+                                <div class="col-6 col-lg-3">
+                                    {{ form_row(form.blur, { 'attr': {'class': buttonMap.buttonClasses('blur')} }) }}
+                                </div>
+                                <div class="col-6 col-lg-3">
+                                    {{ form_row(form.clear, { 'attr': {'class': buttonMap.buttonClasses('clear')} }) }}
+                                </div>
+                                <div class="col-6 col-lg-3 border-start border-primary">
+                                    {{ form_row(form.maximize, { 'attr': {'class': buttonMap.buttonClasses('maximize')} }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Favorite row -->
+                    <div class="row g-3 text-center justify-content-center">
+                        <div class="col-2">
+                            {{ form_row(form.store, { 'attr': {'class': 'btn btn-danger w-100 px-3 py-2 text-truncate'} }) }}
+                        </div>
+                        <div class="col-6 col-md-8">
+                            <a href="{{ path('artsy_gallery') }}" target="_blank" class="btn btn-secondary w-100">
+                                <i class="fa-solid fa-layer-group"></i><br>
+                                <span>Artsy Gallery</span>
+                            </a>
+                        </div>
+                        <div class="col-4 col-md-2">
+                            <a href="{{ path('displate_add') }}" target="_blank" class="btn btn-secondary w-100">
+                                <i class="fa-solid fa-d"></i> <i class="fa-solid fa-magnifying-glass text-dark"></i><br>
+                                <span>Displate-Search</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
+
+        <!-- Artwork Section -->
+        <div class="row artwork-section mt-5 text-center">
+            <div class="col-12">
+                {% if lastImageDto is not null and lastImageDto.found %}
+                    <p class="text-white">Current Artwork:
+                        <strong>{{ lastImageDto.title }}</strong> by <em>{{ lastImageDto.artist }}</em>
+                    </p>
+                    <img src="{{ lastImageDto.url }}" alt="{{ lastImageDto.title }}"
+                         class="img-fluid mx-auto d-block border border-primary rounded"
+                         style="max-width: 100%; max-height: 500px;">
+                {% else %}
+                    <h2 class="text-white">No artwork is displayed currently</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

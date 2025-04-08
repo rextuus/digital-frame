@@ -4,7 +4,7 @@ namespace App\Service\FrameConfiguration;
 
 use App\Entity\BackgroundConfiguration;
 use App\Entity\FrameConfiguration;
-use App\Entity\UnsplashTag;
+use App\Entity\SearchTag;
 use App\Repository\BackgroundConfigurationRepository;
 use App\Repository\FrameConfigurationRepository;
 use App\Service\FrameConfiguration\Form\ConfigurationUpdateData;
@@ -95,7 +95,7 @@ readonly class FrameConfigurationService
         return $configuration->isNext();
     }
 
-    public function setCurrentTag(UnsplashTag $tag): void
+    public function setCurrentTag(SearchTag $tag): void
     {
         $configuration = $this->getConfiguration();
 
@@ -103,7 +103,7 @@ readonly class FrameConfigurationService
         $this->repository->save($configuration, true);
     }
 
-    public function getCurrentTag(): UnsplashTag
+    public function getCurrentTag(): SearchTag
     {
         $configuration = $this->getConfiguration();
 
@@ -430,6 +430,10 @@ readonly class FrameConfigurationService
         $collection->addButton(
             'nasa',
             new ButtonState($currentMode === DisplayMode::NASA ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'displate',
+            new ButtonState($currentMode === DisplayMode::DISPLATE ? $enabledClass : $disabledClass)
         );
 
         return $collection;

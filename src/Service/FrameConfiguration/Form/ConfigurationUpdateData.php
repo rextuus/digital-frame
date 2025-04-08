@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Service\FrameConfiguration\Form;
 
 use App\Entity\FrameConfiguration;
-use App\Entity\UnsplashTag;
+use App\Entity\SearchTag;
 use App\Service\FrameConfiguration\DisplayMode;
 
 class ConfigurationUpdateData
 {
     private DisplayMode $mode;
     private bool $next;
-    private UnsplashTag $currentTag;
+    private SearchTag $currentTag;
     private int $greetingDisplayTime;
     private int $shutDownTime;
 
@@ -38,12 +38,12 @@ class ConfigurationUpdateData
         return $this;
     }
 
-    public function getCurrentTag(): UnsplashTag
+    public function getCurrentTag(): SearchTag
     {
         return $this->currentTag;
     }
 
-    public function setCurrentTag(UnsplashTag $currentTag): ConfigurationUpdateData
+    public function setCurrentTag(SearchTag $currentTag): ConfigurationUpdateData
     {
         $this->currentTag = $currentTag;
 

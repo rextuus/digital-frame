@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Displate Item - {{ name is not empty ? name : 'Unknown' }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center">Displate Image Picker</h1>
+
+        <!-- Back to Search Button -->
+        <div class="mb-3">
+            <a href="{{ path('displate_search') }}" class="btn btn-secondary">Back to Search</a>
+        </div>
+
+        <!-- Form to input Displate URL -->
+        <form method="post" action="{{ path('displate_add') }}">
+            <div class="mb-3">
+                <label for="displate_url" class="form-label">Displate URL</label>
+                <input type="url" id="displate_url" name="displate_url" class="form-control" required placeholder="https://displate.com/displate/XXXXXX">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Check Variants</button>
+            </div>
+        </form>
+
+        {% if images is not empty %}
+            <h2 class="text-center mt-5">Found Variants</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                {% for image in images %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="col">
+                                {{ component('DisplateVariantPick', {
+                                    image: image,
+                                    searchTerm: searchTerm
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-danger mt-5">No images were found matching the specified pattern.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\UnsplashImage;
-use App\Entity\UnsplashTag;
+use App\Entity\SearchTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,13 +39,13 @@ class UnsplashImageRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findNotShownImageByTag(UnsplashTag $tag): ?UnsplashImage
+    public function findNotShownImageByTag(SearchTag $tag): ?UnsplashImage
     {
         $qb = $this->createQueryBuilder('i');
         $qb->select('i');
-        $qb->join('i.unsplashTag', 't');
+        $qb->join('i.searchTag', 't');
         $qb->where('i.viewed IS NULL')
-            ->andWhere($qb->expr()->eq('i.unsplashTag', ':tag'))
+            ->andWhere($qb->expr()->eq('i.searchTag', ':tag'))
             ->setParameter('tag', $tag)
             ->setMaxResults(1);
 
@@ -55,5 +55,22 @@ class UnsplashImageRepository extends ServiceEntityRepository
         }
 
         return $result[0];
+    }
+
+    /**
+     * @return array<UnsplashImage>
+     */
+    public function findByNextUnseenByTag(SearchTag $currentTag, int $imagedPerPage = 10): array
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i');
+        $qb->join('i.searchTag', 't');
+        $qb->where('i.viewed IS NULL')
+            ->andWhere($qb->expr()->eq('i.searchTag', ':tag'))
+            ->setParameter('tag', $currentTag)
+            ->orderBy('i.id', 'ASC')
+            ->setMaxResults($imagedPerPage);
+
+        return $qb->getQuery()->getResult();
     }
 }

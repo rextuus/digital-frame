@@ -2,7 +2,7 @@
 
 namespace App\Service\Unsplash;
 
-use App\Entity\UnsplashTag;
+use App\Entity\SearchTag;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Unsplash\HttpClient;
 use Unsplash\Photo;
@@ -48,7 +48,7 @@ class UnsplashApiService
     /**
      * @return array<Photo>
      */
-    public function getImageLinksByTag(UnsplashTag $tag): array
+    public function getImageLinksByTag(SearchTag $tag): array
     {
         $this->getClient();
 
@@ -69,7 +69,7 @@ class UnsplashApiService
         return $result->getArrayObject()->toArray();
     }
 
-    public function getTotalPagesForTag(UnsplashTag $tag): int
+    public function getTotalPagesForTag(SearchTag $tag): int
     {
         $this->getClient();
 

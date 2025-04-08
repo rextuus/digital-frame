@@ -13,3 +13,6 @@ sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
    sudo setfacl -m u:www-data:rwx /run/user/1000
    sudo setfacl -m u:www-data:rw /run/user/1000/wayland-0
 
+   sudo visudo
+   www-data ALL=(ALL) NOPASSWD: /usr/bin/setfacl, /usr/bin/wlr-randr
+

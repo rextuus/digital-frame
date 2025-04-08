@@ -1,0 +1,58 @@
+<div{{ attributes }} class="card h-100 shadow">
+    <img src="{{ image.url }}" class="card-img-top" alt="Crawled Image">
+    <div class="card-body">
+        <h5 class="card-title text-center">{{ image.name }}</h5>
+        <p class="card-text text-muted text-center">Dimensions: {{ image.width }}x{{ image.height }}</p>
+        <div class="text-center mb-3">
+            <a href="{{ image.url }}" target="_blank" class="btn btn-secondary">
+                <i class="fa-solid fa-eye"></i> View on Displate
+            </a>
+        </div>
+
+        <!-- Form Start -->
+        {{ form_start(form, {
+            attr: {
+                'data-action': 'live#action:prevent',
+                'data-live-action-param': 'submit',
+                'class': 'row gy-3'
+            }
+        }) }}
+
+        <!-- Token Input (Hidden) -->
+        {{ form_row(form._token) }}
+
+        <!-- Existing Tag (Dropdown) -->
+        <div class="col-12">
+            <label for="existing-tag" class="form-label">Existing Tag</label>
+            {{ form_widget(form.existingTag, {
+                'attr': {
+                    'class': 'form-select',
+                    'id': 'existing-tag'
+                }
+            }) }}
+        </div>
+
+        <!-- New Tag (Text Input) -->
+        <div class="col-12">
+            <label for="new-tag" class="form-label">New Tag</label>
+            {{ form_widget(form.newTag, {
+                'attr': {
+                    'class': 'form-control',
+                    'id': 'new-tag',
+                    'placeholder': 'Enter a new tag name'
+                }
+            }) }}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 text-end mt-3">
+            <button type="submit" class="btn btn-outline-success d-flex align-items-center justify-content-center gap-2">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Display on frame</span>
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+        <!-- Form End -->
+    </div>
+</div>

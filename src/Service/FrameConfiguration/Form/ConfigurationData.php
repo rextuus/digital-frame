@@ -2,13 +2,13 @@
 
 namespace App\Service\FrameConfiguration\Form;
 
-use App\Entity\UnsplashTag;
+use App\Entity\SearchTag;
 
 class ConfigurationData
 {
     private int $mode;
 
-    private ?UnsplashTag $tag = null;
+    private ?SearchTag $tag = null;
 
     private ?string $newTag;
 
@@ -32,12 +32,12 @@ class ConfigurationData
         $this->mode = $mode;
     }
 
-    public function getTag(): ?UnsplashTag
+    public function getTag(): ?SearchTag
     {
         return $this->tag;
     }
 
-    public function setTag(?UnsplashTag $tag): void
+    public function setTag(?SearchTag $tag): void
     {
         $this->tag = $tag;
     }

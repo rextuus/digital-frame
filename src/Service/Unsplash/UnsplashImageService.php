@@ -3,9 +3,9 @@
 namespace App\Service\Unsplash;
 
 use App\Entity\UnsplashImage;
-use App\Entity\UnsplashTag;
+use App\Entity\SearchTag;
 use App\Repository\UnsplashImageRepository;
-use App\Repository\UnsplashTagRepository;
+use App\Repository\SearchTagRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Exception;
@@ -20,7 +20,7 @@ class UnsplashImageService
     (
         private readonly UnsplashImageFactory $imageFactory,
         private readonly UnsplashImageRepository $imageRepository,
-        private readonly UnsplashTagRepository $tagRepository,
+        private readonly SearchTagRepository $tagRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly UnsplashApiService $api
     ) {
@@ -46,7 +46,7 @@ class UnsplashImageService
         return $image;
     }
 
-    public function storeNewImageByTag(UnsplashTag $tag): void
+    public function storeNewImageByTag(SearchTag $tag): void
     {
         // new tags need to checked for pages
         if ($tag->getTotalPages() === 0 && !$tag->isFullyLStored()) {
@@ -65,7 +65,7 @@ class UnsplashImageService
         $this->storeImagesFromApiResponse($newImages, $tag);
     }
 
-    private function storeTotalPagesForTag(UnsplashTag $tag): void
+    private function storeTotalPagesForTag(SearchTag $tag): void
     {
         $totalPages = $this->api->getTotalPagesForTag($tag);
         if ($totalPages === 0) {
@@ -78,7 +78,7 @@ class UnsplashImageService
         $this->entityManager->flush();
     }
 
-    public function getNextRandomImage(UnsplashTag $tag): UnsplashImage
+    public function getNextRandomImage(SearchTag $tag): UnsplashImage
     {
         $this->tryCounter = $this->tryCounter + 1;
         $image = $this->imageRepository->findNotShownImageByTag($tag);
@@ -92,7 +92,7 @@ class UnsplashImageService
             // if we cant find a new one my there are non anymore
             if ($image === null && $tag->isFullyLStored()) {
                 // reset all images of tag => there are no more to fetch
-                foreach ($tag->getImages() as $image) {
+                foreach ($tag->getUnsplashImages() as $image) {
                     $image->setViewed(null);
                     $this->entityManager->persist($image);
                 }
@@ -119,14 +119,14 @@ class UnsplashImageService
     /**
      * @param array<Photo> $newImages
      */
-    protected function storeImagesFromApiResponse(array $newImages, UnsplashTag $tag): void
+    protected function storeImagesFromApiResponse(array $newImages, SearchTag $tag): void
     {
         $this->entityManager->persist($tag);
         foreach ($newImages as $image) {
             $unsplashImage = new UnsplashImage;
             $unsplashImage->setUrl($image['urls']['regular']);
             $unsplashImage->setTerm($tag->getTerm());
-            $unsplashImage->setUnsplashTag($tag);
+            $unsplashImage->setSearchTag($tag);
             $unsplashImage->setViewed(null);
             $unsplashImage->setColor($image['color']);
             $unsplashImage->setName(str_replace(' ', '_', $image['description']));
@@ -139,14 +139,14 @@ class UnsplashImageService
         $this->entityManager->flush();
     }
 
-    public function createNewTag(string $term): UnsplashTag
+    public function createNewTag(string $term): SearchTag
     {
         $tag = $this->tagRepository->findOneBy(['term' => $term]);
         if ($tag !== null) {
             return $tag;
         }
 
-        $tag = new UnsplashTag();
+        $tag = new SearchTag();
         $tag->setTerm($term);
         $tag->setCurrentPage(1);
         $tag->setTotalPages(0);
@@ -158,7 +158,7 @@ class UnsplashImageService
     }
 
     /**
-     * @return array<UnsplashTag>
+     * @return array<SearchTag>
      */
     public function getStoredTags(): array
     {

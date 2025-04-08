@@ -2,18 +2,19 @@
 
 namespace App\Repository;
 
-use App\Entity\UnsplashTag;
+use App\Entity\DisplateImage;
+use App\Entity\SearchTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<UnsplashTag>
+ * @extends ServiceEntityRepository<SearchTag>
  */
-class UnsplashTagRepository extends ServiceEntityRepository
+class SearchTagRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UnsplashTag::class);
+        parent::__construct($registry, SearchTag::class);
     }
 
     //    /**
@@ -40,4 +41,15 @@ class UnsplashTagRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * @return array<SearchTag>
+     */
+    public function getExistingDisplateTags(): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('t');
+        $qb->innerJoin(DisplateImage::class, 'd');
+        return $qb->getQuery()->getResult();
+    }
 }

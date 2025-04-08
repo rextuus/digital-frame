@@ -1,0 +1,8 @@
+<div{{ attributes }} class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <div class="text-white"># {{ this.desireCount }}</div>
+    {% for image in this.nextImages %}
+        <div class="col">
+            {{ component('UnsplashCard', {dataModel: 'desireCount:useless', image: image, id: image.id}) }}
+        </div>
+    {% endfor %}
+</div>

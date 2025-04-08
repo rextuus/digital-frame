@@ -55,6 +55,7 @@ class ConfigurationController extends AbstractController
             $isArtsy = $form->get('artsy')->isClicked();
             $isGreeting = $form->get('greeting')->isClicked();
             $isNasa = $form->get('nasa')->isClicked();
+            $isDisplate = $form->get('displate')->isClicked();
             $isGreetingInterruption = $form->get('greetingInterruption')->isClicked();
             $isSpotifyInterruption = $form->get('spotifyInterruption')->isClicked();
             $changeColor = $form->get('changeColor')->isClicked();
@@ -81,6 +82,9 @@ class ConfigurationController extends AbstractController
                 }
                 elseif ($isNasa) {
                     $newMode = DisplayMode::NASA;
+                }
+                elseif ($isDisplate) {
+                    $newMode = DisplayMode::DISPLATE;
                 }
             }
 

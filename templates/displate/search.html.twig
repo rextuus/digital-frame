@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center">Search Displates</h1>
+
+        <!-- Search Form -->
+        <form method="get" action="{{ path('displate_search') }}" class="mb-4">
+            <div class="input-group">
+                <input
+                        type="text"
+                        name="q"
+                        id="searchTerm"
+                        value="{{ searchTerm }}"
+                        placeholder="Enter your search term"
+                        class="form-control"
+                        required
+                >
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
+
+        {% if images is not empty %}
+            <h2 class="text-center mt-5">Results for "{{ searchTerm }}"</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                {% for image in images %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <!-- Display the image -->
+                            <img src="{{ image.getUrl() }}" class="card-img-top" alt="{{ image.getName() }}">
+
+                            <!-- Display Title and Link -->
+                            <div class="card-body">
+                                <h5 class="card-title">{{ image.getName() }}</h5>
+
+                                <!-- Optional Width and Height -->
+                                {% if image.getWidth() and image.getHeight() %}
+                                    <p class="text-muted">
+                                        Dimensions: {{ image.getWidth() }} × {{ image.getHeight() }}
+                                    </p>
+                                {% endif %}
+
+                                <!-- Links Section -->
+                                <div class="d-flex justify-content-between">
+                                    <!-- Existing link to Displate search preview -->
+                                    {% if image.getLink() %}
+                                        <a href="{{ image.getLink() }}" target="_blank" class="btn btn-primary">View on Displate</a>
+                                    {% endif %}
+
+                                    <!-- New link to Displate detail route -->
+                                    {% if image.displateId() %}
+                                        <a href="{{ path('displate_add', { displate_id: image.displateId, search_term: searchTerm }) }}" class="btn btn-secondary">
+                                            Add to Collection
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-danger mt-5">No results found for "{{ searchTerm }}".</p>
+        {% endif %}
+    </div>
+{% endblock %}

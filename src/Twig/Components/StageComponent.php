@@ -2,9 +2,8 @@
 
 namespace App\Twig\Components;
 
-use App\Controller\SpotifyController;
-use App\Entity\BackgroundConfiguration;
 use App\Service\Artsy\ArtsyService;
+use App\Service\Displate\DisplateImageService;
 use App\Service\FrameConfiguration\BackgroundStyle;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
@@ -37,6 +36,7 @@ final class StageComponent
         private readonly ArtsyService $artsyService,
         private readonly SpotifyService $spotifyService,
         private readonly NasaService $nasaService,
+        private readonly DisplateImageService $displateImageService,
     ) {
     }
 
@@ -53,6 +53,7 @@ final class StageComponent
                 DisplayMode::ARTSY => $this->artsyService->getCurrentArtwork()->getBestResolutionUrl(),
                 DisplayMode::SPOTIFY => $this->spotifyService->getImageUrlOfCurrentlyPlayingSong()['url'] ?? 'test',
                 DisplayMode::NASA => $this->nasaService->getImageOfTheDay()->getUrl(),
+                DisplayMode::DISPLATE => $this->switchToDisplate(),
                 default => null,
             };
         }
@@ -74,6 +75,7 @@ final class StageComponent
                 DisplayMode::ARTSY => $this->nextArtsyImage(),
                 DisplayMode::SPOTIFY => $this->switchToSpotify(),
                 DisplayMode::NASA => $this->switchToNasa(),
+                DisplayMode::DISPLATE => $this->switchToDisplate(),
                 default => null,
             };
         }
@@ -128,8 +130,20 @@ final class StageComponent
 
     private function nextUnsplashImage(): void
     {
-        $currentTag = $this->configurationService->getCurrentTag();
-        $unsplashImage = $this->unsplashImageService->getNextRandomImage($currentTag);
+        $unsplashImage = null;
+
+        // check if it's a forced display call from gallery
+        $imageId = $this->configurationService->getNextImageId();
+        if ($imageId !== null) {
+            $unsplashImage = $this->unsplashImageService->getImageById($imageId);
+            $this->configurationService->setNextImageId(null);
+        }
+
+        if ($unsplashImage === null) {
+            $currentTag = $this->configurationService->getCurrentTag();
+            $unsplashImage = $this->unsplashImageService->getNextRandomImage($currentTag);
+        }
+
         $this->imageUrl = $unsplashImage->getUrl();
 
         $this->configurationService->setNext(false);
@@ -173,5 +187,29 @@ final class StageComponent
 
         $imageOfTheDay = $this->nasaService->getImageOfTheDay();
         $this->imageUrl = $imageOfTheDay->getUrl();
+    }
+
+    private function switchToDisplate(): string
+    {
+        $displateImage = null;
+
+        // check if it's a forced display call from gallery
+        $imageId = $this->configurationService->getNextImageId();
+        if ($imageId !== null) {
+            $displateImage = $this->displateImageService->getArtworkById($imageId);
+            $this->configurationService->setNextImageId(null);
+        }
+
+        if ($displateImage === null) {
+            $displateImage = $this->displateImageService->getRandomImage();
+        }
+
+        $this->configurationService->setCurrentDisplayedImage($displateImage->getId(), DisplayMode::DISPLATE);
+        $this->configurationService->setWaitForModeSwitch(false);
+        $this->configurationService->setNext(false);
+
+        $this->imageUrl = $displateImage->getUrl();
+
+        return $this->imageUrl;
     }
 }
