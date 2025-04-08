@@ -82,7 +82,7 @@ final class DisplateVariantPick extends AbstractController
             $newSearchTag->setTerm($tag);
             $newSearchTag->setCurrentPage(0);
             $newSearchTag->setFullyLStored(false);
-            $newSearchTag->setTotalPages($this->image->getTotalPagesForSearchTag());
+            $newSearchTag->setTotalPages($this->image->getTotalPagesForSearchTag() ?? 0);
             $newSearchTag->setVariant(TagVariant::DISPLATE);
 
             $tag = $newSearchTag;
