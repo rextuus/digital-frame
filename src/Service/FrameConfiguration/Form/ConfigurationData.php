@@ -16,6 +16,8 @@ class ConfigurationData
 
     private bool $blur = false;
 
+    private ?int $height = null;
+
     /**
      * @return int
      */
@@ -77,6 +79,17 @@ class ConfigurationData
     public function setBlur(bool $blur): ConfigurationData
     {
         $this->blur = $blur;
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function setHeight(?int $height): ConfigurationData
+    {
+        $this->height = $height;
         return $this;
     }
 }

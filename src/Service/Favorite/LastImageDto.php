@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service\Favorite;
 
-use App\Service\FrameConfiguration\DisplayMode;
-
 class LastImageDto
 {
     private string $url;
@@ -55,5 +53,16 @@ class LastImageDto
     {
         $this->found = $found;
         return $this;
+    }
+
+    public static function fromFavoriteConvertable(FavoriteConvertable $convertable): self
+    {
+        $dto = new self();
+
+        $dto->setUrl($convertable->getUrl());
+        $dto->setTitle($convertable->getTitle());
+        $dto->setArtist($convertable->getArtist());
+
+        return $dto;
     }
 }

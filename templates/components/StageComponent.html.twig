@@ -3,7 +3,7 @@
     <div class="bg-blur {{ this.clearModeClass }}" {{this.getBackgroundStyle|raw}}></div>
     <!-- Main image -->
     <div class="image-container">
-        <img id="main-image" class="image {{ this.imageStyleClass }}" src="{{ this.imageUrl }}" alt="Digital-Frame">
+        <img id="main-image" class="image {{ this.imageStyleClass }}" src="{{ this.imageUrl }}" alt="Digital-Frame" {{ this.minHeight|raw }}>
         {% set nasaText = this.nasaText %}
         {% if nasaText is not null %}
             <div class="p-4 mt-3 nasa-container"><p class="nasa-text">{{ nasaText }}</p></div>

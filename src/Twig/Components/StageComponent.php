@@ -2,15 +2,13 @@
 
 namespace App\Twig\Components;
 
-use App\Service\Artsy\ArtsyService;
-use App\Service\Displate\DisplateImageService;
 use App\Service\FrameConfiguration\BackgroundStyle;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\FrameConfiguration\ImageStyle;
 use App\Service\Nasa\NasaService;
 use App\Service\Spotify\SpotifyService;
-use App\Service\Unsplash\UnsplashImageService;
+use App\Service\Stage\ImageDisplayHandlerProvider;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -32,11 +30,9 @@ final class StageComponent
 
     public function __construct(
         private readonly FrameConfigurationService $configurationService,
-        private readonly UnsplashImageService $unsplashImageService,
-        private readonly ArtsyService $artsyService,
         private readonly SpotifyService $spotifyService,
         private readonly NasaService $nasaService,
-        private readonly DisplateImageService $displateImageService,
+        private readonly ImageDisplayHandlerProvider $displayHandlerProvider,
     ) {
     }
 
@@ -46,16 +42,8 @@ final class StageComponent
 
         // init imageUrl first time page is loaded
         if ($this->imageUrl === null) {
-            $this->imageUrl = match ($this->currentMode) {
-                DisplayMode::UNSPLASH => $this->unsplashImageService
-                    ->getNextRandomImage($this->configurationService->getCurrentTag())
-                    ->getUrl(),
-                DisplayMode::ARTSY => $this->artsyService->getCurrentArtwork()->getBestResolutionUrl(),
-                DisplayMode::SPOTIFY => $this->spotifyService->getImageUrlOfCurrentlyPlayingSong()['url'] ?? 'test',
-                DisplayMode::NASA => $this->nasaService->getImageOfTheDay()->getUrl(),
-                DisplayMode::DISPLATE => $this->switchToDisplate(),
-                default => null,
-            };
+            $handler = $this->displayHandlerProvider->getHandlerForMode($this->currentMode);
+            $this->imageUrl = $handler->initialize();
         }
 
         return $this->imageUrl;
@@ -70,14 +58,8 @@ final class StageComponent
                 $this->currentMode = $this->configurationService->getMode();
             }
 
-            match ($this->currentMode) {
-                DisplayMode::UNSPLASH => $this->nextUnsplashImage(),
-                DisplayMode::ARTSY => $this->nextArtsyImage(),
-                DisplayMode::SPOTIFY => $this->switchToSpotify(),
-                DisplayMode::NASA => $this->switchToNasa(),
-                DisplayMode::DISPLATE => $this->switchToDisplate(),
-                default => null,
-            };
+            $handler = $this->displayHandlerProvider->getHandlerForMode($this->currentMode);
+            $this->imageUrl = $handler->refresh();
         }
 
         // set current spotifyUrl
@@ -111,6 +93,21 @@ final class StageComponent
 
         return match ($backgroundConfig->getImageStyle()) {
             ImageStyle::SCREEN_WIDTH => 'maximized',
+            ImageStyle::CUSTOM_HEIGHT => 'no-limits',
+            default => '',
+        };
+    }
+
+    public function getMinHeight(): string
+    {
+        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        $customHeight = $backgroundConfig->getCustomHeight();
+        if ($customHeight === null) {
+            $customHeight = 1900;
+        }
+
+        return match ($backgroundConfig->getImageStyle()) {
+            ImageStyle::CUSTOM_HEIGHT => 'style="min-height: '.$customHeight.'px;"',
             default => '',
         };
     }
@@ -126,90 +123,5 @@ final class StageComponent
         }
 
         return $this->nasaText;
-    }
-
-    private function nextUnsplashImage(): void
-    {
-        $unsplashImage = null;
-
-        // check if it's a forced display call from gallery
-        $imageId = $this->configurationService->getNextImageId();
-        if ($imageId !== null) {
-            $unsplashImage = $this->unsplashImageService->getImageById($imageId);
-            $this->configurationService->setNextImageId(null);
-        }
-
-        if ($unsplashImage === null) {
-            $currentTag = $this->configurationService->getCurrentTag();
-            $unsplashImage = $this->unsplashImageService->getNextRandomImage($currentTag);
-        }
-
-        $this->imageUrl = $unsplashImage->getUrl();
-
-        $this->configurationService->setNext(false);
-        $this->configurationService->setWaitForModeSwitch(false);
-
-        $this->configurationService->setCurrentDisplayedImage($unsplashImage->getId(), DisplayMode::UNSPLASH);
-    }
-
-    private function nextArtsyImage(): void
-    {
-        $artsyImage = null;
-
-        // check if it's a forced display call from gallery
-        $imageId = $this->configurationService->getNextImageId();
-        if ($imageId !== null) {
-            $artsyImage = $this->artsyService->getArtworkById($imageId);
-            $this->configurationService->setNextImageId(null);
-        }
-
-        if ($artsyImage === null) {
-            $artsyImage = $this->artsyService->getCurrentArtWork();
-        }
-
-        $this->imageUrl = $artsyImage->getBestResolutionUrl();
-        $this->configurationService->setCurrentDisplayedImage($artsyImage->getId(), DisplayMode::ARTSY);
-        $this->configurationService->setNext(false);
-        $this->configurationService->setWaitForModeSwitch(false);
-    }
-
-    private function switchToSpotify(): void
-    {
-        $this->configurationService->setCurrentDisplayedImage(null, DisplayMode::SPOTIFY);
-        $this->configurationService->setWaitForModeSwitch(false);
-        $this->imageUrl = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong()['url'] ?? 'test';
-    }
-
-    private function switchToNasa(): void
-    {
-        $this->configurationService->setCurrentDisplayedImage(null, DisplayMode::NASA);
-        $this->configurationService->setWaitForModeSwitch(false);
-
-        $imageOfTheDay = $this->nasaService->getImageOfTheDay();
-        $this->imageUrl = $imageOfTheDay->getUrl();
-    }
-
-    private function switchToDisplate(): string
-    {
-        $displateImage = null;
-
-        // check if it's a forced display call from gallery
-        $imageId = $this->configurationService->getNextImageId();
-        if ($imageId !== null) {
-            $displateImage = $this->displateImageService->getArtworkById($imageId);
-            $this->configurationService->setNextImageId(null);
-        }
-
-        if ($displateImage === null) {
-            $displateImage = $this->displateImageService->getRandomImage();
-        }
-
-        $this->configurationService->setCurrentDisplayedImage($displateImage->getId(), DisplayMode::DISPLATE);
-        $this->configurationService->setWaitForModeSwitch(false);
-        $this->configurationService->setNext(false);
-
-        $this->imageUrl = $displateImage->getUrl();
-
-        return $this->imageUrl;
     }
 }

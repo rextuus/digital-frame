@@ -40,7 +40,7 @@ class UnsplashImage implements FavoriteConvertable
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }

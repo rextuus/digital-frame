@@ -32,6 +32,9 @@ class BackgroundConfiguration
     #[ORM\Column(nullable: false, enumType: ImageStyle::class, options: ['default' => ImageStyle::ORIGINAL])]
     private ImageStyle $imageStyle;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $customHeight = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +96,18 @@ class BackgroundConfiguration
     public function setImageStyle(ImageStyle $imageStyle): static
     {
         $this->imageStyle = $imageStyle;
+
+        return $this;
+    }
+
+    public function getCustomHeight(): ?int
+    {
+        return $this->customHeight;
+    }
+
+    public function setCustomHeight(?int $customHeight): static
+    {
+        $this->customHeight = $customHeight;
 
         return $this;
     }

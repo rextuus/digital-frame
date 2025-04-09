@@ -70,6 +70,11 @@ body {
     &.maximized{
         min-width: 1040px;
     }
+
+    &.no-limits{
+        max-width: 200%;
+        max-height: 200%;
+    }
 }
 
 .nasa-container{

@@ -107,7 +107,7 @@ class ArtsyImage implements FavoriteConvertable
         return $this;
     }
 
-    public function getArtist(): ?string
+    public function getArtist(): string
     {
         return $this->artist;
     }

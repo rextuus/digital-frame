@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,6 +58,15 @@ class ConfigurationType extends AbstractType
         $builder->add('maximize', SubmitType::class, [
             'label' => '<i class="fa-solid fa-maximize fa-2x"></i><br><span>Maximize</span>',
             'label_html' => true,
+        ]);
+        $builder->add('customHeight', SubmitType::class, [
+            'label' => '<i class="fa-solid fa-sort-numeric-up fa-2x"></i><br><span>CustomHeight</span>',
+            'label_html' => true,
+        ]);
+        $builder->add('height', NumberType::class, [
+            'label' => false,
+            'label_html' => true,
+            'required' => false,
         ]);
 
         $builder

@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Service\Favorite\Converter;
 
 use App\Entity\Favorite;
-use App\Service\Favorite\Exception\ConverterNotSupportsException;
 use App\Service\Favorite\FavoriteConvertable;
 use App\Service\Favorite\LastImageDto;
 use App\Service\Favorite\ModeToFavoriteConverterInterface;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\Nasa\NasaService;
-use App\Service\Spotify\SpotifyService;
-use App\Service\Spotify\SpotifyToFavoriteDto;
 
 class NasaConverter implements ModeToFavoriteConverterInterface
 {

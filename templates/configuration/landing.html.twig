@@ -87,6 +87,10 @@
                                 <div class="col-6 col-lg-3 border-start border-primary">
                                     {{ form_row(form.maximize, { 'attr': {'class': buttonMap.buttonClasses('maximize')} }) }}
                                 </div>
+                                <div class="col-6 col-lg-3">
+                                    {{ form_row(form.height, { 'attr': {'class': 'form-control', 'placeholder': 'Enter height', 'type': 'number'} }) }}
+                                    {{ form_row(form.customHeight, { 'attr': {'class': buttonMap.buttonClasses('customHeight')} }) }}
+                                </div>
                             </div>
                         </div>
                     </div>

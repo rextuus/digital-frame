@@ -367,6 +367,20 @@ readonly class FrameConfigurationService
         $this->entityManager->flush();
     }
 
+    public function setImageStyleForCurrentMode(ImageStyle $style, ?int $height): void
+    {
+        $configuration = $this->getConfiguration();
+
+        $backgroundConfig = $this->backgroundConfigurationRepository->findOneBy(['mode' => $configuration->getMode()]);
+        $backgroundConfig->setImageStyle($style);
+        if ($height !== null) {
+            $backgroundConfig->setCustomHeight($height);
+        }
+
+        $this->entityManager->persist($backgroundConfig);
+        $this->entityManager->flush();
+    }
+
     /**
      * @return ButtonStateCollection
      */
@@ -402,6 +416,11 @@ readonly class FrameConfigurationService
         }
         $collection->addButton('maximize', new ButtonState($maximized));
 
+        $customHeight = $disabledClass;
+        if ($backgroundConfig->getImageStyle() === ImageStyle::CUSTOM_HEIGHT){
+            $customHeight = $enabledClass;
+        }
+        $collection->addButton('customHeight', new ButtonState($customHeight));
 
         $collection->addButton(
             'spotifyInterruption',

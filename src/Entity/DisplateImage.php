@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\DisplateImageRepository;
+use App\Service\Favorite\FavoriteConvertable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DisplateImageRepository::class)]
-class DisplateImage
+class DisplateImage implements FavoriteConvertable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,7 +33,7 @@ class DisplateImage
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }

@@ -11,7 +11,6 @@ use App\Service\Favorite\LastImageDto;
 use App\Service\Favorite\ModeToFavoriteConverterInterface;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\Spotify\SpotifyService;
-use App\Service\Spotify\SpotifyToFavoriteDto;
 
 class SpotifyConverter implements ModeToFavoriteConverterInterface
 {
