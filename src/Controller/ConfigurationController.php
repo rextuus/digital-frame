@@ -50,6 +50,9 @@ class ConfigurationController extends AbstractController
         if ($backgroundStyle->getCustomHeight() !== null) {
             $configurationData->setHeight($backgroundStyle->getCustomHeight());
         }
+        if ($backgroundStyle->getCustomMargin() !== null) {
+            $configurationData->setMargin($backgroundStyle->getCustomMargin());
+        }
         $form = $this->createForm(ConfigurationType::class, $configurationData);
 
         $form->handleRequest($request);
@@ -206,7 +209,11 @@ class ConfigurationController extends AbstractController
             if ($customHeight === null) {
                 $customHeight = 1900;
             }
-            $this->configurationService->setImageStyleForCurrentMode(ImageStyle::CUSTOM_HEIGHT, $customHeight);
+            $customMargin = $data->getMargin();
+            if ($customMargin=== null) {
+                $customMargin = 0;
+            }
+            $this->configurationService->setImageStyleForCurrentMode(ImageStyle::CUSTOM_HEIGHT, $customHeight, $customMargin);
         }
     }
 

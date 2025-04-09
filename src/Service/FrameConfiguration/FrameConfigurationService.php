@@ -367,7 +367,7 @@ readonly class FrameConfigurationService
         $this->entityManager->flush();
     }
 
-    public function setImageStyleForCurrentMode(ImageStyle $style, ?int $height): void
+    public function setImageStyleForCurrentMode(ImageStyle $style, ?int $height, ?int $margin): void
     {
         $configuration = $this->getConfiguration();
 
@@ -375,6 +375,10 @@ readonly class FrameConfigurationService
         $backgroundConfig->setImageStyle($style);
         if ($height !== null) {
             $backgroundConfig->setCustomHeight($height);
+        }
+
+        if ($margin !== null) {
+            $backgroundConfig->setCustomMargin($margin);
         }
 
         $this->entityManager->persist($backgroundConfig);

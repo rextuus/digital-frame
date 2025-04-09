@@ -106,8 +106,17 @@ final class StageComponent
             $customHeight = 1900;
         }
 
+        $customPadding = $backgroundConfig->getCustomMargin();
+        if ($customPadding === null) {
+            $customPadding = 0;
+        }
+
         return match ($backgroundConfig->getImageStyle()) {
-            ImageStyle::CUSTOM_HEIGHT => 'style="min-height: '.$customHeight.'px;"',
+            ImageStyle::CUSTOM_HEIGHT => sprintf(
+                'style="min-height: %dpx; margin-bottom: %dpx;"',
+                $customHeight,
+                $customPadding
+            ),
             default => '',
         };
     }

@@ -35,6 +35,9 @@ class BackgroundConfiguration
     #[ORM\Column(nullable: true)]
     private ?int $customHeight = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $customMargin = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +111,18 @@ class BackgroundConfiguration
     public function setCustomHeight(?int $customHeight): static
     {
         $this->customHeight = $customHeight;
+
+        return $this;
+    }
+
+    public function getCustomMargin(): ?int
+    {
+        return $this->customMargin;
+    }
+
+    public function setCustomMargin(?int $customMargin): static
+    {
+        $this->customMargin = $customMargin;
 
         return $this;
     }

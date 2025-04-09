@@ -68,6 +68,11 @@ class ConfigurationType extends AbstractType
             'label_html' => true,
             'required' => false,
         ]);
+        $builder->add('margin', NumberType::class, [
+            'label' => false,
+            'label_html' => true,
+            'required' => false,
+        ]);
 
         $builder
             ->add('spotify', SubmitType::class, [

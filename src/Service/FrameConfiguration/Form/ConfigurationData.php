@@ -17,6 +17,7 @@ class ConfigurationData
     private bool $blur = false;
 
     private ?int $height = null;
+    private ?int $margin = null;
 
     /**
      * @return int
@@ -90,6 +91,17 @@ class ConfigurationData
     public function setHeight(?int $height): ConfigurationData
     {
         $this->height = $height;
+        return $this;
+    }
+
+    public function getMargin(): ?int
+    {
+        return $this->margin;
+    }
+
+    public function setMargin(?int $margin): ConfigurationData
+    {
+        $this->margin = $margin;
         return $this;
     }
 }
