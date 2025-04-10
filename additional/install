@@ -16,3 +16,7 @@ sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
    sudo visudo
    www-data ALL=(ALL) NOPASSWD: /usr/bin/setfacl, /usr/bin/wlr-randr
 
+# check spotify is running
+chmod +x check_spotify.sh
+crontab -e
+ * * * * * home/master/digital-frame/additional/check_spotify.sh
