@@ -77,7 +77,7 @@ final class DisplateController extends AbstractController
         return $this->render('displate/variant_picker.html.twig', [
             'images' => $images,
             'name' => $name,
-            'searchTerm' => $searchTerm,
+            'searchTerm' => $searchTerm ?:  '',
         ]);
     }
 

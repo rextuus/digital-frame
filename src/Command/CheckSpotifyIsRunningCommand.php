@@ -33,6 +33,11 @@ class CheckSpotifyIsRunningCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        // only check if interruptions are want
+        if (!$this->frameConfigurationService->shouldSpotifyInterrupt()) {
+            return Command::SUCCESS;
+        }
+
         try {
             $currentTrack = $this->spotifyService->getImageUrlOfCurrentlyPlayingSong();
             if ($currentTrack === []) {
