@@ -19,4 +19,4 @@ sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
 # check spotify is running
 chmod +x check_spotify.sh
 crontab -e
- * * * * * home/master/digital-frame/additional/check_spotify.sh
+ * * * * * /home/master/digital-frame/additional/check_spotify.sh
