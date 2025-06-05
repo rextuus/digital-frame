@@ -58,3 +58,42 @@ body {
 }
 
 
+.bg-light-blue {
+    background-color: #add8e6 !important;
+}
+
+.bg-green {
+    background-color: #28a745 !important;
+}
+
+.bg-yellow {
+    background-color: #ffc107 !important;
+}
+
+.bg-primary {
+    background-color: #890000 !important;
+}
+
+.bg-dark-blue {
+    background-color: #3d443d !important;
+}
+
+.bg-orange {
+    background-color: rgb(53, 64, 84) !important;
+}
+
+.bg-default {
+    background-color: #f8f9fa !important;
+}
+
+.timeline-bar {
+    background-color: #e9ecef;
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.timeline-bar > div {
+    border-right: 1px solid #fff;
+    box-sizing: border-box;
+}

@@ -1,0 +1,15 @@
+[Unit]
+Description=Symfony Messenger Worker (Schedule Queue)
+After=network.target
+
+[Service]
+User=your-username
+WorkingDirectory=/path/to/your/project
+ExecStart=/usr/bin/php /home/master/digital-frame/bin/console messenger:consume async_schedule --time-limit=3600 --memory-limit=128M
+Restart=always
+TimeoutSec=30
+Environment=APP_ENV=prod
+Environment=APP_DEBUG=0
+
+[Install]
+WantedBy=multi-user.target

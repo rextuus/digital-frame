@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Tags</h1>
+        <div class="row">
+            {% for tag in tags %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    {{ component('SearchTagComponent', {searchTag: tag}) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

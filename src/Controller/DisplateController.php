@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SearchTagRepository;
 use App\Service\Displate\DisplateImageService;
 use App\Service\Displate\ImageDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,8 +20,7 @@ final class DisplateController extends AbstractController
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly DisplateImageService $displateImageService,
-    )
-    {
+    ) {
     }
 
     #[Route('/', name: 'displate_add', methods: ['GET', 'POST'])]
@@ -38,38 +38,11 @@ final class DisplateController extends AbstractController
                 $url = sprintf('https://displate.com/displate/%s', $displateId);
             }
 
-            // Perform the HTTP GET request
-            $response = $this->client->request('GET', $url);
+            $images = $this->displateImageService->fetchAndFilterImagesFromUrl($url);
 
-            // Get the page content (HTML source)
-            $html = $response->getContent();
-
-
-            preg_match_all('/"name": "(.*)"/', $html, $matches);
-            $names = $matches[1];
-            $name = $names[array_key_last($names)];
-
-            // Match all image URLs with the provided pattern
-            preg_match_all(
-                '/https:\/\/cdn\.displate\.com\/artwork\/(\d+)x(\d+)\/[a-zA-Z0-9\/._-]+\.jpg/',
-                $html,
-                $matches,
-                PREG_SET_ORDER
-            );
-
-            // Filter images based on height and remove duplicates
-            $seenUrls = [];
-            foreach ($matches as $match) {
-                $width = (int) $match[1];  // Extract width from the URL
-                $height = (int) $match[2]; // Extract height from the URL
-                $imageUrl = $match[0];    // Full URL of the image
-
-                // Check height > 1000 and uniqueness
-                if ($height > 1000 && !isset($seenUrls[$imageUrl])) {
-                    $imageDto = new ImageDto($imageUrl, $name, $width, $height);
-                    $images[] = $imageDto;
-                    $seenUrls[$imageUrl] = true; // Mark URL as seen
-                }
+            // Assign the name if at least one image exists
+            if (!empty($images)) {
+                $name = $images[0]->getName();
             }
         }
 
@@ -77,7 +50,7 @@ final class DisplateController extends AbstractController
         return $this->render('displate/variant_picker.html.twig', [
             'images' => $images,
             'name' => $name,
-            'searchTerm' => $searchTerm ?:  '',
+            'searchTerm' => $searchTerm ?: '',
         ]);
     }
 
@@ -97,5 +70,27 @@ final class DisplateController extends AbstractController
         ]);
     }
 
+    #[Route('/tags', name: 'displate_tags', methods: ['GET'])]
+    public function tags(DisplateImageService $displateImageService): Response
+    {
+        $searchTags = $displateImageService->getExistingDisplateTags();
 
+        return $this->render('displate/tags.html.twig', [
+            'tags' => $searchTags,
+        ]);
+    }
+
+    #[Route('/gallery', name: 'displate_gallery', methods: ['GET'])]
+    public function images(Request $request, SearchTagRepository $searchTagRepository): Response
+    {
+        $selectedTag = $request->query->get('tag', null);
+
+        if ($selectedTag !== null) {
+            $selectedTag = $searchTagRepository->findOneBy(['term' => $selectedTag]);
+        }
+
+        return $this->render('displate/gallery.html.twig', [
+            'selectedTag' => $selectedTag,
+        ]);
+    }
 }

@@ -1,0 +1,48 @@
+<div {{ attributes }} class="container my-5">
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h3 class="text-white">Daily Schedule Timeline</h3>
+            <p class="text-muted">Configure and submit your schedule preferences.</p>
+        </div>
+    </div>
+
+    <div class="row align-items-center">
+        <div class="col-12">
+            <div
+                    class="timeline-bar position-relative bg-light border rounded"
+                    style="height: 300px; width: 100%; border: 1px solid #ddd;"
+            >
+                {% for slot in this.slots %}
+                    {% set startPercent = slot.firstSlot.getTimestamp() / 86400 * 100 %}
+                    {% set endPercent = slot.lastSlot.getTimestamp() / 86400 * 100 %}
+                    {% set durationPercent = endPercent - startPercent %}
+
+                    <a
+                            href="{{ path('app_configuration_scheduler_edit', { 'identifier': slot.identifier }) }}"
+                            class="position-absolute d-block text-center text-white text-decoration-none {{ this.getBackgroundColorForIdentifier(slot.identifier) }} border-end border-2 border-dark"
+                            style="left: {{ startPercent }}%; width: {{ durationPercent }}%; height: 100%; font-size: 10px; overflow: hidden;"
+                            title="{{ slot.identifier }}"
+                    >
+                        {% set randomNumber = random(0, 10000) %}
+
+                        {{ component('ScheduleSlot', {
+                            slot: slot,
+                            key: 'key' ~ loop.index ~ randomNumber
+                        }) }}
+
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12 d-flex justify-content-between text-white">
+            <span>00:00</span>
+            <span>06:00</span>
+            <span>12:00</span>
+            <span>18:00</span>
+            <span>23:59</span>
+        </div>
+    </div>
+</div>

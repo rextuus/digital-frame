@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image Gallery{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ component('DisplateGallery', {selectedTag: selectedTag} ) }}
+    </div>
+
+{#    <div class="container">#}
+{#        <h1 class="my-4">Image Gallery</h1>#}
+
+{#        <!-- Filter Section -->#}
+{#        <form method="get" action="{{ path('displate_gallery') }}" class="mb-4">#}
+{#            <select name="tag" class="form-select" onchange="this.form.submit()">#}
+{#                <option value="" {% if selectedTag is null %}selected{% endif %}>All Tags</option>#}
+{#                {% for tag in tags %}#}
+{#                    <option value="{{ tag }}" {% if selectedTag == tag %}selected{% endif %}>#}
+{#                        {{ tag }}#}
+{#                    </option>#}
+{#                {% endfor %}#}
+{#            </select>#}
+{#        </form>#}
+
+{#        <!-- Images Grid -->#}
+{#        <div id="images-grid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">#}
+{#            {% for image in images %}#}
+{#                <div class="col">#}
+{#                    <div class="card h-100">#}
+{#                        <img src="{{ image.url }}" class="card-img-top" alt="{{ image.name }}">#}
+{#                        <div class="card-body">#}
+{#                            <h5 class="card-title">{{ image.name }}</h5>#}
+{#                            <button class="btn btn-primary w-100">Dummy Action</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+{#        <!-- Loading Spinner -->#}
+{#        <div id="loading-spinner" class="text-center my-4" style="display: none;">#}
+{#            <div class="spinner-border" role="status">#}
+{#                <span class="visually-hidden">Loading...</span>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <script>#}
+{#        document.addEventListener('DOMContentLoaded', () => {#}
+{#            const grid = document.getElementById('images-grid');#}
+{#            const spinner = document.getElementById('loading-spinner');#}
+{#            let page = 2; // Start from page 2 because initial images (page 1) are already loaded#}
+{#            const tag = new URLSearchParams(window.location.search).get('tag') || '';#}
+{#            let isLoading = false;#}
+
+{#            const fetchImages = async () => {#}
+{#                if (isLoading) return;#}
+{#                isLoading = true;#}
+{#                spinner.style.display = 'block';#}
+
+{#                try {#}
+{#                    const response = await fetch(`/displate/gallery/load?page=${page}&tag=${tag}`);#}
+{#                    const data = await response.json();#}
+
+{#                    data.images.forEach(image => {#}
+{#                        const col = document.createElement('div');#}
+{#                        col.className = 'col';#}
+{#                        col.innerHTML = `#}
+{#                    <div class="card h-100">#}
+{#                        <img src="${image.url}" class="card-img-top" alt="${image.name}">#}
+{#                        <div class="card-body">#}
+{#                            <h5 class="card-title">${image.name}</h5>#}
+{#                            <button class="btn btn-primary w-100">Dummy Action</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                `;#}
+{#                        grid.appendChild(col);#}
+{#                    });#}
+
+{#                    page++;#}
+{#                    isLoading = false;#}
+{#                    spinner.style.display = 'none';#}
+
+{#                    // Stop fetching if no more images are returned#}
+{#                    if (data.images.length === 0) {#}
+{#                        window.removeEventListener('scroll', onScroll);#}
+{#                    }#}
+{#                } catch (error) {#}
+{#                    console.error('Error loading images:', error);#}
+{#                    spinner.style.display = 'none';#}
+{#                    isLoading = false;#}
+{#                }#}
+{#            };#}
+
+{#            const onScroll = () => {#}
+{#                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {#}
+{#                    fetchImages();#}
+{#                }#}
+{#            };#}
+
+{#            window.addEventListener('scroll', onScroll);#}
+{#        });#}
+{#    </script>#}
+{% endblock %}

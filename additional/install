@@ -20,3 +20,13 @@ sudo mv ~/.symfony*/bin/symfony /usr/local/bin/symfony
 chmod +x check_spotify.sh
 crontab -e
  * * * * * /home/master/digital-frame/additional/check_spotify.sh
+
+ #conusmer
+sudo nano /etc/systemd/system/symfony-messenger-schedule.service
+sudo nano /etc/systemd/system/symfony-messenger-displate.service
+sudo systemctl daemon-reload
+sudo systemctl enable symfony-messenger-schedule.service
+sudo systemctl enable symfony-messenger-displate.service
+
+sudo systemctl start symfony-messenger-schedule.service
+sudo systemctl start symfony-messenger-displate.service

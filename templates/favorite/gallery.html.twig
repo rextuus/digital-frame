@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Favorites{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('config') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('config') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container body-container my-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white">Artsy Images</h2>
+            </div>
+        </div>
+        {{ component('FavoriteGallery') }}
+    </div>
+{% endblock %}

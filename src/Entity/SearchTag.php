@@ -43,6 +43,9 @@ class SearchTag
     #[ORM\Column(nullable: false, enumType: TagVariant::class, options: ['default' => TagVariant::UNSPLASH])]
     private TagVariant $variant = TagVariant::UNSPLASH;
 
+    #[ORM\Column(nullable: false, options: ['default' => false])]
+    private bool $collectingInProgress = false;
+
     public function __construct()
     {
         $this->unsplashImages = new ArrayCollection();
@@ -174,6 +177,18 @@ class SearchTag
     public function setVariant(TagVariant $variant): SearchTag
     {
         $this->variant = $variant;
+        return $this;
+    }
+
+    public function isCollectingInProgress(): ?bool
+    {
+        return $this->collectingInProgress;
+    }
+
+    public function setCollectingInProgress(bool $collectingInProgress): static
+    {
+        $this->collectingInProgress = $collectingInProgress;
+
         return $this;
     }
 }

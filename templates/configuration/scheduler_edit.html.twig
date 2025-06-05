@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Schedule{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col text-center">
+                <h2>Edit Schedule Slot</h2>
+                <p class="text-muted">Modify the schedule slot for identifier <strong>{{ form.identifier.vars.value }}</strong>.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                <div class="mb-3">
+                    {{ form_label(form.identifier, 'Identifier', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.identifier, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.identifier) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">From Time (HH:MM)</label>
+                    <div class="d-flex align-items-center">
+                        {{ form_widget(form.fromHour, {'attr': {'class': 'form-control', 'style': 'max-width: 80px;'}}) }}
+                        <span class="mx-2">:</span>
+                        {{ form_widget(form.fromMinute, {'attr': {'class': 'form-control', 'style': 'max-width: 80px;'}}) }}
+                    </div>
+                    {{ form_errors(form.fromHour) }}
+                    {{ form_errors(form.fromMinute) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">To Time (HH:MM)</label>
+                    <div class="d-flex align-items-center">
+                        {{ form_widget(form.toHour, {'attr': {'class': 'form-control', 'style': 'max-width: 80px;'}}) }}
+                        <span class="mx-2">:</span>
+                        {{ form_widget(form.toMinute, {'attr': {'class': 'form-control', 'style': 'max-width: 80px;'}}) }}
+                    </div>
+                    {{ form_errors(form.toHour) }}
+                    {{ form_errors(form.toMinute) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.action, 'Action', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.action, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.action) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.interval, 'Interval (Minutes)', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.interval, {'attr': {'class': 'form-control', 'placeholder': 'Enter interval in minutes'}}) }}
+                    {{ form_errors(form.interval) }}
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

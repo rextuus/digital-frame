@@ -1,0 +1,27 @@
+<div {{ attributes }}>
+    {% set slotActionDetails = this.getSlotActionDetails() %}
+    <div class="p-3 mb-2 border border-2 rounded {{ slotActionDetails.bgColor }}">
+        {% if slot is not null %}
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Time Range -->
+                <div class="text-dark fw-bold fs-5">
+                    {{ slot.firstSlot|date('H:i') }} - {{ slot.lastSlot|date('H:i') }}
+                </div>
+
+                <!-- Action Icon -->
+                <div class="text-center">
+                    <i class="{{ slotActionDetails.icon }}" style="font-size: 1.5rem;" title="{{ slotActionDetails.action.name }}"></i>
+                </div>
+            </div>
+
+            <!-- Slot Identifier -->
+            <div class="mt-2 text-center">
+                {{ slotActionDetails.identifier }}
+            </div>
+        {% else %}
+            <div class="text-center text-danger fw-bold">
+                No slot data available.
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -29,7 +29,7 @@ readonly class ImageDisplayHandlerProvider
                 return $handler;
             }
         }
-dd($this->handlers);
+
         throw new Exception('No handler found for mode ' . $displayMode->name);
     }
 }

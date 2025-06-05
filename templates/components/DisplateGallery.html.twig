@@ -1,0 +1,50 @@
+<div {{ attributes }} class="container py-4">
+    <!-- Filter Section -->
+    <form method="get" action="{{ path('displate_gallery') }}" class="mb-4">
+        <select name="tag" class="form-select" onchange="this.form.submit()">
+            <option value="" {% if this.selectedTag is null %}selected{% endif %}>All Tags</option>
+            {% for tag in this.tags %}
+                <option value="{{ tag }}" {% if this.selectedTag == tag %}selected{% endif %}>
+                    {{ tag }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if page > 1 %}
+        {# Adding a fake "previous page" div is enough to trick the system #}
+        <div class="d-none" id="page--{{ page - 1 }}" data-live-ignore="true"></div>
+    {% endif %}
+
+    {# Current page #}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="page--{{ page }}"
+         data-live-ignore="true">
+
+        {% for image in this.images %}
+            <div class="col mb-2">
+                {% set randomNumber = random(0, 10000) %}
+
+                {{ component('DisplateCard', {image: image, key: 'key' ~ image.id ~ randomNumber}) }}
+{#                <div class="card h-100">#}
+{#                    {{ image }}#}
+{#                    <img src="{{ image.url }}" class="card-img-top" alt="{{ image.name }}">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">{{ image.name }}</h5>#}
+{#                        <button class="btn btn-primary w-100">Dummy Action</button>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-center py-4">
+        {% if this.hasMore %}
+            <button data-action="mouseover->live#action click->live#action" data-live-action-param="more"
+                    class="btn btn-outline-secondary w-100">
+                Load More
+            </button>
+        {% else %}
+            <span class="text-muted">The End</span>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div{{ attributes }} class="row mt-5">
+    <!-- Top Section: Page Details and Checkbox -->
+    <div class="container">
+        <div class="row mb-5">
+            {% for mode in this.modes %}
+                <div class="col text-center" id="mode-{{ mode }}">
+                    <button
+                            data-action="live#action"
+                            data-live-action-param="toggleMode"
+                            data-live-category-param="{{ mode }}"
+                            class="btn {{ this.buttonCssForMode(mode) }} mr-3">
+                        <i class="{{ this.fontAwesomeClassForMode(mode) }} fa-2x"></i><br><span>{{ mode }}</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row mb-5">
+            <div class="col text-center">
+               <div class="text-white">Total filtered favorites: {{ this.totalCount }}</div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for favorite in this.images %}
+                {% set randomNumber = random(0, 10000) %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    {{ component('FavoriteCard', { dataModel: 'totalCount:useless', favorite: favorite, key: 'key' ~ favorite.id ~ randomNumber, }) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="col text-center text-white">
+                <span>{{ this.page }}</span>/<span>{{ this.totalPages }}</span>
+            </div>
+
+        </div>
+
+        <div class="row mt-5 mb-5 bg-dark">
+            {% if this.page != 1 %}
+                <div class="col text-center">
+                    <button
+                            data-action="live#action"
+                            data-live-action-param="setPage"
+                            data-live-page-param="1"
+                            class="btn btn-secondary"
+                    >
+                        1
+                    </button>
+                </div>
+            {% endif %}
+
+
+            <div class="col text-center">
+                {% if this.hasPreviousPages() %}
+                    <button data-action="live#action" data-live-action-param="loadBefore"
+                            class="btn btn-secondary mr-3">
+                        Previous
+                    </button>
+                {% endif %}
+            </div>
+
+
+            <div class="col text-center">
+                {% if this.hasMorePages() %}
+                    <button data-action="live#action" data-live-action-param="loadMore" class="btn btn-secondary">
+                        Next
+                    </button>
+                {% endif %}
+            </div>
+
+            {% if this.page != this.totalPages %}
+                <div class="col text-center">
+                    <button
+                            data-action="live#action"
+                            data-live-action-param="setPage"
+                            data-live-page-param="{{ this.totalPages }}"
+                            class="btn btn-secondary"
+                    >
+                        {{ this.totalPages }}
+                    </button>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>

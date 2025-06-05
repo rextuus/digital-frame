@@ -13,10 +13,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 #[Route('/favorite')]
 final class FavoriteController extends AbstractController
 {
-    public function __construct(private HttpClientInterface $client)
-    {
-    }
-
     #[Route('/gallery', name: 'favorite_gallery')]
     public function login(): Response
     {

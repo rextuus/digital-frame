@@ -1,17 +1,40 @@
 services:
   app:
-    build: .
-    volumes:
-      - .:/var/www/html
-    working_dir: /var/www/html
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: digital_frame
     ports:
-      - "8000:80"
-#  db:
-#    image: mysql:8.0
-#    environment:
-#      MYSQL_ROOT_PASSWORD: passwort
-#      MYSQL_DATABASE: symfony
-#      MYSQL_USER: symfony
-#      MYSQL_PASSWORD: symfony
-#    ports:
-#      - "3306:3306"
+      - "49500:80"
+    volumes:
+      - ./symfony:/var/www/html:cached # Mounts your Symfony project
+      - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf # Ensures VirtualHost is applied
+    environment:
+      - DATABASE_URL=sqlite:///var/data.db
+      - MESSENGER_TRANSPORT_DSN=redis://redis:6379
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:7-alpine
+    container_name: digital_frame_redis
+    ports:
+      - "49501:6379"
+
+  db:
+    image: mysql:8
+    container_name: digital_frame_db
+    restart: always
+    ports:
+      - "49502:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony_db
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\Displate\DisplateImageService;
+use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\DisplayState;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +13,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 #[Route('/api')]
 class ApiController extends AbstractController
@@ -49,6 +50,11 @@ class ApiController extends AbstractController
         $displayState = DisplayState::tryFrom($data['state']);
         if ($displayState === null) {
             return new JsonResponse(['error' => 'Invalid display state. Allowed values are "on" or "off".'], 400);
+        }
+
+        // if already on we dont need to make it on
+        if ($this->configurationService->getDisplayState() === DisplayState::ON && $displayState === DisplayState::ON) {
+            return new JsonResponse(['state' => $displayState->value, 'output' => ''], 200);
         }
 
         return $this->executeCommand($displayState);
@@ -107,5 +113,32 @@ class ApiController extends AbstractController
         $displayState = $this->configurationService->getDisplayState();
 
         return new JsonResponse(['state' => $displayState->value], 200);
+    }
+
+    #[Route('/next', name: 'api_display_next', methods: ['GET'])]
+    public function next(): JsonResponse
+    {
+        $this->skipImage();
+
+        return new JsonResponse(['state' => 'skipped'], 200);
+    }
+
+    #[Route('/block', name: 'api_display_block', methods: ['GET'])]
+    public function bock(DisplateImageService $displateImageService): JsonResponse
+    {
+        $currentMode = $this->configurationService->getMode();
+
+        if ($currentMode === DisplayMode::DISPLATE){
+            $displateImageService->blockCurrentlyDisplayedImage();
+        }
+
+        $this->skipImage();
+
+        return new JsonResponse(['state' => 'skipped'], 200);
+    }
+
+    private function skipImage(): void
+    {
+        $this->configurationService->setNext(true);
     }
 }

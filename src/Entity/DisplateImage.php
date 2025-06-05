@@ -28,6 +28,9 @@ class DisplateImage implements FavoriteConvertable
     #[ORM\ManyToOne(inversedBy: 'displateImages')]
     private ?SearchTag $searchTag = null;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $blocked = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +80,18 @@ class DisplateImage implements FavoriteConvertable
     public function setSearchTag(?SearchTag $searchTag): static
     {
         $this->searchTag = $searchTag;
+
+        return $this;
+    }
+
+    public function isBlocked(): ?bool
+    {
+        return $this->blocked;
+    }
+
+    public function setBlocked(bool $blocked): static
+    {
+        $this->blocked = $blocked;
 
         return $this;
     }

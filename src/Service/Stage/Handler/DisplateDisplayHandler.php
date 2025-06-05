@@ -24,7 +24,7 @@ readonly class DisplateDisplayHandler implements ImageDisplayHandlerInterface
 
     public function initialize(): string
     {
-        return $this->switchToDisplate();
+        return $this->displateImageService->getRandomImage()->getUrl();
     }
 
     public function refresh(): string
@@ -44,10 +44,11 @@ readonly class DisplateDisplayHandler implements ImageDisplayHandlerInterface
         }
 
         if ($displateImage === null) {
-            $displateImage = $this->displateImageService->getRandomImage();
+            $displateImage = $this->displateImageService->getNextImageForCurrentTag();
         }
 
         $this->configurationService->setCurrentDisplayedImage($displateImage->getId(), DisplayMode::DISPLATE);
+        $this->configurationService->setCurrentTag($displateImage->getSearchTag());
         $this->configurationService->setWaitForModeSwitch(false);
         $this->configurationService->setNext(false);
 

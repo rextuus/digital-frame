@@ -49,7 +49,9 @@ class SearchTagRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('t');
         $qb->select('t');
-        $qb->innerJoin(DisplateImage::class, 'd');
+        $qb->where($qb->expr()->eq('t.variant', ':variant'));
+        $qb->setParameter('variant', 'displate');
+
         return $qb->getQuery()->getResult();
     }
 }

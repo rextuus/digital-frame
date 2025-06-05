@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\BackgroundConfiguration;
+use App\Form\ScheduleFrameData;
+use App\Form\ScheduleFrameType;
 use App\Service\Favorite\FavoriteService;
 use App\Service\Favorite\ModeToFavoriteConvertProvider;
 use App\Service\FrameConfiguration\BackgroundStyle;
@@ -11,8 +13,11 @@ use App\Service\FrameConfiguration\Form\ConfigurationData;
 use App\Service\FrameConfiguration\Form\ConfigurationType;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\FrameConfiguration\ImageStyle;
+use App\Service\Scheduling\ScheduleAction;
+use App\Service\Scheduling\ScheduleConfigurationService;
 use App\Service\Unsplash\UnsplashImageService;
 use ColorThief\ColorThief;
+use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -231,5 +236,77 @@ class ConfigurationController extends AbstractController
             }
         }
         return new JsonResponse($backgroundColor);
+    }
+
+    #[Route('/scheduler', name: 'app_configuration_scheduler')]
+    public function scheduler(Request $request, ScheduleConfigurationService $scheduleConfigurationService): Response
+    {
+        $configuration = $scheduleConfigurationService->getConfiguration();
+
+//        $start = new DateTime('00:00:00');
+//        $finish = new DateTime('05:00:00');
+//        $scheduleConfigurationService->addScheduleSlot($start, $finish, ScheduleAction::SHOW_RANDOM_FAVORITE_FROM_LIST, 5);
+//        $scheduleConfigurationService->resetSchedule();
+
+        return $this->render('configuration/scheduler.html.twig', [
+        ]);
+    }
+
+    #[Route('/scheduler/edit/{identifier}', name: 'app_configuration_scheduler_edit')]
+    public function edit(string $identifier, ScheduleConfigurationService $scheduleConfigurationService, Request $request): Response
+    {
+        // Retrieve existing schedule slot using the identifier
+        $timeSlot = $scheduleConfigurationService->findSlotByIdentifier($identifier);
+
+        if (!$timeSlot) {
+            throw $this->createNotFoundException(sprintf('No schedule slot found with identifier "%s".', $identifier));
+        }
+
+        // Create the ScheduleFrameData DTO and populate it with the slot's details
+        $dto = new ScheduleFrameData();
+        $dto->setIdentifier($timeSlot->getIdentifier())
+            ->setFromHour($timeSlot->getFromHour())
+            ->setFromMinute($timeSlot->getFromMinute())
+            ->setToHour($timeSlot->getToHour())
+            ->setInterval($timeSlot->getInterval())
+            ->setToMinute($timeSlot->getToMinute());
+
+        $info = explode('|', $timeSlot->getIdentifier());
+        $action = ScheduleAction::tryFrom($info[0]);
+        if ($action === null) {
+            $action = ScheduleAction::DEFAULT;
+        }
+
+        $dto->setAction($action); // Assuming `getAction` exists
+
+        // Create and handle the form
+        $form = $this->createForm(ScheduleFrameType::class, $dto, [
+            'identifiers' => [$identifier],
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Update the schedule slot using the submitted data
+            /** @var ScheduleFrameData $data */
+            $data = $form->getData();
+
+            // Assuming you have a method to update the slot
+            $start = new DateTime(
+                sprintf('%s:%s:00', $data->getFromHour(), $data->getFromMinute())
+            );
+            $finish = new DateTime(
+                sprintf('%s:%s:00', $data->getToHour(), $data->getToMinute())
+            );
+
+            $scheduleConfigurationService->addScheduleSlot($start, $finish, $data->getAction(), $data->getInterval());
+
+            // Redirect to a success page or another part of the configuration
+            return $this->redirectToRoute('app_configuration_scheduler');
+        }
+
+        return $this->render('configuration/scheduler_edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
