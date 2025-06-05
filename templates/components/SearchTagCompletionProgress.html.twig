@@ -1,0 +1,29 @@
+<div{{ attributes }} data-poll="delay(5000)|refresh">
+    <p>Total Pages: <strong>{{ searchTag.totalPages }}</strong></p>
+    <p>Collected Pages: <strong>{{ this.currentPageCleaned }}</strong></p>
+
+    {# New marking shown when collectingInProgress is true #}
+    {% if searchTag.collectingInProgress %}
+        <div class="alert alert-info" role="alert">
+            Collecting in progress... Please wait.
+        </div>
+    {% endif %}
+
+    <div class="progress mb-3">
+        {% if searchTag.totalPages > 0 %}
+            <div
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: {{ (this.currentPageCleaned / searchTag.totalPages) * 100 }}%;"
+                    aria-valuenow="{{ this.currentPageCleaned }}"
+                    aria-valuemin="0"
+                    aria-valuemax="{{ searchTag.totalPages }}">
+                {{ (this.currentPageCleaned / searchTag.totalPages * 100)|round(2) }}%
+            </div>
+        {% else %}
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 100%;">
+                No pages available
+            </div>
+        {% endif %}
+    </div>
+</div>

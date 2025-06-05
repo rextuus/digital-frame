@@ -1,0 +1,24 @@
+<div{{ attributes }}>
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>Search Tag: {{ searchTag.term }}</strong>
+        </div>
+        <div class="card-body">
+
+            {{ component('SearchTagCompletionProgress', {searchTag: searchTag, searchTagId: searchTag.id}) }}
+
+            <button
+                    data-action="live#action"
+                    data-live-action-param="countPages"
+                    class="btn btn-secondary">
+                Count pages
+            </button>
+            <button
+                    data-action="live#action"
+                    data-live-action-param="collectImages"
+                    class="btn btn-secondary">
+                Collect
+            </button>
+        </div>
+    </div>
+</div>
