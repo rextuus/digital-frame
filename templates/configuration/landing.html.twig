@@ -17,9 +17,18 @@
     </div>
     <!-- Form Section -->
     <div class="row justify-content-center" data-controller="form-loading">
+
         <div class="col-12">
             <div class="card bg-dark text-white">
                 <div class="card-body">
+                    <div id="loading-overlay" data-form-loading-target="overlay" class="d-flex">
+                        <div>
+                            <div class="spinner-border text-light" role="status"></div>
+                            <div class="loading-text">Please wait…</div>
+                        </div>
+                    </div>
+
+
                     {{ form_start(form, { 'attr': { 'data-action': 'submit->form-loading#startLoading' } }) }}
                     {{ form_errors(form) }}
 
