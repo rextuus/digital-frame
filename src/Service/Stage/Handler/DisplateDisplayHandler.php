@@ -7,6 +7,7 @@ namespace App\Service\Stage\Handler;
 use App\Service\Displate\DisplateImageService;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\Stage\Exception\DisplateNoImagesForTagException;
 use App\Service\Stage\ImageDisplayHandlerInterface;
 
 readonly class DisplateDisplayHandler implements ImageDisplayHandlerInterface
@@ -44,7 +45,11 @@ readonly class DisplateDisplayHandler implements ImageDisplayHandlerInterface
         }
 
         if ($displateImage === null) {
-            $displateImage = $this->displateImageService->getNextImageForCurrentTag();
+            try {
+                $displateImage = $this->displateImageService->getNextImageForCurrentTag();
+            } catch (DisplateNoImagesForTagException $e) {
+                $displateImage = $this->displateImageService->getRandomImage();
+            }
         }
 
         $this->configurationService->setCurrentDisplayedImage($displateImage->getId(), DisplayMode::DISPLATE);

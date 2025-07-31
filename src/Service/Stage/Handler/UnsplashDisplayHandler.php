@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Service\Stage\Handler;
 
 use App\Entity\Favorite;
+use App\Repository\SearchTagRepository;
 use App\Service\Favorite\LastImageDto;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\Stage\Exception\UnsplashNoImagesForTagException;
 use App\Service\Stage\ImageDisplayHandlerInterface;
 use App\Service\Unsplash\UnsplashImageService;
 
@@ -28,7 +30,16 @@ readonly class UnsplashDisplayHandler implements ImageDisplayHandlerInterface
     {
         $currentTag = $this->configurationService->getCurrentTag();
 
-        return $this->unsplashImageService->getNextRandomImage($currentTag)->getUrl();
+        try {
+            $unsplashImage = $this->unsplashImageService->getNextRandomImage($currentTag);
+        } catch (UnsplashNoImagesForTagException $e) {
+
+            $defaultTag = $this->unsplashImageService->getDefaultSearchTag();
+            $unsplashImage = $this->unsplashImageService->getNextRandomImage($defaultTag);
+
+            $this->configurationService->setCurrentTag($defaultTag);
+        }
+        return $unsplashImage->getUrl();
     }
 
     public function refresh(): string
@@ -44,7 +55,15 @@ readonly class UnsplashDisplayHandler implements ImageDisplayHandlerInterface
 
         if ($unsplashImage === null) {
             $currentTag = $this->configurationService->getCurrentTag();
-            $unsplashImage = $this->unsplashImageService->getNextRandomImage($currentTag);
+            try {
+                $unsplashImage = $this->unsplashImageService->getNextRandomImage($currentTag);
+            } catch (UnsplashNoImagesForTagException $e) {
+
+                $defaultTag = $this->unsplashImageService->getDefaultSearchTag();
+                $unsplashImage = $this->unsplashImageService->getNextRandomImage($defaultTag);
+
+                $this->configurationService->setCurrentTag($defaultTag);
+            }
         }
 
         $this->configurationService->setNext(false);

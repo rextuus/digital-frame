@@ -82,10 +82,10 @@ class DisplateImageRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('i');
         $qb->join('i.searchTag', 't')
-            ->where('t.term = :tag')
-            ->andWhere($qb->expr()->isNotNull('i.viewed'))
-            ->andWhere($qb->expr()->eq('i.blocked', 'false'))
-            ->setParameter('tag', $tag->getTerm())
+            ->where('t = :tag')
+            ->andWhere($qb->expr()->isNull('i.viewed'))
+            ->andWhere($qb->expr()->eq('i.blocked', 0))
+            ->setParameter('tag', $tag)
             ->setMaxResults(1)
             ->orderBy('i.id', 'ASC')
             ->getQuery()

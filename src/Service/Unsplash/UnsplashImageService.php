@@ -6,6 +6,7 @@ use App\Entity\UnsplashImage;
 use App\Entity\SearchTag;
 use App\Repository\UnsplashImageRepository;
 use App\Repository\SearchTagRepository;
+use App\Service\Stage\Exception\UnsplashNoImagesForTagException;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Exception;
@@ -102,7 +103,7 @@ class UnsplashImageService
 
                 // now we must have one or the tag is not able to have some
                 if ($image === null) {
-                    throw new Exception(
+                    throw new UnsplashNoImagesForTagException(
                         'Cant load new images for tag: ' . $tag->getTerm() . ' pages: ' . $tag->getTotalPages() . ''
                     );
                 }
@@ -168,5 +169,10 @@ class UnsplashImageService
     public function getImageById(int $id): ?UnsplashImage
     {
         return $this->imageRepository->find($id);
+    }
+
+    public function getDefaultSearchTag(): SearchTag
+    {
+        return $this->tagRepository->findOneBy(['term' => self::TAG_RANDOM]);
     }
 }

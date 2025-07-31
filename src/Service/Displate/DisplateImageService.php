@@ -11,6 +11,7 @@ use App\Repository\DisplateImageRepository;
 use App\Repository\SearchTagRepository;
 use App\Service\Displate\Message\CollectDisplateImageMessage;
 use App\Service\FrameConfiguration\FrameConfigurationService;
+use App\Service\Stage\Exception\DisplateNoImagesForTagException;
 use App\Service\Unsplash\TagVariant;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,14 +59,15 @@ class DisplateImageService
         return $this->displateImageRepository->find($randomId);
     }
 
+    /**
+     * @throws DisplateNoImagesForTagException
+     */
     public function getNextImageForCurrentTag(): DisplateImage
     {
         $currentTag = $this->configurationService->getCurrentTag();
         $displateImage = $this->displateImageRepository->getNextNonDisplayedOrBlockedImageForCurrentTag($currentTag);
-
         if ($displateImage === null) {
-
-            throw new \Exception('No image found');
+            throw new DisplateNoImagesForTagException('No image found');
         }
 
         $displateImage->setViewed(new DateTime());

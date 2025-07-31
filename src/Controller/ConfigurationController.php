@@ -98,6 +98,7 @@ class ConfigurationController extends AbstractController
                 $newTag = $this->unsplashImageService->createNewTag($data->getNewTag());
                 $currentTag = $newTag;
             }
+
             $this->configurationService->setCurrentTag($currentTag);
 
             if ($storeFavorite) {
