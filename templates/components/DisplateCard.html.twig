@@ -2,6 +2,14 @@
     <img src="{{ image.url }}" class="card-img-top" alt="{{ image.name }}">
     <div class="card-body">
         <h5 class="card-title">{{ image.name }}</h5>
-        <button class="btn btn-primary w-100">Dummy Action</button>
+        <p class="card-title">Tag: {{ image.searchTag.term }}</p>
+        <button
+                data-action="live#action"
+                data-live-action-param="display"
+                data-live-id-param="{{ image.id }}"
+                class="{{ this.buttonCss }}"
+                {{ this.disabled }}>
+            Display
+        </button>
     </div>
 </div>

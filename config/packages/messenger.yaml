@@ -2,15 +2,7 @@ framework:
     messenger:
         failure_transport: failed
         transports:
-            async_schedule:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    use_notify: true
-                    check_delayed_interval: 60000
-                retry_strategy:
-                    max_retries: 3
-                    multiplier: 2
-            async_displate:
+            async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     use_notify: true
@@ -21,7 +13,7 @@ framework:
             failed: 'doctrine://default?queue_name=failed'
 
         routing:
-            App\Service\Scheduling\Message\RunScheduleMessage: async_schedule
-            App\Service\Displate\Message\DetermineSearchTagTotalCountMessage: async_displate
-            App\Service\Displate\Message\CollectSearchTagPageMessage: async_displate
-            App\Service\Displate\Message\CollectDisplateImageMessage: async_displate
+            App\Service\Scheduling\Message\RunScheduleMessage: async
+            App\Service\Displate\Message\DetermineSearchTagTotalCountMessage: async
+            App\Service\Displate\Message\CollectSearchTagPageMessage: async
+            App\Service\Displate\Message\CollectDisplateImageMessage: async

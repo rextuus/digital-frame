@@ -65,7 +65,7 @@
                                     {{ form_row(form.tag, { 'attr': {'class': 'form-select'} }) }}
                                 </div>
                                 <div class="col-6">
-                                    {{ form_row(form.newTag, { 'attr': {'class': 'form-control', 'placeholder': 'Enter new tag'} }) }}
+                                    {{ form_row(form.newTag, { 'attr': {'class': 'form-control', 'placeholder': 'Enter new tag', 'disabled' : nextButtonDisabled} }) }}
                                 </div>
                             </div>
                         </div>
@@ -110,10 +110,16 @@
                         <div class="col-2">
                             {{ form_row(form.store, { 'attr': {'class': 'btn btn-danger w-100 px-3 py-2 text-truncate'} }) }}
                         </div>
-                        <div class="col-6 col-md-8">
+                        <div class="col-6 col-md-4">
                             <a href="{{ path('artsy_gallery') }}" target="_blank" class="btn btn-secondary w-100">
                                 <i class="fa-solid fa-layer-group"></i><br>
                                 <span>Artsy Gallery</span>
+                            </a>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <a href="{{ path('displate_gallery') }}" target="_blank" class="btn btn-secondary w-100">
+                                <i class="fa-solid fa-layer-group"></i><br>
+                                <span>Displate Gallery</span>
                             </a>
                         </div>
                         <div class="col-4 col-md-2">

@@ -135,11 +135,14 @@ class ConfigurationController extends AbstractController
 
         $buttonMap = $this->configurationService->getActiveButtonMap();
 
+        $nextButtonDisabled = $currentMode !== DisplayMode::UNSPLASH;
+
         return $this->render('configuration/landing.html.twig', [
             'form' => $form->createView(),
             'buttonMap' => $buttonMap,
             'lastImageDto' => $converter->getLastImageDto(),
-            'backgroundColor' => $backgroundStyle
+            'backgroundColor' => $backgroundStyle,
+            'nextButtonDisabled' => $nextButtonDisabled
         ]);
     }
 
