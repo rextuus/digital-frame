@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <a href="{{ path('queue_messages') }}" class="btn btn-sm btn-secondary mb-3">&larr; Back to list</a>
+
+        <h2>📦 Message #{{ id }}</h2>
+        <p><strong>Queue:</strong> {{ queue_name }}</p>
+        <p><strong>Created at:</strong> {{ created_at|date('Y-m-d H:i:s') }}</p>
+
+        <h4>📘 Decoded Message Body</h4>
+        {% if body %}
+            <pre class="bg-light p-3 border rounded text-break">{{ body|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+        {% else %}
+            <div class="alert alert-warning">⚠️ Unable to decode JSON message.</div>
+            <h5>Raw body</h5>
+            <pre class="bg-light p-3 border rounded text-break">{{ raw_body }}</pre>
+        {% endif %}
+    </div>
+{% endblock %}

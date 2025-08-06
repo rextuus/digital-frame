@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message Queue{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">📬 Symfony Messenger Queue</h1>
+
+        {% if messages is empty %}
+            <div class="alert alert-info">The queue is empty.</div>
+        {% else %}
+            <table class="table table-bordered table-hover table-striped align-middle">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Queue</th>
+                    <th>Created At</th>
+                    <th>Type</th>
+                    <th>Tag ID</th>
+                    <th>Displate ID</th>
+                    <th>Last?</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for msg in messages %}
+                    <tr>
+                        <td>{{ msg.id }}</td>
+                        <td>{{ msg.queue_name }}</td>
+                        <td>{{ msg.created_at|date('Y-m-d H:i:s') }}</td>
+                        <td><code>{{ msg.type|split('\\\\')|last }}</code></td>
+                        <td>
+                            {% if msg.tagId is not null %}
+                                <span class="badge bg-primary">{{ msg.tagId }}</span>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if msg.displateId is not null %}
+                                <span class="badge bg-warning text-dark">{{ msg.displateId }}</span>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if msg.isLast is same as(true) %}
+                                <span class="badge bg-success">Yes</span>
+                            {% elseif msg.isLast is same as(false) %}
+                                <span class="badge bg-secondary">No</span>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('queue_message_detail', { id: msg.id }) }}" class="btn btn-sm btn-outline-info">
+                                Details
+                            </a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
