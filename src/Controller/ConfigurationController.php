@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\BackgroundConfiguration;
 use App\Form\ScheduleFrameData;
 use App\Form\ScheduleFrameType;
+use App\Service\Displate\DisplateImageService;
 use App\Service\Favorite\FavoriteService;
 use App\Service\Favorite\ModeToFavoriteConvertProvider;
 use App\Service\FrameConfiguration\BackgroundStyle;

@@ -16,8 +16,11 @@ use App\Service\Unsplash\TagVariant;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Panther\Client;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class DisplateImageService
@@ -109,49 +112,46 @@ class DisplateImageService
      */
     public function crawlImagesFromDisplateSearchPage(string $url, ?int $page = null): array
     {
-        $url = sprintf(self::BASE_URL, $url);
+        $httpClient = HttpClient::create();
 
-        if ($page !== null) {
-            $url = sprintf('%s&page=%d', $url, $page);
-        }
+        // random UUID as au is required
+        $uuid = Uuid::v4()->toRfc4122();
+
+        $response = $httpClient->request('GET', 'https://displate.com/elysium-api/user/v6/search', [
+            'query' => [
+                'phrase' => $url,
+                'page' => 1,
+                'au' => $uuid,
+            ],
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => 'Mozilla/5.0 (compatible; Symfony HttpClient)',
+            ],
+        ]);
+
+        $data = json_decode($response->getContent(), true);
+        $searchResult = $data['searchResult'];
+        $count = $searchResult['count'];
+        $artworks = $searchResult['artworks'];
+
+        $estimatedPageCount = (int) ceil($count / count($artworks));
 
         $images = [];
+        foreach ($artworks as $artwork) {
+            $externalId = $artwork['externalId'];
+            $title = $artwork['title'];
 
-        $client = Client::createChromeClient();
-
-        // Navigate to the URL
-        $client->request('GET', $url);
-
-        // Wait until the results are loaded (based on a CSS selector for results)
-        $crawler = $client->waitFor('div[data-testid="masonry-grid-item"]', 5);
-
-        $maxPages = (int)$crawler->filter('span[data-testid="pagination-maxpage"]')->text();
-
-        // Scrape the dynamically loaded content
-        $crawler->filter('div[data-testid="masonry-grid-item"]')->each(function ($node) use (&$images, $maxPages) {
-            $imageUrl = $node->filter('img[data-testid="artwork-img"]')->attr('src') ?? null;
-            $title = $node->filter('img[data-testid="artwork-img"]')->attr('alt') ?? 'No title';
-            $relativeSearchLink = $node->filter('a.ElysiumLink_link__xHW5f')->attr('href') ?? null;
-            $searchPreviewLink = $imageUrl;
-
-            // Build the full detail link
-            $detailLink = $relativeSearchLink ? sprintf('https://displate.com%s', $relativeSearchLink) : null;
-
-            if ($searchPreviewLink && $detailLink) {
-                $linkParts = explode('/', $detailLink);
-                $images[] = new ImageDto(
-                    $searchPreviewLink,
-                    $title,
-                    null,
-                    null,
-                    $searchPreviewLink,
-                    (int) $linkParts[array_key_last($linkParts)],
-                    $maxPages
-                );
-            }
-        });
-
-        $client->quit();
+            $url = sprintf('https://displate.com/displate/%s', $externalId);
+            $images[] = new ImageDto(
+                $url,
+                $title,
+                null,
+                null,
+                $url,
+                $externalId,
+                $estimatedPageCount
+            );
+        }
 
         return $images;
     }
