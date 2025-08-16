@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Displate Search{% endblock %}
+
 {% block body %}
     <div class="container my-5">
-        <h1 class="text-center">Search Displates</h1>
+        <h1 class="text-center">Get the same results as on displate.com</h1>
 
         <!-- Search Form -->
         <form method="get" action="{{ path('displate_search') }}" class="mb-4">
@@ -27,7 +29,7 @@
                     <div class="col">
                         <div class="card h-100">
                             <!-- Display the image -->
-                            <img src="{{ image.getUrl() }}" class="card-img-top" alt="{{ image.getName() }}">
+                            <img src="{{ image.previewUrl }}" class="card-img-top" alt="{{ image.getName() }}">
 
                             <!-- Display Title and Link -->
                             <div class="card-body">

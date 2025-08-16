@@ -21,7 +21,7 @@ readonly class ModeToFavoriteConvertProvider
     ) {
     }
 
-    public function getFittingConverter(): ModeToFavoriteConverterInterface
+    public function getFittingConverterForCurrentMode(): ModeToFavoriteConverterInterface
     {
         return $this->getConverterForMode($this->frameConfigurationService->getCurrentlyDisplayedImageMode());
     }

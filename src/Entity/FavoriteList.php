@@ -69,4 +69,9 @@ class FavoriteList
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->ident;
+    }
 }

@@ -22,7 +22,7 @@ class Favorite
     #[ORM\Column(nullable: true)]
     private ?int $entityId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $displayUrl = null;
 
     #[ORM\Column(length: 255)]

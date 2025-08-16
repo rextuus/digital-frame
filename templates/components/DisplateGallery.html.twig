@@ -1,16 +1,20 @@
 <div {{ attributes }} class="container py-4 bg-dark">
-    <!-- Filter Section -->
-    <form method="get" action="{{ path('displate_gallery') }}" class="mb-4">
-        <select name="tag" class="form-select" onchange="this.form.submit()">
-            <option value="" {% if this.selectedTag is null %}selected{% endif %}>All Tags</option>
-            {% for tag in this.tags %}
-                <option value="{{ tag }}" {% if this.selectedTag == tag %}selected{% endif %}>
-                    {{ tag }}
-                </option>
-            {% endfor %}
-        </select>
-    </form>
+        <h1 class="text-center text-white mb-5">Stored Displate images</h1>
 
+    <!-- Filter Section -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+
+        <form method="get" action="{{ path('displate_gallery') }}" class="mb-4">
+            <select name="tag" class="form-select" onchange="this.form.submit()">
+                <option value="" {% if this.selectedTag is null %}selected{% endif %}>All Tags</option>
+                {% for tag in this.tags %}
+                    <option value="{{ tag }}" {% if this.selectedTag == tag %}selected{% endif %}>
+                        {{ tag }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
     {% if page > 1 %}
         {# Adding a fake "previous page" div is enough to trick the system #}
         <div class="d-none" id="page--{{ page - 1 }}" data-live-ignore="true"></div>

@@ -6,6 +6,7 @@ use App\Entity\BackgroundConfiguration;
 use App\Form\ScheduleFrameData;
 use App\Form\ScheduleFrameType;
 use App\Service\Displate\DisplateImageService;
+use App\Service\Favorite\FavoriteConvertable;
 use App\Service\Favorite\FavoriteService;
 use App\Service\Favorite\ModeToFavoriteConvertProvider;
 use App\Service\FrameConfiguration\BackgroundStyle;
@@ -32,7 +33,8 @@ class ConfigurationController extends AbstractController
     public function __construct(
         private readonly ModeToFavoriteConvertProvider $modeToFavoriteConvertProvider,
         private readonly FrameConfigurationService $configurationService,
-        private readonly UnsplashImageService $unsplashImageService
+        private readonly UnsplashImageService $unsplashImageService,
+        private readonly FavoriteService $favoriteService
     ) {
     }
 
@@ -103,8 +105,13 @@ class ConfigurationController extends AbstractController
             $this->configurationService->setCurrentTag($currentTag);
 
             if ($storeFavorite) {
-                $converter = $this->modeToFavoriteConvertProvider->getFittingConverter();
-                $favoriteService->storeFavorite($converter->convertToFavoriteEntity());
+                $converter = $this->modeToFavoriteConvertProvider->getFittingConverterForCurrentMode();
+                $favorite = $converter->convertToFavoriteEntity();
+
+                $favoriteList = $configurationData->getFavoriteList();
+                $this->favoriteService->toggleFavoriteAndList($favorite, $favoriteList);
+
+                return $this->redirectToRoute('app_configuration_landing');
             }
 
             // change backgroundColor for current mode
@@ -132,18 +139,26 @@ class ConfigurationController extends AbstractController
             return $this->redirectToRoute('app_configuration_landing');
         }
 
-        $converter = $this->modeToFavoriteConvertProvider->getFittingConverter();
+        $converter = $this->modeToFavoriteConvertProvider->getFittingConverterForCurrentMode();
 
         $buttonMap = $this->configurationService->getActiveButtonMap();
 
         $nextButtonDisabled = $currentMode !== DisplayMode::UNSPLASH;
 
+        $lastImageDto = $converter->getLastImageDto();
+        $favoriteLists = $this->favoriteService->getFavoriteListsForTarget();
+        $favoriteButtonCssClass = '';
+        if (count($favoriteLists) > 0){
+            $favoriteButtonCssClass = 'bg-primary';
+        }
+
         return $this->render('configuration/landing.html.twig', [
             'form' => $form->createView(),
             'buttonMap' => $buttonMap,
-            'lastImageDto' => $converter->getLastImageDto(),
+            'lastImageDto' => $lastImageDto,
             'backgroundColor' => $backgroundStyle,
-            'nextButtonDisabled' => $nextButtonDisabled
+            'nextButtonDisabled' => $nextButtonDisabled,
+            'favoriteButtonCssClass' => $favoriteButtonCssClass,
         ]);
     }
 

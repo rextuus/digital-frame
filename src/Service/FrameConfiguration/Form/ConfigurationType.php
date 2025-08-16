@@ -2,10 +2,11 @@
 
 namespace App\Service\FrameConfiguration\Form;
 
+use App\Entity\FavoriteList;
 use App\Entity\SearchTag;
+use App\Service\Favorite\FavoriteService;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Unsplash\UnsplashImageService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -18,7 +19,8 @@ class ConfigurationType extends AbstractType
 {
     public function __construct(
         private readonly UnsplashImageService $imageService,
-        private readonly FrameConfigurationService $configurationService
+        private readonly FrameConfigurationService $configurationService,
+        private readonly FavoriteService $favoriteService,
     ) {
     }
 
@@ -33,6 +35,19 @@ class ConfigurationType extends AbstractType
             'choices' => $this->imageService->getStoredTags(),
             'data' => $currentTag,
 
+        ]);
+
+        $favoriteLists = $this->favoriteService->getFavoriteListsForTarget();
+        if (count($favoriteLists) === 0) {
+            $favoriteLists[] = $this->favoriteService->getDefaultFavoriteList();
+        }
+        $builder->add('favoriteList', EntityType::class, [
+            'class' => FavoriteList::class,
+            'label' => '<i class="fa-solid fa-list fa-2x"></i><br><span></span>',
+            'label_html' => true,
+            'label_attr' => ['style' => 'margin-right: 10px', 'id' => 'tag-label'],
+            'choices' => $favoriteLists,
+            'data' => $favoriteLists[0],
         ]);
 
         $builder->add('color', ColorType::class, [

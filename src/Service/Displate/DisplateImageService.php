@@ -140,6 +140,7 @@ class DisplateImageService
         foreach ($artworks as $artwork) {
             $externalId = $artwork['externalId'];
             $title = $artwork['title'];
+            $imageCoreUrl = $artwork['imageCoreUrl'];
 
             $url = sprintf('https://displate.com/displate/%s', $externalId);
             $images[] = new ImageDto(
@@ -149,7 +150,8 @@ class DisplateImageService
                 null,
                 $url,
                 $externalId,
-                $estimatedPageCount
+                $estimatedPageCount,
+                'https://cdn.displate.com/artwork/270x380/'.$imageCoreUrl.'.jpg'
             );
         }
 

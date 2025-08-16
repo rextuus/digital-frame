@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Favorites{% endblock %}
+{% block title %}Favorite Gallery{% endblock %}
 
 {% block javascripts %}
     {{ encore_entry_script_tags('config') }}
@@ -14,9 +14,9 @@
     <div class="container body-container my-5">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white">Artsy Images</h2>
+                <h2 class="text-white">Favorite Gallery</h2>
             </div>
         </div>
-        {{ component('FavoriteGallery') }}
+        {{ component('FavoriteGallery', {modesEnabled: modesEnabled}) }}
     </div>
 {% endblock %}

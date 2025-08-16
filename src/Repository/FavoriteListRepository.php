@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Favorite;
 use App\Entity\FavoriteList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,4 +41,17 @@ class FavoriteListRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * @return array<FavoriteList>
+     */
+    public function findListsByFavorite(string $url): array
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb->join('l.favorites', 'f')
+            ->where($qb->expr()->like('f.displayUrl', ':url'))
+            ->setParameter('url', $url);
+
+        return $qb->getQuery()->getResult();
+    }
 }

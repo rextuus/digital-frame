@@ -75,7 +75,7 @@ final class DisplateController extends AbstractController
     }
 
     #[Route('/gallery', name: 'displate_gallery', methods: ['GET'])]
-    public function images(Request $request, SearchTagRepository $searchTagRepository): Response
+    public function gallery(Request $request, SearchTagRepository $searchTagRepository): Response
     {
         $selectedTag = $request->query->get('tag', null);
 

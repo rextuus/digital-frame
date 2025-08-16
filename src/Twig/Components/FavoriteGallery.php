@@ -42,7 +42,6 @@ final class FavoriteGallery
     {
         $availableModes = $this->favoriteRepository->getPresentModes();
         $availableModes = array_map(fn(array $mode) => $mode[array_key_first($mode)]->name, $availableModes);
-
         foreach (DisplayMode::cases() as $mode) {
             $this->modesEnabled[$mode->name] = true;
             if (!in_array($mode->name, $availableModes)) {
@@ -69,63 +68,50 @@ final class FavoriteGallery
     /**
      * @return array<Favorite>
      */
-    public function getImages(): array
+    public function getFavorites(): array
     {
         $totalImages = $this->favoriteRepository->countFavorites($this->getEnabledModes());
         $this->totalCount = $totalImages;
 
+        if ($totalImages === 0) {
+            return [];
+        }
+
+//        dump($this->favoriteRepository->findPaginatedFavorites(
+//            self::IMAGES_PER_PAGE,
+//            ($this->page - 1) * self::IMAGES_PER_PAGE,
+//            $this->getEnabledModes(),
+//        ));
+
         return $this->favoriteRepository->findPaginatedFavorites(
-            $this->page,
             self::IMAGES_PER_PAGE,
+            ($this->page - 1) * self::IMAGES_PER_PAGE,
             $this->getEnabledModes(),
-            $this->sort,
         );
     }
 
-    public function hasMorePages(): bool
-    {
-        $totalImages = $this->favoriteRepository->countFavorites($this->getEnabledModes());
-
-        return ($this->page * self::IMAGES_PER_PAGE) < $totalImages;
-    }
-
-    public function getTotalPages(): int
-    {
-        $totalImages = $this->favoriteRepository->countFavorites($this->getEnabledModes());
-
-        return ceil($totalImages / self::IMAGES_PER_PAGE);
-    }
-
-    public function hasPreviousPages(): bool
-    {
-        return $this->page > 1;
-    }
-
     #[LiveAction]
-    public function loadMore(): void
+    public function more(): void
     {
-        $this->page++;
+        ++$this->page;
     }
 
-    #[LiveAction]
-    public function loadBefore(): void
+    public function hasMore(): bool
     {
-        $this->page--;
+        return $this->favoriteRepository->findPaginatedFavorites(
+            self::IMAGES_PER_PAGE,
+            ($this->page - 1) * self::IMAGES_PER_PAGE,
+            $this->getEnabledModes(),
+            true
+        );
     }
+
 
     #[LiveAction]
     public function toggleMode(#[LiveArg] string $category): void
     {
         $this->modesEnabled[$category] = !$this->modesEnabled[$category];
         $this->page = 1;
-    }
-
-    #[LiveAction]
-    public function setPage(#[LiveArg] int $page): void
-    {
-        if ($page > 0 && $page <= $this->getTotalPages()) {
-            $this->page = $page;
-        }
     }
 
     public function getModes(): array

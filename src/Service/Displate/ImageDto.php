@@ -14,7 +14,8 @@ class ImageDto
         private ?int $height = null,
         private ?string $link = null,
         private ?int $displateId = null,
-        private ?int $totalPagesForSearchTag = null
+        private ?int $totalPagesForSearchTag = null,
+        private ?string $previewUrl = null
     ) {
     }
 
@@ -92,6 +93,17 @@ class ImageDto
     public function setTotalPagesForSearchTag(?int $totalPagesForSearchTag): ImageDto
     {
         $this->totalPagesForSearchTag = $totalPagesForSearchTag;
+        return $this;
+    }
+
+    public function getPreviewUrl(): ?string
+    {
+        return $this->previewUrl;
+    }
+
+    public function setPreviewUrl(?string $previewUrl): self
+    {
+        $this->previewUrl = $previewUrl;
         return $this;
     }
 }

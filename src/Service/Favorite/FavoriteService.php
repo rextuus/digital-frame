@@ -7,6 +7,7 @@ namespace App\Service\Favorite;
 use App\Entity\Favorite;
 use App\Entity\FavoriteList;
 use App\Repository\FavoriteListRepository;
+use App\Repository\FavoriteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class FavoriteService
@@ -16,13 +17,16 @@ readonly class FavoriteService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private FavoriteListRepository $favoriteListRepository,
+        private ModeToFavoriteConvertProvider $modeToFavoriteConvertProvider,
     )
     {
     }
 
-    public function storeFavorite(Favorite $favorite): void
+    public function storeFavorite(Favorite $favorite, ?FavoriteList $favoriteList = null): void
     {
-        $favoriteList = $this->getDefaultFavoriteList();
+        if ($favoriteList === null) {
+            $favoriteList = $this->getDefaultFavoriteList();
+        }
         $favoriteList->addFavorite($favorite);
         $favorite->addFavoriteList($favoriteList);
 
@@ -31,7 +35,7 @@ readonly class FavoriteService
         $this->entityManager->flush();
     }
 
-    private function getDefaultFavoriteList(): FavoriteList
+    public function getDefaultFavoriteList(): FavoriteList
     {
         $favoriteList = $this->favoriteListRepository->findOneBy(['ident' => self::DEFAULT_FAVORITE_LIST_NAME]);
         if (!$favoriteList) {
@@ -43,5 +47,54 @@ readonly class FavoriteService
         }
 
         return $favoriteList;
+    }
+
+    /**
+     * @return array<FavoriteList>
+     */
+    public function getFavoriteListsForTarget(): array
+    {
+        $converter = $this->modeToFavoriteConvertProvider->getFittingConverterForCurrentMode();
+        $lastImageDto = $converter->getLastImageDto();
+
+        return $this->favoriteListRepository->findListsByFavorite($lastImageDto->getUrl());
+    }
+
+    public function removeFavoriteFromList(Favorite $favorite, FavoriteList $favoriteList): void
+    {
+        $favoriteList->removeFavorite($favorite);
+        $favorite->removeFavoriteList($favoriteList);
+
+        // Persist and flush changes to sync before checking dependencies
+//        $this->entityManager->persist($favoriteList);
+        $this->entityManager->flush();
+
+        // Check if Favorite has no associated FavoriteLists left
+        if ($favorite->getFavoriteLists()->isEmpty()) {
+            $this->entityManager->remove($favorite);
+        }
+        // Final flush after removing the Favorite
+        $this->entityManager->flush();
+    }
+
+    public function toggleFavoriteAndList(Favorite $favorite, FavoriteList $favoriteList): void
+    {
+        $isInList = false;
+        foreach ($favoriteList->getFavorites() as $listFavorite) {
+            if ($listFavorite->getDisplayUrl() === $favorite->getDisplayUrl()) {
+                // we need to exchange the favorite coming in with the one from the list.
+                // incoming is a not persisted Favorite and more like a dto cause it comes from a provider
+                $favorite = $listFavorite;
+
+                $isInList = true;
+                break;
+            }
+        }
+
+        if ($isInList) {
+            $this->removeFavoriteFromList($favorite, $favoriteList);
+        } else {
+            $this->storeFavorite($favorite, $favoriteList);
+        }
     }
 }

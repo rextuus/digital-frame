@@ -16,46 +16,51 @@ class FavoriteRepository extends ServiceEntityRepository
         parent::__construct($registry, Favorite::class);
     }
 
-    //    /**
-    //     * @return Favorite[] Returns an array of Favorite objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('f.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Favorite
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-    public function findPaginatedFavorites(int $page, int $limit, array $modes, string $sort = 'ASC')
+    public function findPaginatedFavorites(
+        int $limit,
+        int $offset,
+        array $modes,
+        bool $count = false
+    ): array|bool
     {
         $modes = array_map(fn($type) => $type->value, $modes);
 
+        if ($modes === []){
+            if ($count) {
+                return false;
+            }
+
+            return [];
+        }
+
         $qb = $this->createQueryBuilder('f');
         $qb->select('f')
-            ->where($qb->expr()->in('f.displayMode', $modes))
-            ->orderBy('f.id', $sort)
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit);
+            ->where($qb->expr()->in('f.displayMode', $modes));
+
+        if ($count) {
+            $qb->select('COUNT(f.id)');
+            $total = $qb->getQuery()->getSingleScalarResult();
+            if ($total === 0) {
+                return false;
+            }
+
+            return $offset < $total / $limit;
+        }
+
+
+        $qb->setMaxResults($limit)
+            ->setFirstResult($offset);
+
 
         return $qb->getQuery()->getResult();
     }
 
     public function countFavorites(array $modes): int
     {
+        if ($modes === []){
+            return 0;
+        }
+
         $modes = array_map(fn($type) => $type->value, $modes);
 
         $qb = $this->createQueryBuilder('f');

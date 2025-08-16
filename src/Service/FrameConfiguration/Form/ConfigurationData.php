@@ -2,6 +2,7 @@
 
 namespace App\Service\FrameConfiguration\Form;
 
+use App\Entity\FavoriteList;
 use App\Entity\SearchTag;
 
 class ConfigurationData
@@ -18,6 +19,7 @@ class ConfigurationData
 
     private ?int $height = null;
     private ?int $margin = null;
+    private ?FavoriteList $favoriteList = null;
 
     /**
      * @return int
@@ -102,6 +104,17 @@ class ConfigurationData
     public function setMargin(?int $margin): ConfigurationData
     {
         $this->margin = $margin;
+        return $this;
+    }
+
+    public function getFavoriteList(): ?FavoriteList
+    {
+        return $this->favoriteList;
+    }
+
+    public function setFavoriteList(?FavoriteList $favoriteList): self
+    {
+        $this->favoriteList = $favoriteList;
         return $this;
     }
 }
