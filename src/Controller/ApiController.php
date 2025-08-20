@@ -150,9 +150,11 @@ class ApiController extends AbstractController
 
         if ($currentMode === DisplayMode::UNSPLASH){
             $this->configurationService->setMode(DisplayMode::ARTSY);
+            $this->skipImage();
         }
-        if ($currentMode === DisplayMode::UNSPLASH){
+        if ($currentMode === DisplayMode::ARTSY){
             $this->configurationService->setMode(DisplayMode::SPOTIFY);
+            $this->skipImage();
         }
         if ($currentMode === DisplayMode::SPOTIFY){
             $this->configurationService->setMode(DisplayMode::NASA);
@@ -162,8 +164,8 @@ class ApiController extends AbstractController
         }
         if ($currentMode === DisplayMode::DISPLATE){
             $this->configurationService->setMode(DisplayMode::UNSPLASH);
+            $this->skipImage();
         }
-        $this->skipImage();
 
         return new JsonResponse(['state' => 'skipped'], 200);
     }
