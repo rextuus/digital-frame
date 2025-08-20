@@ -29,13 +29,13 @@ class ApiController extends AbstractController
     #[Route('/switch/on', name: 'api_display_on', methods: ['GET'])]
     public function turnDisplayOn(): JsonResponse
     {
-        return $this->executeCommand(DisplayState::ON);
+        return $this->executeDisplayPythonCommand(DisplayState::ON);
     }
 
     #[Route('/switch/off', name: 'api_display_off', methods: ['GET'])]
     public function turnDisplayOff(): JsonResponse
     {
-        return $this->executeCommand(DisplayState::OFF);
+        return $this->executeDisplayPythonCommand(DisplayState::OFF);
     }
 
     #[Route('/switch', name: 'api_display_toggle', methods: ['POST'])]
@@ -57,11 +57,11 @@ class ApiController extends AbstractController
             return new JsonResponse(['state' => $displayState->value, 'output' => ''], 200);
         }
 
-        return $this->executeCommand($displayState);
+        return $this->executeDisplayPythonCommand($displayState);
     }
 
 
-    private function executeCommand(DisplayState $displayState): JsonResponse
+    private function executeDisplayPythonCommand(DisplayState $displayState): JsonResponse
     {
         if (!file_exists($this->switchStateScriptPath) || !is_readable($this->switchStateScriptPath)) {
             return new JsonResponse(['error' => 'Python script not found or is not readable.'], 500);
@@ -115,7 +115,27 @@ class ApiController extends AbstractController
         return new JsonResponse(['state' => $displayState->value], 200);
     }
 
-    #[Route('/next', name: 'api_display_next', methods: ['GET'])]
+    #[Route('/reboot', name: 'api_reboot', methods: ['POST'])]
+    public function rebootSystem(): JsonResponse
+    {
+        $output = [];
+        $returnCode = null;
+
+        // Check if the appropriate permission exists (e.g., sudo setup for reboot without password prompt).
+        exec('sudo /sbin/reboot 2>&1', $output, $returnCode);
+
+        if ($returnCode !== 0) {
+            return new JsonResponse([
+                'error' => 'Failed to reboot the Raspberry Pi.',
+                'output' => $output,
+                'return_code' => $returnCode,
+            ], 500);
+        }
+
+        return new JsonResponse(['message' => 'Reboot command executed successfully. The system will restart shortly.'], 200);
+    }
+
+    #[Route('/next', name: 'api_display_next', methods: ['GET', 'POST'])]
     public function next(): JsonResponse
     {
         $this->skipImage();
