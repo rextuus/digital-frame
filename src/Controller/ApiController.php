@@ -163,6 +163,7 @@ class ApiController extends AbstractController
         if ($currentMode === DisplayMode::DISPLATE){
             $this->configurationService->setMode(DisplayMode::UNSPLASH);
         }
+        $this->skipImage();
 
         return new JsonResponse(['state' => 'skipped'], 200);
     }
