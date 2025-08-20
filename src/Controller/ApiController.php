@@ -166,6 +166,8 @@ class ApiController extends AbstractController
             $newMode = DisplayMode::UNSPLASH;
         }
 
+        $this->configurationService->setWaitForModeSwitch(true);
+
         $updateData = $this->configurationService->getDefaultUpdateData();
         $updateData->setMode($newMode);
         $updateData->setNext(true);
