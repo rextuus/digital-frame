@@ -148,24 +148,28 @@ class ApiController extends AbstractController
     {
         $currentMode = $this->configurationService->getMode();
 
+        $newMode = null;
         if ($currentMode === DisplayMode::UNSPLASH){
-            $this->configurationService->setMode(DisplayMode::ARTSY);
-            $this->skipImage();
+            $newMode = DisplayMode::SPOTIFY;
         }
-        if ($currentMode === DisplayMode::ARTSY){
-            $this->configurationService->setMode(DisplayMode::SPOTIFY);
-            $this->skipImage();
-        }
+//        if ($currentMode === DisplayMode::ARTSY){
+//            $this->configurationService->setMode(DisplayMode::SPOTIFY);
+//            $this->skipImage();
+//        }
         if ($currentMode === DisplayMode::SPOTIFY){
-            $this->configurationService->setMode(DisplayMode::NASA);
+            $newMode = DisplayMode::DISPLATE;
         }
-        if ($currentMode === DisplayMode::NASA){
-            $this->configurationService->setMode(DisplayMode::DISPLATE);
-        }
+//        if ($currentMode === DisplayMode::NASA){
+//            $this->configurationService->setMode(DisplayMode::DISPLATE);
+//        }
         if ($currentMode === DisplayMode::DISPLATE){
-            $this->configurationService->setMode(DisplayMode::UNSPLASH);
-            $this->skipImage();
+            $newMode = DisplayMode::UNSPLASH;
         }
+
+        $updateData = $this->configurationService->getDefaultUpdateData();
+        $updateData->setMode($newMode);
+        $updateData->setNext(true);
+        $this->configurationService->update($updateData);
 
         return new JsonResponse(['state' => 'skipped'], 200);
     }
