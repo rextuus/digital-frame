@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api')]
 class ApiController extends AbstractController
@@ -143,8 +143,32 @@ class ApiController extends AbstractController
         return new JsonResponse(['state' => 'skipped'], 200);
     }
 
+    #[Route('/mode', name: 'api_display_mode', methods: ['GET', 'POST'])]
+    public function mode(): JsonResponse
+    {
+        $currentMode = $this->configurationService->getMode();
+
+        if ($currentMode === DisplayMode::UNSPLASH){
+            $this->configurationService->setMode(DisplayMode::ARTSY);
+        }
+        if ($currentMode === DisplayMode::UNSPLASH){
+            $this->configurationService->setMode(DisplayMode::SPOTIFY);
+        }
+        if ($currentMode === DisplayMode::SPOTIFY){
+            $this->configurationService->setMode(DisplayMode::NASA);
+        }
+        if ($currentMode === DisplayMode::NASA){
+            $this->configurationService->setMode(DisplayMode::DISPLATE);
+        }
+        if ($currentMode === DisplayMode::DISPLATE){
+            $this->configurationService->setMode(DisplayMode::UNSPLASH);
+        }
+
+        return new JsonResponse(['state' => 'skipped'], 200);
+    }
+
     #[Route('/block', name: 'api_display_block', methods: ['GET'])]
-    public function bock(DisplateImageService $displateImageService): JsonResponse
+    public function block(DisplateImageService $displateImageService): JsonResponse
     {
         $currentMode = $this->configurationService->getMode();
 
