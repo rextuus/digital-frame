@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Favorite;
+use App\Twig\Components\FavoriteGallery;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -44,7 +45,7 @@ class FavoriteRepository extends ServiceEntityRepository
                 return false;
             }
 
-            return $offset < $total / $limit;
+            return $offset/ FavoriteGallery::IMAGES_PER_PAGE +1 < $total / $limit;
         }
 
 

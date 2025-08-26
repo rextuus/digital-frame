@@ -18,7 +18,7 @@ final class FavoriteGallery
 {
     use DefaultActionTrait;
 
-    private const IMAGES_PER_PAGE = 4;
+    public const IMAGES_PER_PAGE = 12;
 
     #[LiveProp(writable: true)]
     public int $page = 1;
