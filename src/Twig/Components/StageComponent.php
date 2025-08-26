@@ -73,7 +73,7 @@ final class StageComponent
 
     public function getBackgroundStyle(): string
     {   //style="background-image: url('{{ this.imageUrl }}');"
-        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        $backgroundConfig = $this->getBackgroundConfig();
         return match ($backgroundConfig->getStyle()) {
             BackgroundStyle::COLOR => sprintf('style="background-color: %s"', $backgroundConfig->getColor()),
             default => sprintf('style="background-image: url(\'%s\')"', $this->getImageUrl()),
@@ -82,7 +82,7 @@ final class StageComponent
 
     public function getClearModeClass(): string
     {
-        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        $backgroundConfig = $this->getBackgroundConfig();
 
         return match ($backgroundConfig->getStyle()) {
             BackgroundStyle::CLEAR => 'clear-mode',
@@ -92,7 +92,7 @@ final class StageComponent
 
     public function getImageStyleClass(): string
     {
-        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        $backgroundConfig = $this->getBackgroundConfig();
 
         return match ($backgroundConfig->getImageStyle()) {
             ImageStyle::SCREEN_WIDTH => 'maximized',
@@ -103,7 +103,7 @@ final class StageComponent
 
     public function getMinHeight(): string
     {
-        $backgroundConfig = $this->configurationService->getBackgroundConfigurationForCurrentMode();
+        $backgroundConfig = $this->getBackgroundConfig();
         $customHeight = $backgroundConfig->getCustomHeight();
         if ($customHeight === null) {
             $customHeight = 1900;
