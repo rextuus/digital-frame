@@ -326,6 +326,29 @@ readonly class FrameConfigurationService
             }
         }
 
+        $backgroundConfiguration = new BackgroundConfiguration();
+        $backgroundConfiguration->setMode($configuration->getMode());
+        $backgroundConfiguration->setColor(null);
+        $backgroundConfiguration->setStyle(BackgroundStyle::BLUR);
+        $backgroundConfiguration->setImageStyle(ImageStyle::ORIGINAL);
+        $backgroundConfiguration->setConfiguration($configuration);
+        $this->entityManager->persist($backgroundConfiguration);
+        $this->entityManager->flush();
+
+        return $backgroundConfiguration;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getBackgroundConfigurationForMode(DisplayMode $mode): BackgroundConfiguration
+    {
+        foreach ($this->getBackGroundColors() as $backgroundConfiguration) {
+            if ($backgroundConfiguration->getMode() === $mode) {
+                return $backgroundConfiguration;
+            }
+        }
+
         throw new Exception('No background color found for current mode');
     }
 
@@ -457,6 +480,10 @@ readonly class FrameConfigurationService
         $collection->addButton(
             'displate',
             new ButtonState($currentMode === DisplayMode::DISPLATE ? $enabledClass : $disabledClass)
+        );
+        $collection->addButton(
+            'favorite',
+            new ButtonState($currentMode === DisplayMode::FAVORITE ? $enabledClass : $disabledClass)
         );
 
         return $collection;

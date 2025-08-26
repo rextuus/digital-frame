@@ -170,6 +170,7 @@ class ConfigurationController extends AbstractController
         $isGreeting = $form->get('greeting')->isClicked();
         $isNasa = $form->get('nasa')->isClicked();
         $isDisplate = $form->get('displate')->isClicked();
+        $isFavorite = $form->get('favorite')->isClicked();
 
         $newMode = null;
         if ($isArtsy) {
@@ -184,6 +185,8 @@ class ConfigurationController extends AbstractController
             $newMode = DisplayMode::NASA;
         } elseif ($isDisplate) {
             $newMode = DisplayMode::DISPLATE;
+        } elseif ($isFavorite) {
+            $newMode = DisplayMode::FAVORITE;
         }
 
         return $newMode;

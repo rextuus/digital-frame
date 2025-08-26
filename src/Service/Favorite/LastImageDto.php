@@ -6,7 +6,7 @@ namespace App\Service\Favorite;
 
 class LastImageDto
 {
-    private string $url;
+    private string $url = '';
     private ?string $title;
     private ?string $artist;
     private bool $found = false;

@@ -84,6 +84,12 @@ class FrameConfiguration
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?SearchTag $currentTag = null;
 
+    #[ORM\OneToOne(targetEntity: FavoriteList::class, cascade: ['persist', 'remove'])]
+    private ?FavoriteList $currentFavoriteList = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $currentFavoriteListIndex = null;
+
     public function __construct()
     {
         $this->backgroundConfigurations = new ArrayCollection();
@@ -286,6 +292,30 @@ class FrameConfiguration
     public function setCurrentTag(?SearchTag $currentTag): static
     {
         $this->currentTag = $currentTag;
+
+        return $this;
+    }
+
+    public function getCurrentFavoriteList(): ?FavoriteList
+    {
+        return $this->currentFavoriteList;
+    }
+
+    public function setCurrentFavoriteList(?FavoriteList $currentFavoriteList): self
+    {
+        $this->currentFavoriteList = $currentFavoriteList;
+
+        return $this;
+    }
+
+    public function getCurrentFavoriteListIndex(): ?int
+    {
+        return $this->currentFavoriteListIndex;
+    }
+
+    public function setCurrentFavoriteListIndex(?int $currentFavoriteListIndex): self
+    {
+        $this->currentFavoriteListIndex = $currentFavoriteListIndex;
 
         return $this;
     }

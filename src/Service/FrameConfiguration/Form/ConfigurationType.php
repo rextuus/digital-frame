@@ -114,6 +114,10 @@ class ConfigurationType extends AbstractType
                 'label' => '<i class="fa-solid fa-d fa-2x"></i><br><span>Displate</span>',
                 'label_html' => true,
             ])
+            ->add('favorite', SubmitType::class, [
+                'label' => '<i class="fa-solid fa-heart-broken fa-2x"></i><br><span>Favorite</span>',
+                'label_html' => true,
+            ])
             ->add('next', SubmitType::class, [
                 'label' => '<i class="fa-solid fa-forward fa-2x"></i><br><span>Next</span>',
                 'label_html' => true,

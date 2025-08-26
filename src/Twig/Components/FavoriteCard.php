@@ -32,8 +32,8 @@ final class FavoriteCard
     #[LiveAction]
     public function display(#[LiveArg] int $id): void
     {
-        $this->frameConfigurationService->setMode($this->favorite->getDisplayMode());
-        $this->frameConfigurationService->setNextImageId($this->favorite->getEntityId());
+        $this->frameConfigurationService->setMode(DisplayMode::FAVORITE);
+        $this->frameConfigurationService->setNextImageId($this->favorite->getId());
         $this->frameConfigurationService->setNext(true);
         $this->frameConfigurationService->setWaitForModeSwitch(true);
 

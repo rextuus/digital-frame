@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\FrameConfiguration\Form;
 
+use App\Entity\FavoriteList;
 use App\Entity\FrameConfiguration;
 use App\Entity\SearchTag;
 use App\Service\FrameConfiguration\DisplayMode;
@@ -15,6 +16,9 @@ class ConfigurationUpdateData
     private SearchTag $currentTag;
     private int $greetingDisplayTime;
     private int $shutDownTime;
+
+    private ?FavoriteList $currentFavoriteList;
+    private ?int $currentFavoriteListIndex;
 
     public function getMode(): DisplayMode
     {
@@ -72,6 +76,28 @@ class ConfigurationUpdateData
         return $this;
     }
 
+    public function getCurrentFavoriteList(): ?FavoriteList
+    {
+        return $this->currentFavoriteList;
+    }
+
+    public function setCurrentFavoriteList(?FavoriteList $currentFavoriteList): self
+    {
+        $this->currentFavoriteList = $currentFavoriteList;
+        return $this;
+    }
+
+    public function getCurrentFavoriteListIndex(): ?int
+    {
+        return $this->currentFavoriteListIndex;
+    }
+
+    public function setCurrentFavoriteListIndex(?int $currentFavoriteListIndex): self
+    {
+        $this->currentFavoriteListIndex = $currentFavoriteListIndex;
+        return $this;
+    }
+
     public function initFrom(FrameConfiguration $configuration): ConfigurationUpdateData
     {
         $this->setMode($configuration->getMode());
@@ -79,6 +105,8 @@ class ConfigurationUpdateData
         $this->setCurrentTag($configuration->getCurrentTag());
         $this->setNext($configuration->isNext());
         $this->setShutDownTime($configuration->getShutDownTime());
+        $this->setCurrentFavoriteList($configuration->getCurrentFavoriteList());
+        $this->setCurrentFavoriteListIndex($configuration->getCurrentFavoriteListIndex());
 
         return $this;
     }

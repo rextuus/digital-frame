@@ -21,6 +21,8 @@ class FrameConfigurationFactory
         $configuration->setCurrentTag($data->getCurrentTag());
         $configuration->setNext($data->isNext());
         $configuration->setShutDownTime($data->getShutDownTime());
+        $configuration->setCurrentFavoriteList($data->getCurrentFavoriteList());
+        $configuration->setCurrentFavoriteListIndex($data->getCurrentFavoriteListIndex());
 
         return $configuration;
     }

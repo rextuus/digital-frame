@@ -2,6 +2,8 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\BackgroundConfiguration;
+use App\Service\Favorite\FavoriteService;
 use App\Service\FrameConfiguration\BackgroundStyle;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
@@ -33,6 +35,7 @@ final class StageComponent
         private readonly SpotifyService $spotifyService,
         private readonly NasaService $nasaService,
         private readonly ImageDisplayHandlerProvider $displayHandlerProvider,
+        private readonly FavoriteService $favoriteService,
     ) {
     }
 
@@ -119,6 +122,18 @@ final class StageComponent
             ),
             default => '',
         };
+    }
+
+    private function getBackgroundConfig(): BackgroundConfiguration
+    {
+        // we want to get the setting of favorites orgin modes
+        if ($this->currentMode === DisplayMode::FAVORITE) {
+            $configuration = $this->configurationService->getConfiguration();
+            $favorite = $this->favoriteService->getFavorite($configuration->getCurrentlyDisplayedImageId());
+
+            return $this->configurationService->getBackgroundConfigurationForMode($favorite->getDisplayMode());
+        }
+        return $this->configurationService->getBackgroundConfigurationForCurrentMode();
     }
 
     public function getNasaText(): ?string

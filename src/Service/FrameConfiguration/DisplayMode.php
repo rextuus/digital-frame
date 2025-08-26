@@ -10,6 +10,7 @@ enum DisplayMode: int
     case ARTSY = 4;
     case NASA = 5;
     case DISPLATE = 6;
+    case FAVORITE = 7;
 
     public static function fromName(string $mode): DisplayMode
     {
@@ -20,6 +21,7 @@ enum DisplayMode: int
             'ARTSY' => self::ARTSY,
             'NASA' => self::NASA,
             'DISPLATE' => self::DISPLATE,
+            'FAVORITE' => self::FAVORITE,
         };
     }
 

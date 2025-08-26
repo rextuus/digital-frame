@@ -8,6 +8,8 @@ use App\Entity\Favorite;
 use App\Entity\FavoriteList;
 use App\Repository\FavoriteListRepository;
 use App\Repository\FavoriteRepository;
+use App\Service\FrameConfiguration\Form\ConfigurationData;
+use App\Service\FrameConfiguration\FrameConfigurationService;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class FavoriteService
@@ -16,8 +18,10 @@ readonly class FavoriteService
 
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private FavoriteRepository $favoriteRepository,
         private FavoriteListRepository $favoriteListRepository,
         private ModeToFavoriteConvertProvider $modeToFavoriteConvertProvider,
+        private FrameConfigurationService $frameConfigurationService,
     )
     {
     }
@@ -96,5 +100,33 @@ readonly class FavoriteService
         } else {
             $this->storeFavorite($favorite, $favoriteList);
         }
+    }
+
+    public function getFavorite(int $favoriteId): ?Favorite
+    {
+        return $this->favoriteRepository->find($favoriteId);
+    }
+
+    public function getNextForCurrentFavoriteList(): Favorite
+    {
+        $configuration = $this->frameConfigurationService->getConfiguration();
+        $currentList = $configuration->getCurrentFavoriteList();
+        $currentIndex = $configuration->getCurrentFavoriteListIndex();
+        if ($currentList === null) {
+            $currentList = $this->getDefaultFavoriteList();
+        }
+
+        $nextIndex = $currentIndex + 1;
+        $nextFavorite = $currentList->getFavorites()->get($nextIndex);
+        if ($nextFavorite === null) {
+            $nextFavorite = $currentList->getFavorites()->first();
+            $nextIndex = 0;
+        }
+        $updateData = $this->frameConfigurationService->getDefaultUpdateData();
+        $updateData->setCurrentFavoriteListIndex($nextIndex);
+        $updateData->setCurrentFavoriteList($currentList);
+        $this->frameConfigurationService->update($updateData);
+
+        return $nextFavorite;
     }
 }
