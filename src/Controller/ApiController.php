@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\Displate\DisplateImageService;
+use App\Service\Favorite\FavoriteService;
+use App\Service\Favorite\ModeToFavoriteConvertProvider;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\DisplayState;
 use App\Service\FrameConfiguration\FrameConfigurationService;
@@ -23,6 +25,8 @@ class ApiController extends AbstractController
         #[Autowire('%env(ROTATE_DISPLAY_SCRIPT_PATH)%')]
         private readonly string $rotateDisplayScriptPath,
         private readonly FrameConfigurationService $configurationService,
+        private readonly FavoriteService $favoriteService,
+        private readonly ModeToFavoriteConvertProvider $modeToFavoriteConvertProvider,
     ) {
     }
 
@@ -143,6 +147,18 @@ class ApiController extends AbstractController
         return new JsonResponse(['state' => 'skipped'], 200);
     }
 
+    #[Route('/like', name: 'api_display_like', methods: ['GET', 'POST'])]
+    public function like(): JsonResponse
+    {
+        $converter = $this->modeToFavoriteConvertProvider->getFittingConverterForCurrentMode();
+        $favorite = $converter->convertToFavoriteEntity();
+
+        $favoriteList = $this->favoriteService->getDefaultFavoriteList();
+        $this->favoriteService->toggleFavoriteAndList($favorite, $favoriteList);
+
+        return new JsonResponse(['state' => 'liked'], 200);
+    }
+
     #[Route('/mode', name: 'api_display_mode', methods: ['GET', 'POST'])]
     public function mode(): JsonResponse
     {
@@ -152,17 +168,13 @@ class ApiController extends AbstractController
         if ($currentMode === DisplayMode::UNSPLASH){
             $newMode = DisplayMode::SPOTIFY;
         }
-//        if ($currentMode === DisplayMode::ARTSY){
-//            $this->configurationService->setMode(DisplayMode::SPOTIFY);
-//            $this->skipImage();
-//        }
         if ($currentMode === DisplayMode::SPOTIFY){
             $newMode = DisplayMode::DISPLATE;
         }
-//        if ($currentMode === DisplayMode::NASA){
-//            $this->configurationService->setMode(DisplayMode::DISPLATE);
-//        }
         if ($currentMode === DisplayMode::DISPLATE){
+            $newMode = DisplayMode::FAVORITE;
+        }
+        if ($currentMode === DisplayMode::FAVORITE){
             $newMode = DisplayMode::UNSPLASH;
         }
 
