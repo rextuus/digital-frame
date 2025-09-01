@@ -116,17 +116,21 @@ readonly class FavoriteService
             $currentList = $this->getDefaultFavoriteList();
         }
 
+        $favorites = $currentList->getFavorites();
+
         $nextIndex = $currentIndex + 1;
-        $nextFavorite = $currentList->getFavorites()->get($nextIndex);
+        $nextFavorite = null;
+        if ($random) {
+            $nextIndex = rand(0, $favorites->count() - 1);
+            $nextFavorite = $favorites->get($nextIndex);
+        }
+
         if ($nextFavorite === null) {
             $favorites = $currentList->getFavorites();
             $nextFavorite = $favorites->first();
             $nextIndex = 0;
-            if ($random) {
-                $nextIndex = rand(0, $favorites->count() - 1);
-                $nextFavorite = $favorites->get($nextIndex);
-            }
         }
+
         $updateData = $this->frameConfigurationService->getDefaultUpdateData();
         $updateData->setCurrentFavoriteListIndex($nextIndex);
         $updateData->setCurrentFavoriteList($currentList);
