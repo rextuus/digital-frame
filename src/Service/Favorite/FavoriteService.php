@@ -107,7 +107,7 @@ readonly class FavoriteService
         return $this->favoriteRepository->find($favoriteId);
     }
 
-    public function getNextForCurrentFavoriteList(): Favorite
+    public function getNextForCurrentFavoriteList(bool $random = false): Favorite
     {
         $configuration = $this->frameConfigurationService->getConfiguration();
         $currentList = $configuration->getCurrentFavoriteList();
@@ -119,8 +119,13 @@ readonly class FavoriteService
         $nextIndex = $currentIndex + 1;
         $nextFavorite = $currentList->getFavorites()->get($nextIndex);
         if ($nextFavorite === null) {
-            $nextFavorite = $currentList->getFavorites()->first();
+            $favorites = $currentList->getFavorites();
+            $nextFavorite = $favorites->first();
             $nextIndex = 0;
+            if ($random) {
+                $nextIndex = rand(0, $favorites->count() - 1);
+                $nextFavorite = $favorites->get($nextIndex);
+            }
         }
         $updateData = $this->frameConfigurationService->getDefaultUpdateData();
         $updateData->setCurrentFavoriteListIndex($nextIndex);

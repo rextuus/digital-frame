@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service\Stage\Handler;
 
-use App\Entity\Favorite;
-use App\Service\Artsy\ArtsyService;
 use App\Service\Favorite\FavoriteService;
-use App\Service\Favorite\LastImageDto;
 use App\Service\FrameConfiguration\DisplayMode;
 use App\Service\FrameConfiguration\FrameConfigurationService;
 use App\Service\Stage\ImageDisplayHandlerInterface;
-use App\Service\Stage\ImageDisplayHandlerProvider;
 
 readonly class FavoriteHandler implements ImageDisplayHandlerInterface
 {
@@ -47,7 +43,7 @@ readonly class FavoriteHandler implements ImageDisplayHandlerInterface
 
         // get next favorite from list
         if ($favorite === null) {
-            $favorite = $this->favoriteService->getNextForCurrentFavoriteList();
+            $favorite = $this->favoriteService->getNextForCurrentFavoriteList(true);
         }
 
         $this->configurationService->setCurrentDisplayedImage($favorite->getId(), DisplayMode::FAVORITE);
